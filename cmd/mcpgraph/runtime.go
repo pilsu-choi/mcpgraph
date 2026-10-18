@@ -25,19 +25,3 @@ func newHookCmd() *cobra.Command {
 		RunE:  notYet("m9"),
 	}
 }
-
-func newInstallCmd() *cobra.Command {
-	return &cobra.Command{
-		Use:   "install",
-		Short: "Rewrite AI app configs so stdio MCP servers run through the proxy",
-		RunE:  notYet("m8"),
-	}
-}
-
-func newUninstallCmd() *cobra.Command {
-	return &cobra.Command{
-		Use:   "uninstall",
-		Short: "Restore AI app configs from the backups made by install",
-		RunE:  notYet("m8"),
-	}
-}

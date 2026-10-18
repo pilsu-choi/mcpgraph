@@ -17,22 +17,34 @@ import (
 // This is mcpgraph's own format (milestone 8 writes it), so it needs no
 // external verification.
 func unwrapProxy(s serverConfig) (serverConfig, bool) {
-	base := strings.TrimSuffix(filepath.Base(s.Command), ".exe")
-	if base != "mcpgraph" || len(s.Args) == 0 || s.Args[0] != "proxy" {
+	cmd, args, ok := UnwrapProxyCommand(s.Command, s.Args)
+	if !ok {
 		return s, false
 	}
-	for i, a := range s.Args {
+	inner := s
+	inner.Command = cmd
+	inner.Args = args
+	return inner, true
+}
+
+// UnwrapProxyCommand is unwrapProxy for a bare command line: if command and
+// args are an `mcpgraph proxy ... -- cmd args...` wrapper, it returns the
+// wrapped cmd and args, and true. install and uninstall use it too, so
+// all three agree on what "proxied" means.
+func UnwrapProxyCommand(command string, args []string) (string, []string, bool) {
+	base := strings.TrimSuffix(filepath.Base(command), ".exe")
+	if base != "mcpgraph" || len(args) == 0 || args[0] != "proxy" {
+		return command, args, false
+	}
+	for i, a := range args {
 		if a != "--" {
 			continue
 		}
-		if i+1 >= len(s.Args) {
-			return s, false // "proxy --" with nothing to run
+		if i+1 >= len(args) {
+			return command, args, false // "proxy --" with nothing to run
 		}
-		inner := s
-		inner.Command = s.Args[i+1]
-		// Copy instead of re-slicing, so the caller's Args is never shared.
-		inner.Args = append([]string(nil), s.Args[i+2:]...)
-		return inner, true
+		// Copy instead of re-slicing, so the caller's slice is never shared.
+		return args[i+1], append([]string(nil), args[i+2:]...), true
 	}
-	return s, false
+	return command, args, false
 }

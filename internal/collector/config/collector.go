@@ -15,9 +15,9 @@ import (
 	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
-// maxConfigSize caps how much of a config file we read. ~/.claude.json can
+// MaxConfigSize caps how much of a config file we read. ~/.claude.json can
 // be several megabytes because it also stores app state.
-const maxConfigSize = 32 << 20 // 32 MiB
+const MaxConfigSize = 32 << 20 // 32 MiB
 
 // Collector reads every candidate config file once.
 type Collector struct {
@@ -86,14 +86,14 @@ func ScanCandidate(cand Candidate, home string) model.Event {
 	return ev
 }
 
-// readLimited reads a file but refuses anything larger than maxConfigSize.
+// readLimited reads a file but refuses anything larger than MaxConfigSize.
 func readLimited(path string) ([]byte, error) {
 	info, err := os.Stat(path)
 	if err != nil {
 		return nil, err
 	}
-	if info.Size() > maxConfigSize {
-		return nil, fmt.Errorf("file is %d bytes, larger than limit %d", info.Size(), maxConfigSize)
+	if info.Size() > MaxConfigSize {
+		return nil, fmt.Errorf("file is %d bytes, larger than limit %d", info.Size(), MaxConfigSize)
 	}
 	return os.ReadFile(path)
 }

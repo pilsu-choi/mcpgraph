@@ -41,21 +41,30 @@ func (o *options) homeDir() (string, error) {
 	return h, nil
 }
 
-// auditPath returns the audit log path: --data-dir, else the default data
-// directory. With --home set, $XDG_DATA_HOME is ignored so a fake home
-// never reads the real user's log.
-func (o *options) auditPath() (string, error) {
+// dataPath returns mcpgraph's data directory: --data-dir, else the
+// default. With --home set, $XDG_DATA_HOME is ignored so a fake home never
+// touches the real user's data.
+func (o *options) dataPath() (string, error) {
 	if o.dataDir != "" {
-		return filepath.Join(o.dataDir, audit.FileName), nil
+		return o.dataDir, nil
 	}
 	home, err := o.homeDir()
 	if err != nil {
 		return "", err
 	}
 	if o.home != "" {
-		return filepath.Join(home, ".local", "share", "mcpgraph", audit.FileName), nil
+		return filepath.Join(home, ".local", "share", "mcpgraph"), nil
 	}
-	return filepath.Join(audit.DefaultDataDir(home), audit.FileName), nil
+	return audit.DefaultDataDir(home), nil
+}
+
+// auditPath returns the audit log path inside the data directory.
+func (o *options) auditPath() (string, error) {
+	dir, err := o.dataPath()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(dir, audit.FileName), nil
 }
 
 // newRootCmd builds the command tree. Building it in a function (instead of
@@ -84,7 +93,7 @@ func newRootCmd() *cobra.Command {
 	root.PersistentFlags().IntVar(&opts.decisions, "decisions", audit.DefaultGraphLimit, "recent audit decisions to add to the graph (0 = none)")
 
 	root.AddCommand(newScanCmd(opts), newReportCmd(opts), newExportCmd(opts))
-	root.AddCommand(newProxyCmd(opts), newHookCmd(), newInstallCmd(), newUninstallCmd(), newEventsCmd(opts))
+	root.AddCommand(newProxyCmd(opts), newHookCmd(), newInstallCmd(opts), newUninstallCmd(opts), newEventsCmd(opts))
 	return root
 }
 

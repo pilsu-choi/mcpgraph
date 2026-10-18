@@ -107,8 +107,8 @@ func TestStripJSONC(t *testing.T) {
 		{`{"q": "escaped \" // still string"}`, `{"q": "escaped \" // still string"}`},
 	}
 	for _, tt := range tests {
-		if got := string(stripJSONC([]byte(tt.in))); got != tt.want {
-			t.Errorf("stripJSONC(%q) = %q, want %q", tt.in, got, tt.want)
+		if got := string(StripJSONC([]byte(tt.in))); got != tt.want {
+			t.Errorf("StripJSONC(%q) = %q, want %q", tt.in, got, tt.want)
 		}
 	}
 }

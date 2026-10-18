@@ -17,7 +17,7 @@ func (vscode) Parse(data []byte) ([]serverConfig, error) {
 	var doc struct {
 		Servers map[string]json.RawMessage `json:"servers"`
 	}
-	if err := json.Unmarshal(stripJSONC(data), &doc); err != nil {
+	if err := json.Unmarshal(StripJSONC(data), &doc); err != nil {
 		return nil, err
 	}
 	return serversFromMap(doc.Servers, "$.servers")

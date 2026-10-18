@@ -1,9 +1,9 @@
 package config
 
-// stripJSONC removes // and /* */ comments and trailing commas so that a
+// StripJSONC removes // and /* */ comments and trailing commas so that a
 // JSONC document can be decoded by encoding/json. It tracks whether it is
 // inside a string so that "http://..." is left alone.
-func stripJSONC(in []byte) []byte {
+func StripJSONC(in []byte) []byte {
 	out := make([]byte, 0, len(in))
 	inString := false
 	for i := 0; i < len(in); i++ {
