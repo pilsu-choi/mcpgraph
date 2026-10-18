@@ -1,0 +1,12 @@
+{
+  "session_id": "sess-test-1",
+  "transcript_path": "/home/testuser/.claude/projects/x/t.jsonl",
+  "cwd": "/home/testuser/project",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "mcp__postgres__query",
+  "tool_input": {
+    "sql": "DELETE FROM users"
+  },
+  "tool_use_id": "toolu_test_1",
+  "permission_mode": "default"
+}

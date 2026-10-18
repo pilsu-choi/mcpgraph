@@ -1,0 +1,14 @@
+{
+  "session_id": "sess-test-1",
+  "transcript_path": null,
+  "cwd": "/home/testuser/project",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "apply_patch",
+  "tool_input": {
+    "command": "*** Begin Patch\n*** Update File: /home/testuser/project/.env\n@@\n-A=1\n+A=2\n*** End Patch"
+  },
+  "tool_use_id": "toolu_test_1",
+  "model": "gpt-5",
+  "permission_mode": "default",
+  "turn_id": "turn-1"
+}
