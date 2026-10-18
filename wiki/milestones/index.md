@@ -33,5 +33,5 @@ v1 milestones (AGENTS.md v1 §11), each committed separately. The v2 milestones 
 | 7 | [MCP proxy](v2-m7-proxy.md) | done |
 | 8 | [Install / uninstall](2026-10-18-v2-m8-install.md) | done |
 | 9 | [Coding-agent hook](2026-10-18-v2-m9-hook.md) | done (Codex end-to-end [unverified](../issues/2026-10-18-codex-hook-unverified.md)) |
-| 10 | Demo (PostgreSQL in Docker, scripted) + animated SVG at the top of the README | planned |
+| 10 | [Demo + animated SVG](2026-10-18-v2-m10-demo.md) | done |
 | 11 | [Event sink + collector](2026-10-18-v2-m11-collector.md) | done |

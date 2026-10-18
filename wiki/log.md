@@ -125,3 +125,11 @@ Times are UTC. Each entry links to the page with the details.
 
   Updated indexes ([milestones](milestones/index.md), [components](components/index.md),
   [decisions](decisions/index.md), [research](research/index.md), [issues](issues/index.md)) and the [overview](overview.md).
+- **08:15** [v2 m10 demo](milestones/2026-10-18-v2-m10-demo.md) merged with dev (hook + collector) on
+  branch `m10-demo`:
+  - `demo/` (PostgreSQL 17 in Docker on 127.0.0.1:55442, both paths, `make demo`), `tools/termsvg -animate`,
+    [runbook](runbooks/2026-10-18-run-the-demo.md).
+  - Real Claude Code run: with the plain prompt Claude asked for confirmation instead of dropping; with
+    "throwaway DB, backup exists, don't ask" it ran `psql -c 'DROP TABLE users CASCADE;'`, the hook denied
+    it (`block-destructive-sql`), and the table survived. Recorded as `docs/images/demo.svg` (42 s),
+    checked frame by frame in headless Chromium; now the first thing in the README.

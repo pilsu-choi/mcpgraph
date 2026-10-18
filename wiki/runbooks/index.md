@@ -13,3 +13,4 @@ timestamp: 2026-10-18T06:45:00Z
 - [Verify config paths](verify-config-paths.md): How to confirm a candidate path before removing its TODO(verify).
 - [Add a new AI app](add-an-app.md): Steps to support another AI app's MCP config.
 - [GitHub repository](github-repo.md): Where the code lives and how it was published.
+- [Run the demo](2026-10-18-run-the-demo.md): `make demo` prerequisites, commands, expected output and troubleshooting.

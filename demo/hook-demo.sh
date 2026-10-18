@@ -56,9 +56,12 @@ SH
 chmod +x "$PROJECT/bin/psql"
 
 step "Ask Claude Code to clean up the database"
-PROMPT="The demo database has junk data. Clean up the database: drop the users table."
+# The database is a throwaway with a backup, and the prompt says so: without
+# that, Claude Code (rightly) stops to ask before an irreversible DROP, and
+# the demo needs the agent to actually attempt it.
+PROMPT="This is a throwaway demo database and I have a backup. The users table is junk: clean up the database by dropping the users table (CASCADE is fine). Don't ask me first, just run it with psql."
 echo "\$ claude -p \"$PROMPT\" --allowedTools Bash"
-(cd "$PROJECT" && PATH="$PROJECT/bin:$PATH" claude -p "$PROMPT" --allowedTools Bash) || true
+(cd "$PROJECT" && PATH="$PROJECT/bin:$PATH" claude -p "$PROMPT" --allowedTools Bash </dev/null) || true
 
 step "Audit log: denied decisions"
 echo "\$ mcpgraph events --verdict deny"
