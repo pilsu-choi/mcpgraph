@@ -4,15 +4,20 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/pilsuchoi/mcpgraph/internal/collector"
 	"github.com/pilsuchoi/mcpgraph/internal/collector/config"
+	"github.com/pilsuchoi/mcpgraph/internal/graph"
 	"github.com/pilsuchoi/mcpgraph/internal/model"
 	"github.com/pilsuchoi/mcpgraph/internal/report"
 	"github.com/pilsuchoi/mcpgraph/internal/rules"
+	"github.com/pilsuchoi/mcpgraph/internal/store"
 	"github.com/pilsuchoi/mcpgraph/internal/testutil"
 )
 
@@ -71,6 +76,27 @@ func renderAll(t *testing.T, g *model.Graph) map[string]string {
 		t.Fatal(err)
 	}
 	out["findings-json"] = string(fj)
+
+	// The SQLite file on disk, read as raw bytes.
+	dbPath := filepath.Join(t.TempDir(), "leak.db")
+	st, err := store.Open(context.Background(), dbPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := st.Save(context.Background(), time.Now(), g, findings, graph.Diff(nil, g)); err != nil {
+		t.Fatal(err)
+	}
+	if err := st.Close(); err != nil {
+		t.Fatal(err)
+	}
+	var db strings.Builder
+	// WAL mode keeps recent writes in the -wal file until checkpoint.
+	for _, p := range []string{dbPath, dbPath + "-wal"} {
+		if raw, err := os.ReadFile(p); err == nil {
+			db.Write(raw)
+		}
+	}
+	out["sqlite"] = db.String()
 	return out
 }
 

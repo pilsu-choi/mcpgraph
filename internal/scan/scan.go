@@ -49,3 +49,29 @@ func Run(ctx context.Context, collectors []collector.Collector) (*model.Graph, e
 	}
 	return result, nil
 }
+
+// Collect runs every collector concurrently and returns all their events
+// without building a graph. The daemon uses it for its initial scan.
+func Collect(ctx context.Context, collectors []collector.Collector) ([]model.Event, error) {
+	events := make(chan model.Event, len(collectors))
+	g, gctx := errgroup.WithContext(ctx)
+	for _, c := range collectors {
+		g.Go(func() error { return c.Collect(gctx, events) })
+	}
+
+	// Close the channel once every collector is done, so the range loop
+	// below ends. This goroutine is the only one that closes it.
+	var err error
+	go func() {
+		err = g.Wait()
+		close(events)
+	}()
+
+	var out []model.Event
+	for ev := range events {
+		out = append(out, ev)
+	}
+	// err was written before close(events), and the range loop has seen
+	// the close, so reading err here is race-free.
+	return out, err
+}
