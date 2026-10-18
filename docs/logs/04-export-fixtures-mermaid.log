@@ -7,66 +7,66 @@ flowchart LR
   classDef Credential fill:#fee2e2,stroke:#b91c1c,color:#000000
   classDef DataSource fill:#fef3c7,stroke:#b45309,color:#000000
   classDef Decision fill:#fce7f3,stroke:#be185d,color:#000000
-  n_AIApp_3625af8eed08["AIApp<br/>Cursor"]:::AIApp
-  n_AIApp_860374ed5fe9["AIApp<br/>Claude Code"]:::AIApp
-  n_AIApp_dcb4432865e2["AIApp<br/>Claude Desktop"]:::AIApp
-  n_AIApp_e2b308b097e9["AIApp<br/>VS Code"]:::AIApp
-  n_Credential_167ba43dfd77["Credential<br/>inline: GITHUB_PERSONAL_ACCESS_TOKEN"]:::Credential
-  n_Credential_471e32351eb0["Credential<br/>inline: args[2]"]:::Credential
-  n_Credential_56eb7e6bed8d["Credential<br/>inline: url"]:::Credential
-  n_Credential_66b773893061["Credential<br/>inline: SLACK_BOT_TOKEN"]:::Credential
-  n_Credential_8a38f1a3ec90["Credential<br/>env: Authorization"]:::Credential
-  n_Credential_aca51f057cc4["Credential<br/>env: GIT_TOKEN"]:::Credential
-  n_Credential_cf14c38c368e["Credential<br/>inline: API_KEY"]:::Credential
-  n_Credential_e70ac6029c02["Credential<br/>inline: --api-key"]:::Credential
-  n_Credential_f5c220096551["Credential<br/>file: envFile"]:::Credential
+  n_AIApp_4fad442e05a5["AIApp<br/>Claude Code"]:::AIApp
+  n_AIApp_aecb012f3d96["AIApp<br/>Claude Desktop"]:::AIApp
+  n_AIApp_b17f925d551a["AIApp<br/>VS Code"]:::AIApp
+  n_AIApp_c2a0da3c5a38["AIApp<br/>Cursor"]:::AIApp
+  n_Credential_1608ba0ae0c5["Credential<br/>inline: GITHUB_PERSONAL_ACCESS_TOKEN"]:::Credential
+  n_Credential_20ccfb424241["Credential<br/>inline: url"]:::Credential
+  n_Credential_2a6ca7b88fd2["Credential<br/>env: GIT_TOKEN"]:::Credential
+  n_Credential_5f7b27601afa["Credential<br/>inline: args[2]"]:::Credential
+  n_Credential_6d8d072d9c1d["Credential<br/>env: Authorization"]:::Credential
+  n_Credential_8ee53db1d3c7["Credential<br/>inline: SLACK_BOT_TOKEN"]:::Credential
+  n_Credential_b4fae3faee89["Credential<br/>file: envFile"]:::Credential
+  n_Credential_c415ec5ac842["Credential<br/>inline: --api-key"]:::Credential
+  n_Credential_cee10dd65550["Credential<br/>inline: API_KEY"]:::Credential
   n_DataSource_21abe27a441f["DataSource<br/>database: postgresql://db.internal:5432/prod"]:::DataSource
   n_DataSource_244406e1a7d4["DataSource<br/>saas: slack"]:::DataSource
-  n_DataSource_911b0b10fbc6["DataSource<br/>filesystem: /home/dev/code/project"]:::DataSource
+  n_DataSource_837a59df3169["DataSource<br/>filesystem: /home/dev"]:::DataSource
   n_DataSource_9fd74444a94c["DataSource<br/>saas: 10.0.0.5"]:::DataSource
+  n_DataSource_a13be0332681["DataSource<br/>filesystem: /home/dev/code/project"]:::DataSource
   n_DataSource_a4fe234aa714["DataSource<br/>saas: mcp.sentry.dev"]:::DataSource
   n_DataSource_d5abfc73992f["DataSource<br/>saas: sentry"]:::DataSource
-  n_DataSource_df362626c0ed["DataSource<br/>filesystem: /home/dev"]:::DataSource
   n_DataSource_dfbf70335e81["DataSource<br/>saas: api.githubcopilot.com"]:::DataSource
   n_DataSource_e6d4e38df883["DataSource<br/>saas: github"]:::DataSource
   n_Host_fc76b3e1d910["Host<br/>devbox"]:::Host
-  n_MCPServer_40da40676d2a["MCPServer<br/>Claude Desktop / postgres"]:::MCPServer
-  n_MCPServer_4d5f6da3c2b3["MCPServer<br/>Claude Code / slack"]:::MCPServer
-  n_MCPServer_6c8c5ca0d92b["MCPServer<br/>VS Code / custom"]:::MCPServer
-  n_MCPServer_be8eb78743b1["MCPServer<br/>Claude Desktop / github"]:::MCPServer
-  n_MCPServer_c6c19a668d66["MCPServer<br/>Cursor / local-http"]:::MCPServer
-  n_MCPServer_d5f62c47daa1["MCPServer<br/>VS Code / github-remote"]:::MCPServer
-  n_MCPServer_e782a34232b9["MCPServer<br/>Cursor / git"]:::MCPServer
-  n_MCPServer_f181c3e0285b["MCPServer<br/>Claude Desktop / filesystem"]:::MCPServer
-  n_MCPServer_f3b740f066a3["MCPServer<br/>Cursor / remote-insecure"]:::MCPServer
-  n_MCPServer_fe3432b83fed["MCPServer<br/>Claude Code / sentry"]:::MCPServer
-  n_AIApp_3625af8eed08 -->|CONFIGURES| n_MCPServer_c6c19a668d66
-  n_AIApp_3625af8eed08 -->|CONFIGURES| n_MCPServer_e782a34232b9
-  n_AIApp_3625af8eed08 -->|CONFIGURES| n_MCPServer_f3b740f066a3
-  n_AIApp_860374ed5fe9 -->|CONFIGURES| n_MCPServer_4d5f6da3c2b3
-  n_AIApp_860374ed5fe9 -->|CONFIGURES| n_MCPServer_fe3432b83fed
-  n_AIApp_dcb4432865e2 -->|CONFIGURES| n_MCPServer_40da40676d2a
-  n_AIApp_dcb4432865e2 -->|CONFIGURES| n_MCPServer_be8eb78743b1
-  n_AIApp_dcb4432865e2 -->|CONFIGURES| n_MCPServer_f181c3e0285b
-  n_AIApp_e2b308b097e9 -->|CONFIGURES| n_MCPServer_6c8c5ca0d92b
-  n_AIApp_e2b308b097e9 -->|CONFIGURES| n_MCPServer_d5f62c47daa1
-  n_MCPServer_40da40676d2a -->|ACCESSES| n_DataSource_21abe27a441f
-  n_MCPServer_40da40676d2a -->|USES_SECRET| n_Credential_471e32351eb0
-  n_MCPServer_4d5f6da3c2b3 -->|ACCESSES| n_DataSource_244406e1a7d4
-  n_MCPServer_4d5f6da3c2b3 -->|USES_SECRET| n_Credential_66b773893061
-  n_MCPServer_6c8c5ca0d92b -->|USES_SECRET| n_Credential_cf14c38c368e
-  n_MCPServer_6c8c5ca0d92b -->|USES_SECRET| n_Credential_e70ac6029c02
-  n_MCPServer_6c8c5ca0d92b -->|USES_SECRET| n_Credential_f5c220096551
-  n_MCPServer_be8eb78743b1 -->|ACCESSES| n_DataSource_e6d4e38df883
-  n_MCPServer_be8eb78743b1 -->|USES_SECRET| n_Credential_167ba43dfd77
-  n_MCPServer_d5f62c47daa1 -->|ACCESSES| n_DataSource_dfbf70335e81
-  n_MCPServer_d5f62c47daa1 -->|ACCESSES| n_DataSource_e6d4e38df883
-  n_MCPServer_d5f62c47daa1 -->|USES_SECRET| n_Credential_8a38f1a3ec90
-  n_MCPServer_e782a34232b9 -->|ACCESSES| n_DataSource_911b0b10fbc6
-  n_MCPServer_e782a34232b9 -->|USES_SECRET| n_Credential_aca51f057cc4
-  n_MCPServer_f181c3e0285b -->|ACCESSES| n_DataSource_df362626c0ed
-  n_MCPServer_f3b740f066a3 -->|ACCESSES| n_DataSource_9fd74444a94c
-  n_MCPServer_f3b740f066a3 -->|USES_SECRET| n_Credential_56eb7e6bed8d
-  n_MCPServer_fe3432b83fed -->|ACCESSES| n_DataSource_a4fe234aa714
-  n_MCPServer_fe3432b83fed -->|ACCESSES| n_DataSource_d5abfc73992f
+  n_MCPServer_001ca0a6b2eb["MCPServer<br/>Claude Desktop / filesystem"]:::MCPServer
+  n_MCPServer_0851ee91ede0["MCPServer<br/>VS Code / custom"]:::MCPServer
+  n_MCPServer_0a9399fcdfd0["MCPServer<br/>VS Code / github-remote"]:::MCPServer
+  n_MCPServer_3b85af80f0e2["MCPServer<br/>Claude Desktop / github"]:::MCPServer
+  n_MCPServer_46ea5dc8388b["MCPServer<br/>Cursor / local-http"]:::MCPServer
+  n_MCPServer_4e42603cea2c["MCPServer<br/>Claude Code / sentry"]:::MCPServer
+  n_MCPServer_9a90a47fdd80["MCPServer<br/>Cursor / remote-insecure"]:::MCPServer
+  n_MCPServer_a50a4dc252fb["MCPServer<br/>Claude Code / slack"]:::MCPServer
+  n_MCPServer_aee1b454de36["MCPServer<br/>Cursor / git"]:::MCPServer
+  n_MCPServer_fd541277e218["MCPServer<br/>Claude Desktop / postgres"]:::MCPServer
+  n_AIApp_4fad442e05a5 -->|CONFIGURES| n_MCPServer_4e42603cea2c
+  n_AIApp_4fad442e05a5 -->|CONFIGURES| n_MCPServer_a50a4dc252fb
+  n_AIApp_aecb012f3d96 -->|CONFIGURES| n_MCPServer_001ca0a6b2eb
+  n_AIApp_aecb012f3d96 -->|CONFIGURES| n_MCPServer_3b85af80f0e2
+  n_AIApp_aecb012f3d96 -->|CONFIGURES| n_MCPServer_fd541277e218
+  n_AIApp_b17f925d551a -->|CONFIGURES| n_MCPServer_0851ee91ede0
+  n_AIApp_b17f925d551a -->|CONFIGURES| n_MCPServer_0a9399fcdfd0
+  n_AIApp_c2a0da3c5a38 -->|CONFIGURES| n_MCPServer_46ea5dc8388b
+  n_AIApp_c2a0da3c5a38 -->|CONFIGURES| n_MCPServer_9a90a47fdd80
+  n_AIApp_c2a0da3c5a38 -->|CONFIGURES| n_MCPServer_aee1b454de36
+  n_MCPServer_001ca0a6b2eb -->|ACCESSES| n_DataSource_837a59df3169
+  n_MCPServer_0851ee91ede0 -->|USES_SECRET| n_Credential_b4fae3faee89
+  n_MCPServer_0851ee91ede0 -->|USES_SECRET| n_Credential_c415ec5ac842
+  n_MCPServer_0851ee91ede0 -->|USES_SECRET| n_Credential_cee10dd65550
+  n_MCPServer_0a9399fcdfd0 -->|ACCESSES| n_DataSource_dfbf70335e81
+  n_MCPServer_0a9399fcdfd0 -->|ACCESSES| n_DataSource_e6d4e38df883
+  n_MCPServer_0a9399fcdfd0 -->|USES_SECRET| n_Credential_6d8d072d9c1d
+  n_MCPServer_3b85af80f0e2 -->|ACCESSES| n_DataSource_e6d4e38df883
+  n_MCPServer_3b85af80f0e2 -->|USES_SECRET| n_Credential_1608ba0ae0c5
+  n_MCPServer_4e42603cea2c -->|ACCESSES| n_DataSource_a4fe234aa714
+  n_MCPServer_4e42603cea2c -->|ACCESSES| n_DataSource_d5abfc73992f
+  n_MCPServer_9a90a47fdd80 -->|ACCESSES| n_DataSource_9fd74444a94c
+  n_MCPServer_9a90a47fdd80 -->|USES_SECRET| n_Credential_20ccfb424241
+  n_MCPServer_a50a4dc252fb -->|ACCESSES| n_DataSource_244406e1a7d4
+  n_MCPServer_a50a4dc252fb -->|USES_SECRET| n_Credential_8ee53db1d3c7
+  n_MCPServer_aee1b454de36 -->|ACCESSES| n_DataSource_a13be0332681
+  n_MCPServer_aee1b454de36 -->|USES_SECRET| n_Credential_2a6ca7b88fd2
+  n_MCPServer_fd541277e218 -->|ACCESSES| n_DataSource_21abe27a441f
+  n_MCPServer_fd541277e218 -->|USES_SECRET| n_Credential_5f7b27601afa
 # exit code: 0

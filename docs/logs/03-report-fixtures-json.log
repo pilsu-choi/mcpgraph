@@ -3,133 +3,133 @@ $ mcpgraph report -f json --home /home/dev --no-processes
   {
     "rule_id": "R1",
     "severity": "high",
-    "node_id": "Credential:e70ac6029c02",
+    "node_id": "Credential:c415ec5ac842",
     "title": "Plaintext secret --api-key in VS Code / custom",
     "message": "/home/dev/.config/Code/User/mcp.json#$.servers.custom.args[2] (known token prefix sk-ant-). Config files are synced, backed up and read by other tools; reference an environment variable or secret store instead."
   },
   {
     "rule_id": "R1",
     "severity": "high",
-    "node_id": "Credential:cf14c38c368e",
+    "node_id": "Credential:cee10dd65550",
     "title": "Plaintext secret API_KEY in VS Code / custom",
     "message": "/home/dev/.config/Code/User/mcp.json#$.servers.custom.env.API_KEY (secret-named key API_KEY). Config files are synced, backed up and read by other tools; reference an environment variable or secret store instead."
   },
   {
     "rule_id": "R1",
     "severity": "high",
-    "node_id": "Credential:167ba43dfd77",
+    "node_id": "Credential:1608ba0ae0c5",
     "title": "Plaintext secret GITHUB_PERSONAL_ACCESS_TOKEN in Claude Desktop / github",
     "message": "/home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.github.env.GITHUB_PERSONAL_ACCESS_TOKEN (known token prefix ghp_). Config files are synced, backed up and read by other tools; reference an environment variable or secret store instead."
   },
   {
     "rule_id": "R1",
     "severity": "high",
-    "node_id": "Credential:66b773893061",
+    "node_id": "Credential:8ee53db1d3c7",
     "title": "Plaintext secret SLACK_BOT_TOKEN in Claude Code / slack",
     "message": "/home/dev/.claude.json#$.projects[\"/work/app\"].mcpServers.slack.env.SLACK_BOT_TOKEN (known token prefix xoxb-). Config files are synced, backed up and read by other tools; reference an environment variable or secret store instead."
   },
   {
     "rule_id": "R1",
     "severity": "high",
-    "node_id": "Credential:471e32351eb0",
+    "node_id": "Credential:5f7b27601afa",
     "title": "Plaintext secret args[2] in Claude Desktop / postgres",
     "message": "/home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.postgres.args[2] (password or token inside a URL). Config files are synced, backed up and read by other tools; reference an environment variable or secret store instead."
   },
   {
     "rule_id": "R1",
     "severity": "high",
-    "node_id": "Credential:56eb7e6bed8d",
+    "node_id": "Credential:20ccfb424241",
     "title": "Plaintext secret url in Cursor / remote-insecure",
     "message": "/home/dev/.cursor/mcp.json#$.mcpServers.remote-insecure.url (password or token inside the server URL). Config files are synced, backed up and read by other tools; reference an environment variable or secret store instead."
   },
   {
     "rule_id": "R2",
     "severity": "high",
-    "node_id": "MCPServer:f181c3e0285b",
+    "node_id": "MCPServer:001ca0a6b2eb",
     "title": "Claude Desktop / filesystem can access /home/dev",
     "message": "The server is rooted at the home directory or /, so a prompt injection can read SSH keys, cloud credentials and browser data; scope it to the project directory."
   },
   {
     "rule_id": "R5",
     "severity": "high",
-    "node_id": "MCPServer:f181c3e0285b",
+    "node_id": "MCPServer:001ca0a6b2eb",
     "title": "Claude Desktop / filesystem can read /home/dev/.aws/credentials",
     "message": "The credential file is inside /home/dev, which the server can access; one prompt injection is enough to exfiltrate it. Narrow the root."
   },
   {
     "rule_id": "R5",
     "severity": "high",
-    "node_id": "MCPServer:f181c3e0285b",
+    "node_id": "MCPServer:001ca0a6b2eb",
     "title": "Claude Desktop / filesystem can read /home/dev/.ssh/id_ed25519",
     "message": "The credential file is inside /home/dev, which the server can access; one prompt injection is enough to exfiltrate it. Narrow the root."
   },
   {
     "rule_id": "R3",
     "severity": "medium",
-    "node_id": "MCPServer:f181c3e0285b",
+    "node_id": "MCPServer:001ca0a6b2eb",
     "title": "Claude Desktop / filesystem runs unpinned package @modelcontextprotocol/server-filesystem via npx",
     "message": "Without a version, every start fetches the latest release, so a compromised or typosquatted publish runs immediately; pin an exact version."
   },
   {
     "rule_id": "R3",
     "severity": "medium",
-    "node_id": "MCPServer:be8eb78743b1",
+    "node_id": "MCPServer:3b85af80f0e2",
     "title": "Claude Desktop / github runs unpinned package @modelcontextprotocol/server-github via npx",
     "message": "Without a version, every start fetches the latest release, so a compromised or typosquatted publish runs immediately; pin an exact version."
   },
   {
     "rule_id": "R3",
     "severity": "medium",
-    "node_id": "MCPServer:e782a34232b9",
+    "node_id": "MCPServer:aee1b454de36",
     "title": "Cursor / git runs unpinned package mcp-server-git via uvx",
     "message": "Without a version, every start fetches the latest release, so a compromised or typosquatted publish runs immediately; pin an exact version."
   },
   {
     "rule_id": "R4",
     "severity": "medium",
-    "node_id": "MCPServer:4d5f6da3c2b3",
+    "node_id": "MCPServer:a50a4dc252fb",
     "title": "Claude Code / slack is not routed through the mcpgraph proxy",
     "message": "Its tool calls reach the server without a policy check or audit record; run `mcpgraph install` to wrap it."
   },
   {
     "rule_id": "R4",
     "severity": "medium",
-    "node_id": "MCPServer:f181c3e0285b",
+    "node_id": "MCPServer:001ca0a6b2eb",
     "title": "Claude Desktop / filesystem is not routed through the mcpgraph proxy",
     "message": "Its tool calls reach the server without a policy check or audit record; run `mcpgraph install` to wrap it."
   },
   {
     "rule_id": "R4",
     "severity": "medium",
-    "node_id": "MCPServer:be8eb78743b1",
+    "node_id": "MCPServer:3b85af80f0e2",
     "title": "Claude Desktop / github is not routed through the mcpgraph proxy",
     "message": "Its tool calls reach the server without a policy check or audit record; run `mcpgraph install` to wrap it."
   },
   {
     "rule_id": "R4",
     "severity": "medium",
-    "node_id": "MCPServer:40da40676d2a",
+    "node_id": "MCPServer:fd541277e218",
     "title": "Claude Desktop / postgres is not routed through the mcpgraph proxy",
     "message": "Its tool calls reach the server without a policy check or audit record; run `mcpgraph install` to wrap it."
   },
   {
     "rule_id": "R4",
     "severity": "medium",
-    "node_id": "MCPServer:e782a34232b9",
+    "node_id": "MCPServer:aee1b454de36",
     "title": "Cursor / git is not routed through the mcpgraph proxy",
     "message": "Its tool calls reach the server without a policy check or audit record; run `mcpgraph install` to wrap it."
   },
   {
     "rule_id": "R4",
     "severity": "medium",
-    "node_id": "MCPServer:6c8c5ca0d92b",
+    "node_id": "MCPServer:0851ee91ede0",
     "title": "VS Code / custom is not routed through the mcpgraph proxy",
     "message": "Its tool calls reach the server without a policy check or audit record; run `mcpgraph install` to wrap it."
   },
   {
     "rule_id": "R7",
     "severity": "medium",
-    "node_id": "MCPServer:f3b740f066a3",
+    "node_id": "MCPServer:9a90a47fdd80",
     "title": "Cursor / remote-insecure uses plain http:// to 10.0.0.5:8080",
     "message": "Tool calls, results and any auth headers cross the network unencrypted and can be read or modified in transit; use https://."
   }

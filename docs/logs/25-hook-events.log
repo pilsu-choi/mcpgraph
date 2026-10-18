@@ -1,16 +1,16 @@
 $ mcpgraph events   # decisions the hooks wrote
 DECISIONS (12)
 TIME (UTC)           VERDICT  RULE                   SOURCE  AGENT                      TOOL                  ACTION
-2026-10-18 08:05:28  DENY     block-destructive-sql  hook    claude-code (Claude Code)  Bash                  psql -c "DROP TABLE users"
-2026-10-18 08:05:28  ALLOW    -                      hook    claude-code (Claude Code)  Bash                  ls -la
-2026-10-18 08:05:28  ASK      ask-recursive-delete   hook    claude-code (Claude Code)  Bash                  rm -rf ~/
-2026-10-18 08:05:28  DENY     block-secret-read      hook    claude-code (Claude Code)  Read                  /home/testuser/.ssh/id_rsa
-2026-10-18 08:05:28  DENY     block-destructive-sql  hook    claude-code (Claude Code)  mcp__postgres__query  DELETE FROM users
-2026-10-18 08:05:28  ALLOW    -                      hook    claude-code (Claude Code)  Bash                  echo hello
-2026-10-18 08:05:28  DENY     block-destructive-sql  hook    claude-code (Claude Code)  Bash                  PGPASSWORD=****dXyz psql -c "DROP TABLE users"
-2026-10-18 08:05:28  DENY     block-destructive-sql  hook    codex                      Bash                  psql -c "DROP TABLE users"
-2026-10-18 08:05:28  ALLOW    -                      hook    codex                      Bash                  ls -la
-2026-10-18 08:05:28  ASK      ask-recursive-delete   hook    codex                      Bash                  rm -rf ~/
-2026-10-18 08:05:28  DENY     block-secret-read      hook    codex                      apply_patch           *** Begin Patch *** Update File: /home/testuser/project/.env @@ -A=1 …
-2026-10-18 08:05:28  DENY     block-destructive-sql  hook    codex                      mcp__postgres__query  DELETE FROM users
+2026-10-18 08:12:53  DENY     block-destructive-sql  hook    claude-code (Claude Code)  Bash                  psql -c "DROP TABLE users"
+2026-10-18 08:12:53  ALLOW    -                      hook    claude-code (Claude Code)  Bash                  ls -la
+2026-10-18 08:12:53  ASK      ask-recursive-delete   hook    claude-code (Claude Code)  Bash                  rm -rf ~/
+2026-10-18 08:12:53  DENY     block-secret-read      hook    claude-code (Claude Code)  Read                  /home/testuser/.ssh/id_rsa
+2026-10-18 08:12:53  DENY     block-destructive-sql  hook    claude-code (Claude Code)  mcp__postgres__query  DELETE FROM users
+2026-10-18 08:12:53  ALLOW    -                      hook    claude-code (Claude Code)  Bash                  echo hello
+2026-10-18 08:12:53  DENY     block-destructive-sql  hook    claude-code (Claude Code)  Bash                  PGPASSWORD=****dXyz psql -c "DROP TABLE users"
+2026-10-18 08:12:53  DENY     block-destructive-sql  hook    codex                      Bash                  psql -c "DROP TABLE users"
+2026-10-18 08:12:53  ALLOW    -                      hook    codex                      Bash                  ls -la
+2026-10-18 08:12:53  ASK      ask-recursive-delete   hook    codex                      Bash                  rm -rf ~/
+2026-10-18 08:12:53  DENY     block-secret-read      hook    codex                      apply_patch           *** Begin Patch *** Update File: /home/testuser/project/.env @@ -A=1 …
+2026-10-18 08:12:53  DENY     block-destructive-sql  hook    codex                      mcp__postgres__query  DELETE FROM users
 # exit code: 0
