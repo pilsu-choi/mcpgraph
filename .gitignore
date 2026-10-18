@@ -1,0 +1,5 @@
+/dist/
+/mcpgraph
+/mcpgraphd
+*.db
+coverage.out
