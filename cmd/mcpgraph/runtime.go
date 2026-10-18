@@ -17,15 +17,6 @@ func notYet(milestone string) func(*cobra.Command, []string) error {
 	}
 }
 
-func newProxyCmd() *cobra.Command {
-	return &cobra.Command{
-		Use:   "proxy -- <server command> [args...]",
-		Short: "Run an stdio MCP server behind the policy engine",
-		Args:  cobra.MinimumNArgs(1),
-		RunE:  notYet("m7"),
-	}
-}
-
 func newHookCmd() *cobra.Command {
 	return &cobra.Command{
 		Use:   "hook <agent>",

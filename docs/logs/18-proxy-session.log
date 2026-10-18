@@ -1,0 +1,18 @@
+$ mcpgraph proxy --server postgres --app 'Claude Desktop' -- fakemcp < testdata/jsonrpc/captured-sdk-1.30.0.jsonl
+# --- client -> proxy
+{"method":"initialize","params":{"protocolVersion":"2025-11-25","capabilities":{},"clientInfo":{"name":"sdk-client","version":"1.0.0"}},"jsonrpc":"2.0","id":0}
+{"method":"notifications/initialized","jsonrpc":"2.0"}
+{"method":"tools/list","jsonrpc":"2.0","id":1}
+{"method":"tools/call","params":{"name":"query","arguments":{"sql":"SELECT 1"}},"jsonrpc":"2.0","id":2}
+{"method":"tools/call","params":{"name":"query","arguments":{"sql":"DROP TABLE users"}},"jsonrpc":"2.0","id":3}
+{"method":"tools/call","params":{"name":"query","arguments":{"sql":"DELETE FROM users WHERE 1=1"}},"jsonrpc":"2.0","id":4}
+{"method":"tools/call","params":{"name":"not_listed","arguments":{}},"jsonrpc":"2.0","id":5}
+# --- proxy -> client
+fakemcp: ready
+{"jsonrpc":"2.0","id":0,"result":{"protocolVersion":"2025-11-25","capabilities":{"tools":{}},"serverInfo":{"name":"fakemcp","version":"1.0.0"}}}
+{"jsonrpc":"2.0","id":1,"result":{"tools":[{"name":"query","inputSchema":{"type":"object"}},{"name":"read_file","inputSchema":{"type":"object"}}]}}
+{"jsonrpc":"2.0","id":2,"result":{"content":[{"type":"text","text":"fakemcp would run query: SELECT 1"}]}}
+{"id":3,"jsonrpc":"2.0","result":{"_meta":{"mcpgraph/rule_id":"block-destructive-sql","mcpgraph/verdict":"deny"},"content":[{"text":"mcpgraph: this tool call was blocked by policy rule block-destructive-sql and was not run. Destructive SQL is blocked: DROP TABLE, DROP DATABASE/SCHEMA, TRUNCATE and DELETE without a limiting WHERE clause (WHERE 1=1 does not count).","type":"text"}],"isError":true}}
+{"id":4,"jsonrpc":"2.0","result":{"_meta":{"mcpgraph/rule_id":"block-destructive-sql","mcpgraph/verdict":"deny"},"content":[{"text":"mcpgraph: this tool call was blocked by policy rule block-destructive-sql and was not run. Destructive SQL is blocked: DROP TABLE, DROP DATABASE/SCHEMA, TRUNCATE and DELETE without a limiting WHERE clause (WHERE 1=1 does not count).","type":"text"}],"isError":true}}
+{"id":5,"jsonrpc":"2.0","result":{"_meta":{"mcpgraph/rule_id":"ask-unknown-tool","mcpgraph/verdict":"ask"},"content":[{"text":"mcpgraph: this tool call needs human approval (policy rule ask-unknown-tool) and was not run. This MCP tool was not seen in the last scan; approve it once you have checked what it does. mcpgraph cannot ask the user from inside an MCP connection. To allow it, the user can run the action themselves or add an allow rule for it to the policy file given to `mcpgraph proxy --policy`.","type":"text"}],"isError":true}}
+# exit code: 0

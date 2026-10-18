@@ -93,3 +93,10 @@ Times are UTC. Each entry links to the page with the details.
   Redaction made idempotent ([lesson](lessons/redaction-idempotent.md)). README has a new *Audit log
   and events* section, and docs logs 13–17 were added.
 
+- **07:35** [v2 m7 MCP proxy](milestones/v2-m7-proxy.md):
+  - [`internal/proxy`](components/proxy.md) and `mcpgraph proxy -- <server>`;
+  - transcript acceptance test with a real SDK 1.30.0 capture, plus edge tests;
+  - JSON key-case bypass closed ([lesson](lessons/json-case-insensitive.md));
+  - the [revision issue](issues/mcp-revision-per-client.md) partly answered (SDK speaks 2025-11-25).
+
+  `tools/fakemcp` and docs logs 18–19 were added. README has a new *MCP proxy* section.

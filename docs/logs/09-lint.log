@@ -1,3 +1,7 @@
 $ golangci-lint run
-0 issues.
-# exit code: 0
+tools/fakemcp/main.go:24:20: Error return value of `out.WriteString` is not checked (errcheck)
+				out.WriteString(reply + "\n")
+				               ^
+1 issues:
+* errcheck: 1
+# exit code: 1

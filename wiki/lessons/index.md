@@ -16,3 +16,4 @@ Bugs found while building, and what they taught.
 - [Two tildes in a Mermaid label become strikethrough](mermaid-tilde.md): Mermaid parsed '~/.ssh ... ~/.aws' as markdown strikethrough and rendered an error box.
 - [Trailing-quote trim and prose SQL](sql-quote-and-prose.md): Two policy SQL classifier bugs found by tricky-case table tests.
 - [Redacting twice masked the mask](redaction-idempotent.md): Defence-in-depth re-redaction needed redaction to be idempotent.
+- [Go's JSON struct decoding is case-insensitive](json-case-insensitive.md): A "Method" key could hide a tools/call from a struct decoder.

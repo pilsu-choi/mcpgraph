@@ -1,0 +1,20 @@
+# Client side of an MCP 2025-11-25 session, one message per line, sent to
+# `mcpgraph proxy`. Lines starting with # are comments for humans; the test
+# skips them. Odd spacing and key order are deliberate: the proxy must
+# forward non-tools/call messages byte for byte.
+# Hand-written from the MCP spec examples (research §A3–A8), not captured
+# from a real client yet: see wiki/issues/mcp-revision-per-client.md.
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25","capabilities":{"sampling":{}},"clientInfo":{"name":"transcript","version":"1.0"}}}
+{"jsonrpc":"2.0","id":1,"result":{"role":"assistant","content":{"type":"text","text":"answer to the server's sampling request, which also used id 1"},"model":"m"}}
+{"jsonrpc":"2.0","method":"notifications/initialized"}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"query","arguments":{"sql":"SELECT id, email FROM users WHERE id = 7"}}}
+{"jsonrpc":"2.0","id":"req-4","method":"tools/call","params":{"name":"query","arguments":{"sql":"DROP TABLE users"}}}
+{"jsonrpc":"2.0","method":"notifications/cancelled","params":{"requestId":"req-4","reason":"user gave up"}}
+{ "id" : 5 ,   "jsonrpc" : "2.0", "method":"ping"  , "params":{"note":"café café 日本"} }
+{"jsonrpc":"2.0","id":6,"method":"tools/call","params":{"name":"drop_everything","arguments":{}}}
+{"jsonrpc":"2.0","id":7,"method":"tools/call","params":{"name":"query","arguments":{"sql":"DELETE FROM users WHERE id = 7"}}}
+{"jsonrpc":"2.0","id":8,"Method":"ping","method":"tools/call","params":{"name":"query","arguments":{"sql":"TRUNCATE users"}}}
+{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"read_file","arguments":{"path":"~/.ssh/id_ed25519"}}}
+{"jsonrpc":"2.0","method":"notifications/cancelled","params":{"requestId":3,"reason":"late"}}
+{"jsonrpc":"2.0","id":10,"method":"resources/list"}

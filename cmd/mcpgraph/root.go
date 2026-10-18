@@ -84,7 +84,7 @@ func newRootCmd() *cobra.Command {
 	root.PersistentFlags().IntVar(&opts.decisions, "decisions", audit.DefaultGraphLimit, "recent audit decisions to add to the graph (0 = none)")
 
 	root.AddCommand(newScanCmd(opts), newReportCmd(opts), newExportCmd(opts))
-	root.AddCommand(newProxyCmd(), newHookCmd(), newInstallCmd(), newUninstallCmd(), newEventsCmd(opts))
+	root.AddCommand(newProxyCmd(opts), newHookCmd(), newInstallCmd(), newUninstallCmd(), newEventsCmd(opts))
 	return root
 }
 

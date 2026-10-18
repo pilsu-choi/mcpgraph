@@ -51,6 +51,6 @@ the proxy, and fleet UI.
 ## Status
 
 The v1 milestones (posture) are done, and the [v2 transition](milestones/v2-transition.md) brought
-them in line with the new spec. The [policy engine](milestones/v2-m5-policy-engine.md) (milestone 5) and the [audit log](milestones/v2-m6-audit-log.md) (milestone 6) are done. Next is milestone 7, the MCP proxy. See the
+them in line with the new spec. The [policy engine](milestones/v2-m5-policy-engine.md) (milestone 5) and the [audit log](milestones/v2-m6-audit-log.md) (milestone 6) and the [MCP proxy](milestones/v2-m7-proxy.md) (milestone 7) are done. Next is milestone 8, `install` / `uninstall`. See the
 [milestones](milestones/index.md). The code is on GitHub at
 [pilsu-choi/mcpgraph](https://github.com/pilsu-choi/mcpgraph) (`dev` branch).

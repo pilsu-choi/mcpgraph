@@ -25,6 +25,7 @@ cd "$ROOT"
 CGO_ENABLED=0 go build -o "$BIN/" ./cmd/mcpgraph
 go build -o "$BIN/termsvg" ./tools/termsvg
 go build -o "$BIN/replay" ./tools/replay
+go build -o "$BIN/fakemcp" ./tools/fakemcp
 export PATH=$BIN:$PATH
 
 # --- fake home --------------------------------------------------------------
@@ -116,6 +117,22 @@ mcpgraph export -f mermaid --home "$DEMO_HOME" --no-processes --data-dir "$DATA"
 } | tidy > "$LOGS/17-export-decisions-mermaid.log"
 echo "wrote docs/logs/17-export-decisions-mermaid.log"
 
+# --- MCP proxy: a captured client session through mcpgraph proxy ---------
+# The client side of a real SDK session is fed line by line (a short pause
+# lets each answer come back first) into `mcpgraph proxy` wrapping fakemcp.
+PDATA=$WORK/proxy-data
+{
+	echo "\$ mcpgraph proxy --server postgres --app 'Claude Desktop' -- fakemcp < testdata/jsonrpc/captured-sdk-1.30.0.jsonl"
+	echo "# --- client -> proxy"
+	grep -v '^#' testdata/jsonrpc/captured-sdk-1.30.0.jsonl
+	echo "# --- proxy -> client"
+	grep -v '^#' testdata/jsonrpc/captured-sdk-1.30.0.jsonl | while IFS= read -r l; do printf '%s\n' "$l"; sleep 0.2; done |
+		mcpgraph proxy --data-dir "$PDATA" --server postgres --app "Claude Desktop" -- fakemcp 2>&1
+	echo "# exit code: $?"
+} | tidy > "$LOGS/18-proxy-session.log"
+echo "wrote docs/logs/18-proxy-session.log"
+log 19-proxy-events.log "mcpgraph events   # decisions the proxy wrote" mcpgraph events --data-dir "$PDATA"
+
 # --- quality gates ----------------------------------------------------------
 log 07-go-test.log "go test -v ./..." go test -count=1 -v ./...
 log 08-go-test-summary.log "go test ./..." go test -count=1 ./...
@@ -141,6 +158,16 @@ svg 08-go-test-summary.log "go test"
 svg 09-lint.log "golangci-lint"
 svg 11-bench.log "make bench"
 svg 14-events.log "mcpgraph events"
+# Proxy capture: one line per answer the client got.
+{
+	echo "\$ mcpgraph proxy --server postgres -- fakemcp   # answers the client received"
+	sed -n '/^# --- proxy -> client/,$p' "$LOGS/18-proxy-session.log" | grep '^{' |
+		sed -E 's/.*"id":([0-9]+).*"text":"([^"]{0,95}).*/id \1  \2/; s/.*"id":([0-9]+).*"protocolVersion":"([^"]*)".*/id \1  initialize ok (protocol \2)/; s/.*"id":([0-9]+).*"tools":\[.*/id \1  tools: query, read_file/'
+	echo
+	cat "$LOGS/19-proxy-events.log"
+} > "$WORK/proxy-short.log"
+termsvg -title "mcpgraph proxy" -o "$IMAGES/18-proxy.svg" < "$WORK/proxy-short.log"
+echo "wrote docs/images/18-proxy.svg"
 
 # --- hard rule 2: no fake secret may appear in any generated file ------------
 SECRETS=$(sed -n 's/^\t"\(.*\)",$/\1/p' internal/testutil/fakehome.go)

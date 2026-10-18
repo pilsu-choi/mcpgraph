@@ -11,7 +11,8 @@ A tiny EDR for AI agents, written in Go. One binary, two jobs:
    processes, credentials and data sources can those servers reach? *(done)*
 2. **Runtime control.** Catch what an agent is about to do (an MCP tool call, a shell command from a
    coding agent), check it against a policy, and **allow, deny or ask** before it runs. Every
-   decision goes to an audit log and into the graph. *(in progress, see [Roadmap](#roadmap))*
+   decision goes to an audit log and into the graph. *(MCP proxy done; hook and installer in
+   progress, see [Roadmap](#roadmap))*
 
 > The goal: Claude Code is asked to "clean up the database" and tries `DROP TABLE users`. The policy
 > rule `block-destructive-sql` matches, the command never runs, the agent is told why, and the
@@ -31,6 +32,7 @@ All secrets there are fake, and they appear masked (<code>****abcd</code>). Ever
 - [Quick start](#quick-start)
 - [What it finds](#what-it-finds)
 - [Runtime policy](#runtime-policy)
+- [MCP proxy](#mcp-proxy)
 - [Audit log and events](#audit-log-and-events)
 - [Architecture](#architecture)
 - [Design decisions](#design-decisions)
@@ -179,7 +181,8 @@ flowchart LR
 Runtime control judges one action at a time: an MCP `tools/call` (through the proxy, milestone 7) or
 a coding-agent tool use such as a Bash command (through the hook, milestone 9). Both paths build the
 same `policy.Action` and call the same `policy.Engine`, so each rule is written once. The engine and
-the shipped policy are done (milestone 5). The proxy and the hook that feed it come next.
+the shipped policy are done (milestone 5), and so is the [MCP proxy](#mcp-proxy) (milestone 7). The
+hook comes next.
 
 ```mermaid
 flowchart LR
@@ -207,7 +210,7 @@ The shipped policy, [`policies/default.yaml`](policies/default.yaml), is embedde
 | `ask-unknown-tool` | an MCP tool the last scan did not see (proxy only) | ask |
 
 Deny rules come first, so when an action matches both kinds the deny wins: `rm -rf ~/.ssh` is
-denied, not asked. When the proxy (milestone 7) blocks or asks, it answers `tools/call` with a
+denied, not asked. When the proxy blocks or asks, it answers `tools/call` with a
 normal result marked `isError: true`. The text names the rule and the reason, and `_meta` carries
 the rule ID. The MCP spec says clients *should* show tool errors to the model but only *may* show
 JSON-RPC errors, and the agent has to see why it was stopped.
@@ -254,6 +257,83 @@ test enforces that budget on every `make test`.
 
 <p align="center">
   <img src="docs/images/11-bench.svg" alt="make bench" width="80%">
+</p>
+
+## MCP proxy
+
+`mcpgraph proxy` sits between an AI app and a stdio MCP server. The app starts mcpgraph instead of
+the server, and mcpgraph starts the real server as its child:
+
+```sh
+mcpgraph proxy --server postgres --app "Claude Desktop" -- npx -y @modelcontextprotocol/server-postgres postgres://...
+```
+
+```mermaid
+sequenceDiagram
+  participant C as AI app (MCP client)
+  participant P as mcpgraph proxy
+  participant E as policy.Judge
+  participant S as MCP server (child)
+  participant L as audit.jsonl
+  C->>P: initialize, tools/list, notifications ...
+  P->>S: forwarded byte for byte
+  S->>P: tools/list result
+  Note over P: remembers the tool names
+  P->>C: forwarded byte for byte
+  C->>P: tools/call query "SELECT 1"
+  P->>E: Action{tool, args}
+  E-->>P: allow
+  P->>L: decision
+  P->>S: forwarded byte for byte
+  C->>P: tools/call query "DROP TABLE users"
+  P->>E: Action{tool, args}
+  E-->>P: deny (block-destructive-sql)
+  P->>L: decision
+  P->>C: result isError: true, reason + rule ID
+  Note over S: never sees the call
+```
+
+**Transparent by default.** Only `tools/call` is judged. Every other message, in both directions,
+is copied as the exact bytes that arrived: whitespace, key order, unicode escapes and `\r\n` line
+ends included. A test sends a 2 MiB message and a CRLF message and compares bytes. Server stderr is
+passed through, and the server's exit code becomes mcpgraph's exit code.
+
+**Denied and asked calls** get a normal tool result with `isError: true`. The text names the rule
+and the reason; `_meta` carries `mcpgraph/rule_id` and `mcpgraph/verdict`. The real server never
+sees the call. A later `notifications/cancelled` for that request is dropped, since the server never
+knew about it. The proxy cannot show an approval prompt, so `ask` blocks too, and the text says how
+to approve (run the action yourself, or add an allow rule with `--policy`).
+
+**Fail closed, never hang (hard rule 4).** Each `tools/call` is judged by `policy.Judge` with a
+deadline (`--decision-timeout`, default 2s). A broken `--policy` file does not stop the proxy;
+every tool call is denied with `mcpgraph-fail-closed` and the reason, while everything else keeps
+working. A malformed `tools/call` (bad `params`) is denied, not forwarded. When the server exits, the
+proxy exits with it.
+
+**No parser bypass.** Go's `encoding/json` matches struct fields case-insensitively, so a message
+with both `"method":"ping"` and `"Method":"tools/call"` could look like a ping to a struct decoder
+while a server reads it differently. The proxy reads messages as `map[string]json.RawMessage` and
+looks up exact keys only. Batches (JSON arrays, removed from MCP in 2025-06-18) are forwarded
+unless they contain a `tools/call` that is not allowed; then the whole batch is answered locally.
+
+**Unknown tools.** The proxy learns the server's tools from its `tools/list` responses. A call to a
+tool that was not listed gets `ask-unknown-tool`. Before the first `tools/list`, every tool counts
+as known, so a client that never lists tools is not blocked.
+
+**Tested on real traffic.** [`testdata/jsonrpc/captured-sdk-1.30.0.jsonl`](testdata/jsonrpc/captured-sdk-1.30.0.jsonl)
+is a session captured between the official MCP TypeScript SDK 1.30.0 client and server (it
+negotiated protocol `2025-11-25`). The acceptance test replays it, and two hand-written transcripts
+for the `2025-11-25` and `2026-07-28` revisions, through the proxy: allowed calls must reach the
+server unchanged, denied ones must come back with the rule ID, and every other message must be
+byte-identical. Running the SDK client through the proxy against the SDK server showed the client
+accepts the `isError` result and its `_meta`.
+
+`make docs` pipes the client side of that capture through `mcpgraph proxy` wrapping
+[`tools/fakemcp`](tools/fakemcp/main.go), a scripted server that runs nothing
+([`docs/logs/18-proxy-session.log`](docs/logs/18-proxy-session.log)):
+
+<p align="center">
+  <img src="docs/images/18-proxy.svg" alt="mcpgraph proxy session" width="100%">
 </p>
 
 ## Audit log and events
@@ -312,10 +392,9 @@ flowchart LR
   n_Decision_c5f7ca59a919 -->|DECIDED_ON| n_MCPServer_e88807ebc6c1
 ```
 
-Until the proxy and the hook exist, decisions come from
-[`tools/replay`](tools/replay/main.go). It judges recorded actions
+The decisions above come from [`tools/replay`](tools/replay/main.go), which judges recorded actions
 ([`testdata/actions/demo.jsonl`](testdata/actions/demo.jsonl)) with the shipped policy and appends
-them exactly as those paths will.
+them exactly as the proxy and the hook do, so the docs do not depend on a live agent.
 
 ## Architecture
 
@@ -360,8 +439,10 @@ flowchart LR
 | `internal/report` | Inventory and findings tables, JSON, Mermaid |
 | `internal/sink` | `Sink` interface for a future central server; only a no-op exists |
 | `internal/audit` | Append-only JSONL decision log, filters, and the collector that turns decisions into graph nodes |
+| `internal/proxy` | stdio MCP proxy: exact-key message parsing, `tools/call` judging, tool inventory, child process |
 | `tools/termsvg` | Renders terminal output as the SVG captures in this README |
 | `tools/replay` | Judges recorded actions and appends the decisions to an audit log (docs and tests) |
+| `tools/fakemcp` | Scripted stdio MCP server for the docs; it runs nothing |
 
 ### Graph model
 
@@ -497,6 +578,9 @@ Tests never read the real machine. They build a fake `$HOME` in `t.TempDir()` fr
 | Audit log: append-only, 0600, concurrent writers, torn lines, long lines, redaction | `internal/audit/audit_test.go` |
 | Replayed decisions become Decision nodes with the right `DECIDED_ON` edges | `internal/scan/replay_test.go` |
 | `events` filters, formats and bad flags | `cmd/mcpgraph/events_test.go` |
+| Proxy: recorded transcripts (one real SDK capture) replay; allowed calls unchanged, denials carry the rule ID, other messages byte-identical | `internal/proxy/proxy_test.go` |
+| Proxy: fail closed on engine error or timeout, malformed input, 2 MiB and CRLF messages, batches, server exit, no secret in denials or audit | `internal/proxy/edge_test.go` |
+| `mcpgraph proxy` end to end, bad policy fails closed | `cmd/mcpgraph/proxy_test.go` |
 | Exit code 2 on high findings | `cmd/mcpgraph/main_test.go` |
 
 <p align="center">
@@ -529,19 +613,21 @@ GoReleaser builds the binary for darwin/linux × amd64/arm64 as a static, stripp
 | [14-events](docs/logs/14-events.log) · [15 deny as JSONL](docs/logs/15-events-deny-jsonl.log) | `mcpgraph events` |
 | [16-scan-with-decisions](docs/logs/16-scan-with-decisions.log) | scan with a *RECENT DECISIONS* section |
 | [17-export-decisions-mermaid](docs/logs/17-export-decisions-mermaid.log) | Decision nodes and their `DECIDED_ON` targets |
+| [18-proxy-session](docs/logs/18-proxy-session.log) · [19 events](docs/logs/19-proxy-events.log) | a captured SDK session through `mcpgraph proxy`, and the decisions it wrote |
 
 Development history and design notes are kept in the [`wiki/`](wiki/index.md) knowledge bundle.
 
 ## Roadmap
 
-The spec is [`AGENTS.md`](AGENTS.md). Posture (milestones 1–4), the policy engine (5) and the audit log (6) are done.
+The spec is [`AGENTS.md`](AGENTS.md). Posture (milestones 1–4), the policy engine (5), the audit log (6) and the
+MCP proxy (7) are done.
 
 | # | Milestone | Status |
 | --- | --- | --- |
 | 1–4 | Skeleton, discovery, redaction, graph + posture | done |
 | 5 | Policy engine: YAML policy, matchers, SQL classifier, `Engine.Decide` | done |
 | 6 | Append-only JSONL audit log, `mcpgraph events`, `Decision` nodes | done |
-| 7 | `mcpgraph proxy -- <server>`: stdio MCP proxy that judges `tools/call` | planned |
+| 7 | `mcpgraph proxy -- <server>`: stdio MCP proxy that judges `tools/call` | done |
 | 8 | `mcpgraph install` / `uninstall`: route servers through the proxy, with backups | planned |
 | 9 | `mcpgraph hook claude-code`: PreToolUse hook | planned |
 | 10 | `make demo`: Postgres + DB MCP server, both paths blocking `DROP TABLE` | planned |
@@ -566,8 +652,13 @@ back with milestone 12.
 - **Policy matching is pattern-based.** The SQL classifier does not parse string literals, so a
   keyword inside a string can count. The shell splitter does not expand variables, `$(...)` or
   backticks. Unresolved `rm` targets are treated as outside the project, which errs towards asking.
-- **`ask-unknown-tool` needs a tool inventory.** Scans do not list tools yet, so the rule only
-  fires once the proxy supplies one (milestone 7).
+- **`ask-unknown-tool` needs a tool inventory.** Scans do not list tools, so the rule fires only
+  in the proxy, after the server has answered `tools/list`.
+- **The proxy speaks stdio only**, and cannot prompt for `ask`: it blocks with an explanation. The
+  `_meta` key names (`mcpgraph/rule_id`, `mcpgraph/verdict`) follow the spec's prefix rules but are
+  not registered anywhere (`TODO(verify)`).
+- **Wrapping a server needs a config edit** until `mcpgraph install` (milestone 8) does it with
+  backups.
 
 ## Future work
 
