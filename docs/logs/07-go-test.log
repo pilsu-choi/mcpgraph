@@ -8,7 +8,7 @@ $ go test -v ./...
 === RUN   TestNoSecretsInCLIOutput
 --- PASS: TestNoSecretsInCLIOutput (0.01s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.016s
+ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.015s
 ?   	github.com/pilsu-choi/mcpgraph/internal/collector	[no test files]
 === RUN   TestCollectFakeHome
 --- PASS: TestCollectFakeHome (0.00s)
@@ -19,7 +19,7 @@ ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.016s
 === RUN   TestCandidatesPerOS
 --- PASS: TestCandidatesPerOS (0.00s)
 === RUN   TestDeriveCredentialsAndDataSources
-=== RUN   TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource//tmp/TestDeriveCredentialsAndDataSources1577658509/001
+=== RUN   TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource//tmp/TestDeriveCredentialsAndDataSources3176223642/001
 === RUN   TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource/github
 === RUN   TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource/postgresql://db.internal:5432/prod
 === RUN   TestDeriveCredentialsAndDataSources/Claude_Desktop_Credential/GITHUB_PERSONAL_ACCESS_TOKEN
@@ -28,13 +28,13 @@ ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.016s
 === RUN   TestDeriveCredentialsAndDataSources/Claude_Code_DataSource/mcp.sentry.dev
 === RUN   TestDeriveCredentialsAndDataSources/Cursor_Credential/GIT_TOKEN
 === RUN   TestDeriveCredentialsAndDataSources/Cursor_Credential/url
-=== RUN   TestDeriveCredentialsAndDataSources/Cursor_DataSource//tmp/TestDeriveCredentialsAndDataSources1577658509/001/code/project
+=== RUN   TestDeriveCredentialsAndDataSources/Cursor_DataSource//tmp/TestDeriveCredentialsAndDataSources3176223642/001/code/project
 === RUN   TestDeriveCredentialsAndDataSources/VS_Code_Credential/--api-key
 === RUN   TestDeriveCredentialsAndDataSources/VS_Code_Credential/API_KEY
 === RUN   TestDeriveCredentialsAndDataSources/VS_Code_Credential/envFile
 === RUN   TestDeriveCredentialsAndDataSources/VS_Code_Credential/Authorization
 --- PASS: TestDeriveCredentialsAndDataSources (0.00s)
-    --- PASS: TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource//tmp/TestDeriveCredentialsAndDataSources1577658509/001 (0.00s)
+    --- PASS: TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource//tmp/TestDeriveCredentialsAndDataSources3176223642/001 (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource/github (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource/postgresql://db.internal:5432/prod (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/Claude_Desktop_Credential/GITHUB_PERSONAL_ACCESS_TOKEN (0.00s)
@@ -43,7 +43,7 @@ ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.016s
     --- PASS: TestDeriveCredentialsAndDataSources/Claude_Code_DataSource/mcp.sentry.dev (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/Cursor_Credential/GIT_TOKEN (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/Cursor_Credential/url (0.00s)
-    --- PASS: TestDeriveCredentialsAndDataSources/Cursor_DataSource//tmp/TestDeriveCredentialsAndDataSources1577658509/001/code/project (0.00s)
+    --- PASS: TestDeriveCredentialsAndDataSources/Cursor_DataSource//tmp/TestDeriveCredentialsAndDataSources3176223642/001/code/project (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/VS_Code_Credential/--api-key (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/VS_Code_Credential/API_KEY (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/VS_Code_Credential/envFile (0.00s)
@@ -87,7 +87,7 @@ ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.016s
     --- PASS: TestUnwrapProxy/other_subcommand (0.00s)
     --- PASS: TestUnwrapProxy/other_binary_named_proxy (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/collector/config	0.008s
+ok  	github.com/pilsu-choi/mcpgraph/internal/collector/config	0.011s
 === RUN   TestBuildSelectsInterestingProcesses
 --- PASS: TestBuildSelectsInterestingProcesses (0.00s)
 === RUN   TestBuildChildOfEdges
@@ -105,7 +105,7 @@ ok  	github.com/pilsu-choi/mcpgraph/internal/collector/config	0.008s
 === RUN   TestNormalizeArgs
 --- PASS: TestNormalizeArgs (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/collector/process	0.002s
+ok  	github.com/pilsu-choi/mcpgraph/internal/collector/process	0.003s
 === RUN   TestBuilderReplacesPerSource
 --- PASS: TestBuilderReplacesPerSource (0.00s)
 === RUN   TestBuilderDedupesAndDropsDanglingEdges
@@ -147,11 +147,11 @@ ok  	github.com/pilsu-choi/mcpgraph/internal/graph	0.003s
 === RUN   TestOutAndIn
 --- PASS: TestOutAndIn (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/model	0.002s
+ok  	github.com/pilsu-choi/mcpgraph/internal/model	0.003s
 === RUN   TestIsLoopbackHost
 --- PASS: TestIsLoopbackHost (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/netutil	0.003s
+ok  	github.com/pilsu-choi/mcpgraph/internal/netutil	0.002s
 === RUN   TestDecideIsFast
 --- PASS: TestDecideIsFast (0.01s)
 === RUN   TestBlockDestructiveSQL
@@ -439,7 +439,7 @@ ok  	github.com/pilsu-choi/mcpgraph/internal/netutil	0.003s
 === RUN   TestTautology
 --- PASS: TestTautology (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/policy	0.070s
+ok  	github.com/pilsu-choi/mcpgraph/internal/policy	0.071s
 === RUN   TestPlaintextSecret
 === RUN   TestPlaintextSecret/inline_secret
 === RUN   TestPlaintextSecret/env_reference
@@ -547,7 +547,7 @@ ok  	github.com/pilsu-choi/mcpgraph/internal/policy	0.070s
 === RUN   TestDefaultRuleIDsAreUnique
 --- PASS: TestDefaultRuleIDsAreUnique (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/posture	0.005s
+ok  	github.com/pilsu-choi/mcpgraph/internal/posture	0.004s
 === RUN   TestMask
 --- PASS: TestMask (0.00s)
 === RUN   TestDetect
@@ -641,17 +641,17 @@ ok  	github.com/pilsu-choi/mcpgraph/internal/posture	0.005s
 === RUN   TestIsEnvAssignment
 --- PASS: TestIsEnvAssignment (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/redact	0.003s
+ok  	github.com/pilsu-choi/mcpgraph/internal/redact	0.004s
 === RUN   TestMermaid
 --- PASS: TestMermaid (0.00s)
 === RUN   TestJSONRoundTrip
 --- PASS: TestJSONRoundTrip (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/report	0.002s
+ok  	github.com/pilsu-choi/mcpgraph/internal/report	0.003s
 === RUN   TestNoSecretInAnyOutput
 --- PASS: TestNoSecretInAnyOutput (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/scan	0.006s
+ok  	github.com/pilsu-choi/mcpgraph/internal/scan	0.005s
 ?   	github.com/pilsu-choi/mcpgraph/internal/sink	[no test files]
 ?   	github.com/pilsu-choi/mcpgraph/internal/testutil	[no test files]
 ?   	github.com/pilsu-choi/mcpgraph/policies	[no test files]

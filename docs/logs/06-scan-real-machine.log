@@ -7,7 +7,7 @@ Claude Code  0        /home/pilsu/.claude.json
 
 MCP SERVERS (0)
 
-PROCESSES (15)
+PROCESSES (14)
 PID    PPID   APP          MCP  COMMAND
 1588   1335   Claude Code       claude
 1654   1588                yes  npm exec @playwright/mcp@latest
@@ -21,9 +21,8 @@ PID    PPID   APP          MCP  COMMAND
 51769  51473  VS Code           /home/pilsu/.vscode-server/bin/6d62b1d5dace93a33b3a6d3eca1317bd5e15bc…
 51824  51769  VS Code           /home/pilsu/.vscode-server/bin/6d62b1d5dace93a33b3a6d3eca1317bd5e15bc…
 52102  51762  VS Code           /home/pilsu/.vscode-server/bin/6d62b1d5dace93a33b3a6d3eca1317bd5e15bc…
-83999  1588                     /bin/bash -c source /home/pilsu/.claude/shell-snapshots/snapshot-bash…
-84002  83999                    bash scripts/docs.sh
-84003  83999                    tail -3
+85639  1588                     /bin/bash -c source /home/pilsu/.claude/shell-snapshots/snapshot-bash…
+85898  85639                    bash scripts/docs.sh
 
 FINDINGS: 0 high, 1 medium, 0 low
 
