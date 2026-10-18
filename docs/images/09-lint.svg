@@ -1,17 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="774" height="186" viewBox="0 0 774 186">
-<rect width="774" height="186" rx="8" fill="#0d1117"/>
-<rect width="774" height="30" rx="8" fill="#161b22"/><rect y="22" width="774" height="8" fill="#161b22"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="348" height="114" viewBox="0 0 348 114">
+<rect width="348" height="114" rx="8" fill="#0d1117"/>
+<rect width="348" height="30" rx="8" fill="#161b22"/><rect y="22" width="348" height="8" fill="#161b22"/>
 <circle cx="18" cy="15" r="6" fill="#ff5f56"/>
 <circle cx="38" cy="15" r="6" fill="#ffbd2e"/>
 <circle cx="58" cy="15" r="6" fill="#27c93f"/>
-<text x="387" y="19" fill="#8b949e" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" text-anchor="middle">golangci-lint</text>
+<text x="174" y="19" fill="#8b949e" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" text-anchor="middle">golangci-lint</text>
 <g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace" font-size="13" fill="#c9d1d9" xml:space="preserve" style="white-space:pre">
 <text x="16" y="57"><tspan fill="#7ee787">$&#160;</tspan><tspan fill="#ffffff">golangci-lint&#160;run</tspan></text>
-<text x="16" y="75">tools/fakemcp/main.go:24:20:&#160;Error&#160;return&#160;value&#160;of&#160;`out.WriteString`&#160;is&#160;not&#160;checked&#160;(errcheck)</text>
-<text x="16" y="93">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;out.WriteString(reply&#160;+&#160;&quot;\n&quot;)</text>
-<text x="16" y="111">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^</text>
-<text x="16" y="129">1&#160;issues:</text>
-<text x="16" y="147">*&#160;errcheck:&#160;1</text>
-<text x="16" y="165"><tspan fill="#8b949e">#&#160;exit&#160;code:&#160;1</tspan></text>
+<text x="16" y="75">0&#160;issues.</text>
+<text x="16" y="93"><tspan fill="#8b949e">#&#160;exit&#160;code:&#160;0</tspan></text>
 </g>
 </svg>

@@ -1,4 +1,4 @@
-# generated: 2026-10-18T07:31:30Z
-# commit:    a4ec8c8-dirty (docs: refresh run logs at m6)
+# generated: 2026-10-18T07:35:00Z
+# commit:    2d5640c (m7: stdio MCP proxy that judges tools/call)
 # go:        go version go1.27.2 linux/amd64
 # os:        Linux 5.15.167.4-microsoft-standard-WSL2 x86_64

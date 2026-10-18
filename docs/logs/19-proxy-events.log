@@ -1,8 +1,8 @@
 $ mcpgraph events   # decisions the proxy wrote
 DECISIONS (4)
 TIME (UTC)           VERDICT  RULE                   SOURCE  AGENT                      TOOL        ACTION
-2026-10-18 07:31:31  ALLOW    -                      proxy   postgres (Claude Desktop)  query       SELECT 1
-2026-10-18 07:31:31  DENY     block-destructive-sql  proxy   postgres (Claude Desktop)  query       DROP TABLE users
-2026-10-18 07:31:31  DENY     block-destructive-sql  proxy   postgres (Claude Desktop)  query       DELETE FROM users WHERE 1=1
-2026-10-18 07:31:31  ASK      ask-unknown-tool       proxy   postgres (Claude Desktop)  not_listed  
+2026-10-18 07:35:01  ALLOW    -                      proxy   postgres (Claude Desktop)  query       SELECT 1
+2026-10-18 07:35:01  DENY     block-destructive-sql  proxy   postgres (Claude Desktop)  query       DROP TABLE users
+2026-10-18 07:35:02  DENY     block-destructive-sql  proxy   postgres (Claude Desktop)  query       DELETE FROM users WHERE 1=1
+2026-10-18 07:35:02  ASK      ask-unknown-tool       proxy   postgres (Claude Desktop)  not_listed  
 # exit code: 0
