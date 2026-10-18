@@ -1,0 +1,47 @@
+# GoReleaser v2. `make release` runs a local snapshot build only; nothing
+# is published.
+version: 2
+
+project_name: mcpgraph
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: mcpgraph
+    main: ./cmd/mcpgraph
+    binary: mcpgraph
+    env: &env
+      - CGO_ENABLED=0 # hard rule 4: static, pure-Go binaries
+    goos: &goos [darwin, linux]
+    goarch: &goarch [amd64, arm64]
+    flags: &flags [-trimpath]
+    ldflags: &ldflags
+      - -s -w
+  - id: mcpgraphd
+    main: ./cmd/mcpgraphd
+    binary: mcpgraphd
+    env: *env
+    goos: *goos
+    goarch: *goarch
+    flags: *flags
+    ldflags: *ldflags
+
+archives:
+  - formats: [tar.gz]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: checksums.txt
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-snapshot"
+
+changelog:
+  disable: true
+
+# No git remote yet: build-only. Remove this once the repo is on GitHub
+# and releases should be published.
+release:
+  disable: true
