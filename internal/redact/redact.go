@@ -230,7 +230,11 @@ func Args(args []string) []string {
 			out[i] = maskUnlessSafe(a)
 		case strings.HasPrefix(a, "-") && strings.Contains(a, "="):
 			k, v, _ := strings.Cut(a, "=")
-			out[i] = k + "=" + Value(k, URL(v))
+			if strings.Contains(v, "://") {
+				out[i] = k + "=" + URL(v)
+			} else {
+				out[i] = k + "=" + Value(k, v)
+			}
 		case strings.Contains(a, "://"):
 			out[i] = URL(a)
 		default:

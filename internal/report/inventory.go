@@ -5,6 +5,7 @@ package report
 import (
 	"fmt"
 	"io"
+	"sort"
 	"strings"
 	"text/tabwriter"
 
@@ -34,6 +35,13 @@ func Inventory(w io.Writer, g *model.Graph) error {
 	}
 
 	servers := g.NodesOfKind(model.KindMCPServer)
+	sort.Slice(servers, func(i, j int) bool {
+		a, b := servers[i].Server, servers[j].Server
+		if a.App != b.App {
+			return a.App < b.App
+		}
+		return a.Name < b.Name
+	})
 	fmt.Fprintf(tw, "\nMCP SERVERS (%d)\n", len(servers))
 	if len(servers) > 0 {
 		fmt.Fprintln(tw, "APP\tSERVER\tTRANSPORT\tCOMMAND / URL\tSECRETS\tACCESSES\tPIDS")
