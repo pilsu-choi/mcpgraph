@@ -94,6 +94,7 @@ func newRootCmd() *cobra.Command {
 
 	root.AddCommand(newScanCmd(opts), newReportCmd(opts), newExportCmd(opts))
 	root.AddCommand(newProxyCmd(opts), newHookCmd(), newInstallCmd(opts), newUninstallCmd(opts), newEventsCmd(opts))
+	root.AddCommand(newSinkCmd(opts), newCollectorCmd())
 	return root
 }
 

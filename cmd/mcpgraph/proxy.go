@@ -11,6 +11,7 @@ import (
 	"github.com/pilsu-choi/mcpgraph/internal/audit"
 	"github.com/pilsu-choi/mcpgraph/internal/policy"
 	"github.com/pilsu-choi/mcpgraph/internal/proxy"
+	"github.com/pilsu-choi/mcpgraph/internal/sink"
 	"github.com/pilsu-choi/mcpgraph/policies"
 )
 
@@ -56,7 +57,10 @@ stdout carries the MCP protocol, so mcpgraph logs only to stderr.`,
 				slog.Warn("mcpgraph proxy: no audit log", "err", err)
 			} else {
 				defer log.Close()
-				p.SetAudit(log)
+				// nil when the sink is off; Wrap and Close accept nil.
+				fl := sink.NewFlusher(filepath.Dir(path))
+				defer fl.Close() // runs before log.Close: last flush reads the log
+				p.SetAudit(fl.Wrap(log))
 			}
 
 			code, err := p.RunCommand(cmd.Context(), args, cmd.InOrStdin(), cmd.OutOrStdout(), cmd.ErrOrStderr())

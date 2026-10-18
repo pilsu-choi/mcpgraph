@@ -19,6 +19,7 @@ func newEventsCmd(opts *options) *cobra.Command {
 		since   string
 		verdict string
 		format  string
+		remote  collectorFlags
 	)
 	cmd := &cobra.Command{
 		Use:   "events",
@@ -40,22 +41,30 @@ func newEventsCmd(opts *options) *cobra.Command {
 			if f.Source != "" && f.Source != model.SourceProxy && f.Source != model.SourceHook {
 				return fmt.Errorf("unknown source %q (want proxy or hook)", f.Source)
 			}
-			path, err := opts.auditPath()
-			if err != nil {
-				return err
-			}
-			res, err := audit.ReadFile(path, f)
-			if err != nil {
-				return err
-			}
-			if res.Skipped > 0 {
-				slog.Warn("skipped malformed audit lines", "path", path, "count", res.Skipped)
+			var decisions []model.Decision
+			if remote.url != "" {
+				if decisions, err = remote.query(cmd.Context(), f); err != nil {
+					return err
+				}
+			} else {
+				path, err := opts.auditPath()
+				if err != nil {
+					return err
+				}
+				res, err := audit.ReadFile(path, f)
+				if err != nil {
+					return err
+				}
+				if res.Skipped > 0 {
+					slog.Warn("skipped malformed audit lines", "path", path, "count", res.Skipped)
+				}
+				decisions = res.Decisions
 			}
 			switch format {
 			case "table":
-				return report.Events(cmd.OutOrStdout(), res.Decisions)
+				return report.Events(cmd.OutOrStdout(), decisions)
 			case "jsonl":
-				return report.EventsJSONL(cmd.OutOrStdout(), res.Decisions)
+				return report.EventsJSONL(cmd.OutOrStdout(), decisions)
 			default:
 				return fmt.Errorf("unknown format %q (want table or jsonl)", format)
 			}
@@ -69,6 +78,9 @@ func newEventsCmd(opts *options) *cobra.Command {
 	fl.StringVar(&f.Tool, "tool", "", "tool name, e.g. Bash or query")
 	fl.StringVar(&f.RuleID, "rule", "", "policy rule ID")
 	fl.IntVarP(&f.Limit, "limit", "n", 50, "newest N decisions (0 = all)")
+	fl.StringVar(&remote.url, "collector", "", "read from this collector URL instead of the local audit log")
+	fl.StringVar(&remote.token, "token", "", "bearer token for --collector")
+	fl.StringVar(&remote.host, "host", "", "only events from this host (with --collector)")
 	fl.StringVarP(&format, "format", "f", "table", "output format: table or jsonl")
 	return cmd
 }
