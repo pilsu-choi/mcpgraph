@@ -23,5 +23,6 @@ timestamp: 2026-10-18T07:25:00Z
 | [Proxy denials are `isError` results](proxy-denial-iserror.md) | The model reliably sees why a tool call was blocked. |
 | [Deny before ask](deny-before-ask.md) | Stricter rules first in `default.yaml`; `rm -rf ~/.ssh` is denied. |
 | [Plain HTTP becomes R7](plain-http-as-r7.md) | R4 now means "not proxied"; the old check keeps its logic as R7. |
+| [install edits configs in place](2026-10-18-install-in-place-edits.md) | Only `command` and `args` change; uninstall restores the backup or, if the app rewrote the file, just unwraps. |
 
 These match AGENTS.md §5 and the README's *Design decisions* section.

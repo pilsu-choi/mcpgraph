@@ -251,3 +251,10 @@ Stop and ask the owner instead of guessing on: external formats (section 3, rule
   see why it was blocked.
 - **Deny rules before ask rules** in `policies/default.yaml` (first match wins), so for example
   `rm -rf ~/.ssh` is denied rather than asked.
+- **Order after milestone 8 (recorded 2026-10-18):** 9 hook (Claude Code, then Codex CLI if its hook
+  format can be verified from official sources) → 10 demo → 11 event sink + central collector (no
+  longer only a stretch goal). The demo's deliverable is a ~30 second GIF at the top of the README:
+  ask Claude Code to clean up the database → `DROP TABLE` is blocked → the decision is in the audit
+  log. Reviewers judge from that GIF, so it matters more than polish elsewhere.
+- **Workflow:** each task runs in its own git worktree on a branch cut from `dev`, merged back to
+  `dev`. New wiki files get a `YYYY-MM-DD-` file-name prefix.

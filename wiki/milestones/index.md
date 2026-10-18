@@ -31,6 +31,6 @@ v1 milestones (AGENTS.md v1 §11), each committed separately. The v2 milestones 
 | 5 | [Policy engine](v2-m5-policy-engine.md) | done |
 | 6 | [Audit log + events + Decision nodes](v2-m6-audit-log.md) | done |
 | 7 | [MCP proxy](v2-m7-proxy.md) | done |
-| 8 | Install / uninstall | planned |
+| 8 | [Install / uninstall](2026-10-18-v2-m8-install.md) | done |
 | 9 | Coding-agent hook | planned ([fails open](../issues/hook-fails-open.md)) |
 | 10 | Demo (PostgreSQL) + README | planned |

@@ -1,0 +1,103 @@
+$ mcpgraph install --bin /usr/local/bin/mcpgraph --yes   # then: report
+Wrap 6 stdio MCP server(s) in 4 file(s) with mcpgraph proxy:
+  Claude Desktop  /home/dev/.config/Claude/claude_desktop_config.json
+    + mcpServers.filesystem
+    + mcpServers.github
+    + mcpServers.postgres
+  Claude Code  /home/dev/.claude.json
+    + projects["/work/app"].mcpServers.slack
+  Cursor  /home/dev/.cursor/mcp.json
+    + mcpServers.git
+  VS Code  /home/dev/.config/Code/User/mcp.json
+    + servers.custom
+Left alone:
+  Claude Code  /home/dev/.claude.json  mcpServers.sentry: not a stdio server; the proxy wraps stdio only
+  Cursor  /home/dev/.cursor/mcp.json  mcpServers.remote-insecure: not a stdio server; the proxy wraps stdio only
+  Cursor  /home/dev/.cursor/mcp.json  mcpServers.local-http: not a stdio server; the proxy wraps stdio only
+  VS Code  /home/dev/.config/Code/User/mcp.json  servers.github-remote: not a stdio server; the proxy wraps stdio only
+
+--- /home/dev/.config/Claude/claude_desktop_config.json (now)
++++ /home/dev/.config/Claude/claude_desktop_config.json (after install)
+@@ -2,10 +2,10 @@
+   "mcpServers": {
+     "filesystem": {
+-      "command": "npx",
++      "command": "/usr/local/bin/mcpgraph",
+-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "~"]
++      "args": ["proxy", "--server", "filesystem", "--app", "Claude Desktop", "--", "npx", "-y", "@modelcontextprotocol/server-filesystem", "~"]
+     },
+     "github": {
+-      "command": "npx",
++      "command": "/usr/local/bin/mcpgraph",
+-      "args": ["-y", "@modelcontextprotocol/server-github"],
++      "args": ["proxy", "--server", "github", "--app", "Claude Desktop", "--", "npx", "-y", "@modelcontextprotocol/server-github"],
+       "env": {
+         "GITHUB_PERSONAL_ACCESS_TOKEN": "****1234"
+@@ -13,10 +13,6 @@
+     },
+     "postgres": {
+-      "command": "npx",
++      "command": "/usr/local/bin/mcpgraph",
+-      "args": [
+-        "-y",
+-        "@modelcontextprotocol/server-postgres@0.6.2",
+-        "postgresql://admin:****@db.internal:5432/prod"
+-      ]
++      "args": ["proxy", "--server", "postgres", "--app", "Claude Desktop", "--", "npx", "-y", "@modelcontextprotocol/server-postgres@0.6.2", "postgresql://admin:****@db.internal:5432/prod"]
+     }
+   },
+
+--- /home/dev/.claude.json (now)
++++ /home/dev/.claude.json (after install)
+@@ -13,6 +13,6 @@
+         "slack": {
+           "type": "stdio",
+-          "command": "npx",
++          "command": "/usr/local/bin/mcpgraph",
+-          "args": ["-y", "slack-mcp-server@1.2.0"],
++          "args": ["proxy", "--server", "slack", "--app", "Claude Code", "--", "npx", "-y", "slack-mcp-server@1.2.0"],
+           "env": {
+             "SLACK_BOT_TOKEN": "****FAKE",
+
+--- /home/dev/.cursor/mcp.json (now)
++++ /home/dev/.cursor/mcp.json (after install)
+@@ -8,6 +8,6 @@
+     },
+     "git": {
+-      "command": "uvx",
++      "command": "/usr/local/bin/mcpgraph",
+-      "args": ["mcp-server-git", "--repository", "~/code/project"],
++      "args": ["proxy", "--server", "git", "--app", "Cursor", "--", "uvx", "mcp-server-git", "--repository", "~/code/project"],
+       "env": {
+         "GIT_TOKEN": "${GIT_TOKEN}"
+
+--- /home/dev/.config/Code/User/mcp.json (now)
++++ /home/dev/.config/Code/User/mcp.json (after install)
+@@ -13,6 +13,6 @@
+     "custom": {
+       "type": "stdio",
+-      "command": "node",
++      "command": "/usr/local/bin/mcpgraph",
+-      "args": ["/opt/tools/server.js", "--api-key", "****FAKE"],
++      "args": ["proxy", "--server", "custom", "--app", "VS Code", "--", "node", "/opt/tools/server.js", "--api-key", "****FAKE"],
+       "envFile": "${workspaceFolder}/.env",
+       "env": { "API_KEY": "****FAKE" },
+
+wrote /home/dev/.config/Claude/claude_desktop_config.json (backup: /home/dev/.local/share/mcpgraph/install/backups/BACKUP-ID/1-claude_desktop_config.json)
+wrote /home/dev/.claude.json (backup: /home/dev/.local/share/mcpgraph/install/backups/BACKUP-ID/2-.claude.json)
+wrote /home/dev/.cursor/mcp.json (backup: /home/dev/.local/share/mcpgraph/install/backups/BACKUP-ID/3-mcp.json)
+wrote /home/dev/.config/Code/User/mcp.json (backup: /home/dev/.local/share/mcpgraph/install/backups/BACKUP-ID/4-mcp.json)
+Done. Restart the AI apps so they start the servers through the proxy.
+Undo with: mcpgraph uninstall --yes
+
+$ mcpgraph report --no-processes | grep -c R4   # rule R4, after install
+R4 findings: 0
+
+$ mcpgraph report --no-processes | grep R4   # for comparison: before install
+  [R4] Claude Code / slack is not routed through the mcpgraph proxy
+  [R4] Claude Desktop / filesystem is not routed through the mcpgraph proxy
+  [R4] Claude Desktop / github is not routed through the mcpgraph proxy
+  [R4] Claude Desktop / postgres is not routed through the mcpgraph proxy
+  [R4] Cursor / git is not routed through the mcpgraph proxy
+  [R4] VS Code / custom is not routed through the mcpgraph proxy
+# exit code: 0

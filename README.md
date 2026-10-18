@@ -11,8 +11,8 @@ A tiny EDR for AI agents, written in Go. One binary, two jobs:
    processes, credentials and data sources can those servers reach? *(done)*
 2. **Runtime control.** Catch what an agent is about to do (an MCP tool call, a shell command from a
    coding agent), check it against a policy, and **allow, deny or ask** before it runs. Every
-   decision goes to an audit log and into the graph. *(MCP proxy done; hook and installer in
-   progress, see [Roadmap](#roadmap))*
+   decision goes to an audit log and into the graph. *(MCP proxy and installer done; the coding-agent
+   hook is next, see [Roadmap](#roadmap))*
 
 > The goal: Claude Code is asked to "clean up the database" and tries `DROP TABLE users`. The policy
 > rule `block-destructive-sql` matches, the command never runs, the agent is told why, and the
@@ -33,6 +33,7 @@ All secrets there are fake, and they appear masked (<code>****abcd</code>). Ever
 - [What it finds](#what-it-finds)
 - [Runtime policy](#runtime-policy)
 - [MCP proxy](#mcp-proxy)
+- [Install and uninstall](#install-and-uninstall)
 - [Audit log and events](#audit-log-and-events)
 - [Architecture](#architecture)
 - [Design decisions](#design-decisions)
@@ -103,7 +104,7 @@ Useful flags: `--home DIR` scans another home directory (for example the fixture
 | R7 | Remote MCP over plain `http://` to a non-loopback host | medium | Tool calls and auth headers travel unencrypted |
 
 R7 was R4 in the first version. R4 now means "not behind the proxy", and the plain-HTTP check kept
-its logic under a new ID. Until the proxy and `mcpgraph install` exist (milestones 7–8), R4 fires for
+its logic under a new ID. Until `mcpgraph install` has been run (or a server is wrapped by hand), R4 fires for
 every stdio server.
 
 `scan` and `report` exit with code **2** when any finding is high, so they can gate a CI job.
@@ -268,6 +269,9 @@ the server, and mcpgraph starts the real server as its child:
 mcpgraph proxy --server postgres --app "Claude Desktop" -- npx -y @modelcontextprotocol/server-postgres postgres://...
 ```
 
+You do not have to edit configs by hand: [`mcpgraph install`](#install-and-uninstall) wraps every
+stdio server this way, with backups, and `uninstall` undoes it.
+
 ```mermaid
 sequenceDiagram
   participant C as AI app (MCP client)
@@ -335,6 +339,91 @@ accepts the `isError` result and its `_meta`.
 <p align="center">
   <img src="docs/images/18-proxy.svg" alt="mcpgraph proxy session" width="100%">
 </p>
+
+## Install and uninstall
+
+`mcpgraph install` rewrites the MCP configs of Claude Desktop, Claude Code (`~/.claude.json`,
+including per-project servers), Cursor and VS Code, so that each stdio server starts through the
+[proxy](#mcp-proxy). Without `--yes` it is a dry run: it prints the plan and a redacted diff, and
+writes nothing.
+
+```sh
+mcpgraph install                                  # dry run: plan + diff, nothing written
+mcpgraph install --yes                            # back up, then rewrite
+mcpgraph install --app Cursor --server github --yes   # only one app / server
+mcpgraph install --policy ./my-policy.yaml --yes  # proxies use this policy file
+mcpgraph uninstall --yes                          # undo, newest install first
+```
+
+Every stdio server becomes `/abs/path/mcpgraph proxy --server NAME --app APP -- <original command
+and args>`. Remote `http` / `sse` servers and servers that are already proxied are listed as "left
+alone". This is the real dry-run diff for Claude Desktop (paths shortened):
+
+```diff
+--- /home/dev/.config/Claude/claude_desktop_config.json (now)
++++ /home/dev/.config/Claude/claude_desktop_config.json (after install)
+@@ -2,10 +2,10 @@
+   "mcpServers": {
+     "filesystem": {
+-      "command": "npx",
++      "command": "/usr/local/bin/mcpgraph",
+-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "~"]
++      "args": ["proxy", "--server", "filesystem", "--app", "Claude Desktop", "--", "npx", "-y", "@modelcontextprotocol/server-filesystem", "~"]
+     },
+```
+
+<p align="center">
+  <img src="docs/images/20-install.svg" alt="mcpgraph install dry run" width="100%">
+</p>
+
+```mermaid
+flowchart LR
+  subgraph I["install --yes"]
+    direction LR
+    PL["plan<br/>find stdio servers"] --> BK["back up each file<br/>0600 in a 0700 dir"]
+    BK --> WR["atomic write<br/>temp file, fsync, rename"]
+    WR --> MF["manifest.json<br/>paths, hashes, offsets"]
+  end
+  subgraph U["uninstall --yes"]
+    direction LR
+    CH{"file exactly<br/>as install left it?"}
+    CH -- yes --> RS["restore the backup<br/>byte for byte"]
+    CH -- "no, the app changed it" --> UW["unwrap in place<br/>keep the app's changes"]
+    RS --> DEL["delete backups"]
+    UW --> DEL
+  end
+  MF -.-> CH
+```
+
+**Only `command` and `args` change.** A small span-preserving JSON/JSONC parser finds the byte range
+of each `"command"` and `"args"` value and replaces just those ranges. Indentation, key order,
+comments and the rest of a multi-megabyte `~/.claude.json` stay as they were, and the diff hunks are
+built from the same edits. A server that has no `args` gets the key inserted.
+
+**Backups and manifest hold no secrets.** Each file is copied first, with mode 0600 in a 0700
+directory under `<data-dir>/install/backups`. The manifest (`<data-dir>/install/manifest.json`)
+stores only paths, sha256 hashes and edit offsets, never config content. A test scans the diffs and
+the manifest for the fake secrets.
+
+**Atomic, and refuses to race the app.** Writes go to a temp file, are fsynced and renamed over the
+original, and the file mode is kept. If the app changed the file after mcpgraph read it, the write is
+refused. A symlinked config keeps its link; the real file is rewritten. `install` also refuses a
+`go run` binary, or a binary not named `mcpgraph`, unless you pass `--bin`, because scans recognise
+proxied servers by the basename.
+
+**Restore or unwrap.** If a file is exactly as install left it, `uninstall` restores the backup byte
+for byte. If the app changed it since (Claude Code rewrites `~/.claude.json` all the time), a restore
+would lose those changes, so only the proxy wrapping is removed, in place. Then the backups are
+deleted. Several installs are undone newest first.
+
+**The diff is redacted.** Secrets inside JSON string literals are masked in the printed diff, for
+example `"GITHUB_PERSONAL_ACCESS_TOKEN": "****1234"`,
+`"postgresql://admin:****@db.internal:5432/prod"` and `"--api-key", "****FAKE"`.
+
+**R4 clears.** On the fixtures, `report` shows 6 R4 findings before install, 0 after, and 6 again
+after uninstall, and every file is byte-identical to the start
+([`20`](docs/logs/20-install-dry-run.log), [`21`](docs/logs/21-install-apply.log),
+[`22`](docs/logs/22-uninstall.log)).
 
 ## Audit log and events
 
@@ -439,6 +528,7 @@ flowchart LR
 | `internal/report` | Inventory and findings tables, JSON, Mermaid |
 | `internal/sink` | `Sink` interface for a future central server; only a no-op exists |
 | `internal/audit` | Append-only JSONL decision log, filters, and the collector that turns decisions into graph nodes |
+| `internal/install` | `install` / `uninstall`: span-preserving JSON/JSONC edits, plan and diff, backups, manifest, atomic writes |
 | `internal/proxy` | stdio MCP proxy: exact-key message parsing, `tools/call` judging, tool inventory, child process |
 | `tools/termsvg` | Renders terminal output as the SVG captures in this README |
 | `tools/replay` | Judges recorded actions and appends the decisions to an audit log (docs and tests) |
@@ -543,7 +633,7 @@ once, at collection time, so every output is safe by construction. `internal/sca
 runs the fixtures through every output format and fails if any fake secret appears. `make docs` checks the generated logs and images the same way.
 
 **Read-only, no network.** Scanning never writes outside mcpgraph's own data directory and makes no
-outbound connections. Once milestone 8 lands, `mcpgraph install` / `uninstall` will be the only
+outbound connections. `mcpgraph install` / `uninstall` are the only
 commands that edit AI-app configs, with backups, a printed diff and `--yes`.
 
 **No cgo.** gopsutil is pure Go. `CGO_ENABLED=0` builds static binaries
@@ -581,6 +671,10 @@ Tests never read the real machine. They build a fake `$HOME` in `t.TempDir()` fr
 | Proxy: recorded transcripts (one real SDK capture) replay; allowed calls unchanged, denials carry the rule ID, other messages byte-identical | `internal/proxy/proxy_test.go` |
 | Proxy: fail closed on engine error or timeout, malformed input, 2 MiB and CRLF messages, batches, server exit, no secret in denials or audit | `internal/proxy/edge_test.go` |
 | `mcpgraph proxy` end to end, bad policy fails closed | `cmd/mcpgraph/proxy_test.go` |
+| Install round trip on the fixtures: only `command` / `args` change, install twice, filters, symlinks, missing `args`, app changed the file (refused on apply, unwrap on uninstall), config removed after install | `internal/install/install_test.go` |
+| Install safety: no secret in diffs or manifest, backups 0600 in a 0700 dir, atomic writes | `internal/install/install_test.go` |
+| JSONC span parser: comments, errors, line redaction | `internal/install/jsonscan_test.go` |
+| `mcpgraph install` CLI: dry run writes nothing, round trip, refuses a test binary without `--bin` | `cmd/mcpgraph/install_test.go` |
 | Exit code 2 on high findings | `cmd/mcpgraph/main_test.go` |
 
 <p align="center">
@@ -614,13 +708,14 @@ GoReleaser builds the binary for darwin/linux × amd64/arm64 as a static, stripp
 | [16-scan-with-decisions](docs/logs/16-scan-with-decisions.log) | scan with a *RECENT DECISIONS* section |
 | [17-export-decisions-mermaid](docs/logs/17-export-decisions-mermaid.log) | Decision nodes and their `DECIDED_ON` targets |
 | [18-proxy-session](docs/logs/18-proxy-session.log) · [19 events](docs/logs/19-proxy-events.log) | a captured SDK session through `mcpgraph proxy`, and the decisions it wrote |
+| [20-install-dry-run](docs/logs/20-install-dry-run.log) · [21 apply](docs/logs/21-install-apply.log) · [22 uninstall](docs/logs/22-uninstall.log) | `mcpgraph install` dry run; `--yes` and a report with no R4; `uninstall` and the byte-identical check |
 
 Development history and design notes are kept in the [`wiki/`](wiki/index.md) knowledge bundle.
 
 ## Roadmap
 
-The spec is [`AGENTS.md`](AGENTS.md). Posture (milestones 1–4), the policy engine (5), the audit log (6) and the
-MCP proxy (7) are done.
+The spec is [`AGENTS.md`](AGENTS.md). Posture (milestones 1–4), the policy engine (5), the audit log (6), the
+MCP proxy (7) and the installer (8) are done.
 
 | # | Milestone | Status |
 | --- | --- | --- |
@@ -628,7 +723,7 @@ MCP proxy (7) are done.
 | 5 | Policy engine: YAML policy, matchers, SQL classifier, `Engine.Decide` | done |
 | 6 | Append-only JSONL audit log, `mcpgraph events`, `Decision` nodes | done |
 | 7 | `mcpgraph proxy -- <server>`: stdio MCP proxy that judges `tools/call` | done |
-| 8 | `mcpgraph install` / `uninstall`: route servers through the proxy, with backups | planned |
+| 8 | `mcpgraph install` / `uninstall`: route servers through the proxy, with backups | done |
 | 9 | `mcpgraph hook claude-code`: PreToolUse hook | planned |
 | 10 | `make demo`: Postgres + DB MCP server, both paths blocking `DROP TABLE` | planned |
 | 11–12 | *(stretch)* event sink + collector; daemon with drift alerts | stretch |
@@ -657,8 +752,9 @@ back with milestone 12.
 - **The proxy speaks stdio only**, and cannot prompt for `ask`: it blocks with an explanation. The
   `_meta` key names (`mcpgraph/rule_id`, `mcpgraph/verdict`) follow the spec's prefix rules but are
   not registered anywhere (`TODO(verify)`).
-- **Wrapping a server needs a config edit** until `mcpgraph install` (milestone 8) does it with
-  backups.
+- **Apps must be restarted** after `install` or `uninstall`; they read their MCP config at start.
+  `install` also inherits the `TODO(verify)` config paths above, so for apps other than Claude Code
+  on Linux it edits only the files it can find at the guessed locations.
 
 ## Future work
 

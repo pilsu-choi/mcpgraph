@@ -19,6 +19,7 @@ WORK=$(mktemp -d)
 trap 'rm -rf "$WORK"' EXIT
 BIN=$WORK/bin
 DEMO_HOME=$WORK/home
+IHOME=$WORK/install-home
 mkdir -p "$BIN" "$DEMO_HOME"
 
 cd "$ROOT"
@@ -42,7 +43,11 @@ echo "# FAKE demo file" > "$DEMO_HOME/.ssh/id_ed25519"
 
 HOST=$(hostname)
 # tidy makes fixture output stable: temp path -> /home/dev, hostname -> devbox.
-tidy() { sed -e "s|$DEMO_HOME|/home/dev|g" -e "s|$WORK|/tmp/mcpgraph-demo|g" -e "s|\b$HOST\b|devbox|g"; }
+# Backup directory names (timestamp + random suffix) and "backup from <time>" are made stable too.
+tidy() {
+	sed -E -e "s|$DEMO_HOME|/home/dev|g" -e "s|$IHOME|/home/dev|g" -e "s|$WORK|/tmp/mcpgraph-demo|g" -e "s|\b$HOST\b|devbox|g" \
+		-e 's/[0-9]{8}T[0-9]{6}Z-[0-9]+/BACKUP-ID/g' -e 's/(backup from )[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:]{8}Z/\1TIMESTAMP/g'
+}
 
 # log FILE SHOWN-COMMAND CMD... runs CMD, writes "$ SHOWN-COMMAND", the
 # output and the exit code to docs/logs/FILE.
@@ -133,6 +138,25 @@ PDATA=$WORK/proxy-data
 echo "wrote docs/logs/18-proxy-session.log"
 log 19-proxy-events.log "mcpgraph events   # decisions the proxy wrote" mcpgraph events --data-dir "$PDATA"
 
+# --- install / uninstall: wrap the stdio servers, then undo it ------------
+# --yes rewrites config files, so this works on a copy of the fake home.
+rm -rf "$IHOME"
+cp -a "$DEMO_HOME" "$IHOME"
+log 20-install-dry-run.log "mcpgraph install --bin /usr/local/bin/mcpgraph   # dry run, writes nothing" \
+	mcpgraph --home "$IHOME" install --bin /usr/local/bin/mcpgraph
+log 21-install-apply.log "mcpgraph install --bin /usr/local/bin/mcpgraph --yes   # then: report" \
+	sh -c "mcpgraph --home '$IHOME' install --bin /usr/local/bin/mcpgraph --yes
+		echo; echo '\$ mcpgraph report --no-processes | grep -c R4   # rule R4, after install'
+		n=\$(mcpgraph --home '$IHOME' report --no-processes | grep -c R4 || true); echo \"R4 findings: \$n\"
+		echo; echo '\$ mcpgraph report --no-processes | grep R4   # for comparison: before install'
+		mcpgraph --home '$DEMO_HOME' report --no-processes | grep R4 || true"
+log 22-uninstall.log "mcpgraph uninstall --yes   # then compare with the untouched files" \
+	sh -c "mcpgraph --home '$IHOME' uninstall --yes
+		echo
+		for f in .config/Claude/claude_desktop_config.json .claude.json .cursor/mcp.json .config/Code/User/mcp.json; do
+			if cmp -s '$IHOME'/\$f '$DEMO_HOME'/\$f; then echo \"byte-identical  /home/dev/\$f\"; else echo \"DIFFERENT  /home/dev/\$f\"; fi
+		done"
+
 # --- quality gates ----------------------------------------------------------
 log 07-go-test.log "go test -v ./..." go test -count=1 -v ./...
 log 08-go-test-summary.log "go test ./..." go test -count=1 ./...
@@ -168,6 +192,16 @@ svg 14-events.log "mcpgraph events"
 } > "$WORK/proxy-short.log"
 termsvg -title "mcpgraph proxy" -o "$IMAGES/18-proxy.svg" < "$WORK/proxy-short.log"
 echo "wrote docs/images/18-proxy.svg"
+# Install capture: the Claude Desktop part of the dry run.
+{
+	sed -n '1,6p' "$LOGS/20-install-dry-run.log"
+	echo "..."
+	sed -n '/^--- .*claude_desktop_config/,/^$/p' "$LOGS/20-install-dry-run.log" | head -n 13
+	echo "..."
+	grep '^Dry run' "$LOGS/20-install-dry-run.log"
+} > "$WORK/install-short.log"
+termsvg -title "mcpgraph install" -o "$IMAGES/20-install.svg" < "$WORK/install-short.log"
+echo "wrote docs/images/20-install.svg"
 
 # --- hard rule 2: no fake secret may appear in any generated file ------------
 SECRETS=$(sed -n 's/^\t"\(.*\)",$/\1/p' internal/testutil/fakehome.go)

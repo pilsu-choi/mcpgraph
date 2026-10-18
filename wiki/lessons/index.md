@@ -17,3 +17,4 @@ Bugs found while building, and what they taught.
 - [Trailing-quote trim and prose SQL](sql-quote-and-prose.md): Two policy SQL classifier bugs found by tricky-case table tests.
 - [Redacting twice masked the mask](redaction-idempotent.md): Defence-in-depth re-redaction needed redaction to be idempotent.
 - [Go's JSON struct decoding is case-insensitive](json-case-insensitive.md): A "Method" key could hide a tools/call from a struct decoder.
+- [redact.Text is wrong for raw JSON lines](2026-10-18-json-diff-redaction.md): A config diff needed redaction inside decoded string literals, not on whole lines.

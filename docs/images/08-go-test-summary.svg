@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="632" height="456" viewBox="0 0 632 456">
-<rect width="632" height="456" rx="8" fill="#0d1117"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="632" height="474" viewBox="0 0 632 474">
+<rect width="632" height="474" rx="8" fill="#0d1117"/>
 <rect width="632" height="30" rx="8" fill="#161b22"/><rect y="22" width="632" height="8" fill="#161b22"/>
 <circle cx="18" cy="15" r="6" fill="#ff5f56"/>
 <circle cx="38" cy="15" r="6" fill="#ffbd2e"/>
@@ -7,26 +7,27 @@
 <text x="316" y="19" fill="#8b949e" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" text-anchor="middle">go&#160;test</text>
 <g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace" font-size="13" fill="#c9d1d9" xml:space="preserve" style="white-space:pre">
 <text x="16" y="57"><tspan fill="#7ee787">$&#160;</tspan><tspan fill="#ffffff">go&#160;test&#160;./...</tspan></text>
-<text x="16" y="75"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/cmd/mcpgraph&#160;&#160;&#160;&#160;0.033s</text>
-<text x="16" y="93"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/audit&#160;&#160;&#160;&#160;0.008s</text>
+<text x="16" y="75"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/cmd/mcpgraph&#160;&#160;&#160;&#160;0.088s</text>
+<text x="16" y="93"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/audit&#160;&#160;&#160;&#160;0.009s</text>
 <text x="16" y="111">?&#160;&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/collector&#160;&#160;&#160;&#160;[no&#160;test&#160;files]</text>
-<text x="16" y="129"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/collector/config&#160;&#160;&#160;&#160;0.008s</text>
+<text x="16" y="129"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/collector/config&#160;&#160;&#160;&#160;0.011s</text>
 <text x="16" y="147"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/collector/process&#160;&#160;&#160;&#160;0.003s</text>
-<text x="16" y="165"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/graph&#160;&#160;&#160;&#160;0.003s</text>
-<text x="16" y="183"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/model&#160;&#160;&#160;&#160;0.002s</text>
-<text x="16" y="201"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/netutil&#160;&#160;&#160;&#160;0.002s</text>
-<text x="16" y="219"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/policy&#160;&#160;&#160;&#160;0.066s</text>
-<text x="16" y="237"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/posture&#160;&#160;&#160;&#160;0.004s</text>
-<text x="16" y="255"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/proxy&#160;&#160;&#160;&#160;0.193s</text>
-<text x="16" y="273"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/redact&#160;&#160;&#160;&#160;0.003s</text>
-<text x="16" y="291"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/report&#160;&#160;&#160;&#160;0.002s</text>
-<text x="16" y="309"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/scan&#160;&#160;&#160;&#160;0.012s</text>
-<text x="16" y="327">?&#160;&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/sink&#160;&#160;&#160;&#160;[no&#160;test&#160;files]</text>
-<text x="16" y="345">?&#160;&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/testutil&#160;&#160;&#160;&#160;[no&#160;test&#160;files]</text>
-<text x="16" y="363">?&#160;&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/policies&#160;&#160;&#160;&#160;[no&#160;test&#160;files]</text>
-<text x="16" y="381">?&#160;&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/tools/fakemcp&#160;&#160;&#160;&#160;[no&#160;test&#160;files]</text>
-<text x="16" y="399">?&#160;&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/tools/replay&#160;&#160;&#160;&#160;[no&#160;test&#160;files]</text>
-<text x="16" y="417"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/tools/termsvg&#160;&#160;&#160;&#160;0.003s</text>
-<text x="16" y="435"><tspan fill="#8b949e">#&#160;exit&#160;code:&#160;0</tspan></text>
+<text x="16" y="165"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/graph&#160;&#160;&#160;&#160;0.002s</text>
+<text x="16" y="183"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/install&#160;&#160;&#160;&#160;0.193s</text>
+<text x="16" y="201"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/model&#160;&#160;&#160;&#160;0.003s</text>
+<text x="16" y="219"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/netutil&#160;&#160;&#160;&#160;0.002s</text>
+<text x="16" y="237"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/policy&#160;&#160;&#160;&#160;0.066s</text>
+<text x="16" y="255"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/posture&#160;&#160;&#160;&#160;0.006s</text>
+<text x="16" y="273"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/proxy&#160;&#160;&#160;&#160;0.192s</text>
+<text x="16" y="291"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/redact&#160;&#160;&#160;&#160;0.003s</text>
+<text x="16" y="309"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/report&#160;&#160;&#160;&#160;0.002s</text>
+<text x="16" y="327"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/scan&#160;&#160;&#160;&#160;0.014s</text>
+<text x="16" y="345">?&#160;&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/sink&#160;&#160;&#160;&#160;[no&#160;test&#160;files]</text>
+<text x="16" y="363">?&#160;&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/testutil&#160;&#160;&#160;&#160;[no&#160;test&#160;files]</text>
+<text x="16" y="381">?&#160;&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/policies&#160;&#160;&#160;&#160;[no&#160;test&#160;files]</text>
+<text x="16" y="399">?&#160;&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/tools/fakemcp&#160;&#160;&#160;&#160;[no&#160;test&#160;files]</text>
+<text x="16" y="417">?&#160;&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/tools/replay&#160;&#160;&#160;&#160;[no&#160;test&#160;files]</text>
+<text x="16" y="435"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/tools/termsvg&#160;&#160;&#160;&#160;0.002s</text>
+<text x="16" y="453"><tspan fill="#8b949e">#&#160;exit&#160;code:&#160;0</tspan></text>
 </g>
 </svg>

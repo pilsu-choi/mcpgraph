@@ -1,0 +1,80 @@
+$ mcpgraph uninstall --yes   # then compare with the untouched files
+/home/dev/.config/Code/User/mcp.json: restore the backup from TIMESTAMP (byte for byte)
+/home/dev/.cursor/mcp.json: restore the backup from TIMESTAMP (byte for byte)
+/home/dev/.claude.json: restore the backup from TIMESTAMP (byte for byte)
+/home/dev/.config/Claude/claude_desktop_config.json: restore the backup from TIMESTAMP (byte for byte)
+
+--- /home/dev/.config/Code/User/mcp.json (now)
++++ /home/dev/.config/Code/User/mcp.json (after uninstall)
+@@ -13,6 +13,6 @@
+     "custom": {
+       "type": "stdio",
+-      "command": "/usr/local/bin/mcpgraph",
++      "command": "node",
+-      "args": ["proxy", "--server", "custom", "--app", "VS Code", "--", "node", "/opt/tools/server.js", "--api-key", "****FAKE"],
++      "args": ["/opt/tools/server.js", "--api-key", "****FAKE"],
+       "envFile": "${workspaceFolder}/.env",
+       "env": { "API_KEY": "****FAKE" },
+
+--- /home/dev/.cursor/mcp.json (now)
++++ /home/dev/.cursor/mcp.json (after uninstall)
+@@ -8,6 +8,6 @@
+     },
+     "git": {
+-      "command": "/usr/local/bin/mcpgraph",
++      "command": "uvx",
+-      "args": ["proxy", "--server", "git", "--app", "Cursor", "--", "uvx", "mcp-server-git", "--repository", "~/code/project"],
++      "args": ["mcp-server-git", "--repository", "~/code/project"],
+       "env": {
+         "GIT_TOKEN": "${GIT_TOKEN}"
+
+--- /home/dev/.claude.json (now)
++++ /home/dev/.claude.json (after uninstall)
+@@ -13,6 +13,6 @@
+         "slack": {
+           "type": "stdio",
+-          "command": "/usr/local/bin/mcpgraph",
++          "command": "npx",
+-          "args": ["proxy", "--server", "slack", "--app", "Claude Code", "--", "npx", "-y", "slack-mcp-server@1.2.0"],
++          "args": ["-y", "slack-mcp-server@1.2.0"],
+           "env": {
+             "SLACK_BOT_TOKEN": "****FAKE",
+
+--- /home/dev/.config/Claude/claude_desktop_config.json (now)
++++ /home/dev/.config/Claude/claude_desktop_config.json (after uninstall)
+@@ -2,10 +2,10 @@
+   "mcpServers": {
+     "filesystem": {
+-      "command": "/usr/local/bin/mcpgraph",
++      "command": "npx",
+-      "args": ["proxy", "--server", "filesystem", "--app", "Claude Desktop", "--", "npx", "-y", "@modelcontextprotocol/server-filesystem", "~"]
++      "args": ["-y", "@modelcontextprotocol/server-filesystem", "~"]
+     },
+     "github": {
+-      "command": "/usr/local/bin/mcpgraph",
++      "command": "npx",
+-      "args": ["proxy", "--server", "github", "--app", "Claude Desktop", "--", "npx", "-y", "@modelcontextprotocol/server-github"],
++      "args": ["-y", "@modelcontextprotocol/server-github"],
+       "env": {
+         "GITHUB_PERSONAL_ACCESS_TOKEN": "****1234"
+@@ -13,6 +13,10 @@
+     },
+     "postgres": {
+-      "command": "/usr/local/bin/mcpgraph",
++      "command": "npx",
+-      "args": ["proxy", "--server", "postgres", "--app", "Claude Desktop", "--", "npx", "-y", "@modelcontextprotocol/server-postgres@0.6.2", "postgresql://admin:****@db.internal:5432/prod"]
++      "args": [
++        "-y",
++        "@modelcontextprotocol/server-postgres@0.6.2",
++        "postgresql://admin:****@db.internal:5432/prod"
++      ]
+     }
+   },
+
+Done. Restart the AI apps so they start the servers directly again.
+
+byte-identical  /home/dev/.config/Claude/claude_desktop_config.json
+byte-identical  /home/dev/.claude.json
+byte-identical  /home/dev/.cursor/mcp.json
+byte-identical  /home/dev/.config/Code/User/mcp.json
+# exit code: 0

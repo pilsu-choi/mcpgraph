@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1169" height="456" viewBox="0 0 1169 456">
+<rect width="1169" height="456" rx="8" fill="#0d1117"/>
+<rect width="1169" height="30" rx="8" fill="#161b22"/><rect y="22" width="1169" height="8" fill="#161b22"/>
+<circle cx="18" cy="15" r="6" fill="#ff5f56"/>
+<circle cx="38" cy="15" r="6" fill="#ffbd2e"/>
+<circle cx="58" cy="15" r="6" fill="#27c93f"/>
+<text x="584" y="19" fill="#8b949e" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" text-anchor="middle">mcpgraph&#160;install</text>
+<g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace" font-size="13" fill="#c9d1d9" xml:space="preserve" style="white-space:pre">
+<text x="16" y="57"><tspan fill="#7ee787">$&#160;</tspan><tspan fill="#ffffff">mcpgraph&#160;install&#160;--bin&#160;/usr/local/bin/mcpgraph&#160;&#160;&#160;#&#160;dry&#160;run,&#160;writes&#160;nothing</tspan></text>
+<text x="16" y="75">Wrap&#160;6&#160;stdio&#160;MCP&#160;server(s)&#160;in&#160;4&#160;file(s)&#160;with&#160;mcpgraph&#160;proxy:</text>
+<text x="16" y="93">&#160;&#160;Claude&#160;Desktop&#160;&#160;/home/dev/.config/Claude/claude_desktop_config.json</text>
+<text x="16" y="111">&#160;&#160;&#160;&#160;+&#160;mcpServers.filesystem</text>
+<text x="16" y="129">&#160;&#160;&#160;&#160;+&#160;mcpServers.github</text>
+<text x="16" y="147">&#160;&#160;&#160;&#160;+&#160;mcpServers.postgres</text>
+<text x="16" y="165">...</text>
+<text x="16" y="183">---&#160;/home/dev/.config/Claude/claude_desktop_config.json&#160;(now)</text>
+<text x="16" y="201">+++&#160;/home/dev/.config/Claude/claude_desktop_config.json&#160;(after&#160;install)</text>
+<text x="16" y="219">@@&#160;-2,10&#160;+2,10&#160;@@</text>
+<text x="16" y="237">&#160;&#160;&#160;&quot;mcpServers&quot;:&#160;{</text>
+<text x="16" y="255">&#160;&#160;&#160;&#160;&#160;&quot;filesystem&quot;:&#160;{</text>
+<text x="16" y="273">-&#160;&#160;&#160;&#160;&#160;&#160;&quot;command&quot;:&#160;&quot;npx&quot;,</text>
+<text x="16" y="291">+&#160;&#160;&#160;&#160;&#160;&#160;&quot;command&quot;:&#160;&quot;/usr/local/bin/mcpgraph&quot;,</text>
+<text x="16" y="309">-&#160;&#160;&#160;&#160;&#160;&#160;&quot;args&quot;:&#160;[&quot;-y&quot;,&#160;&quot;@modelcontextprotocol/server-filesystem&quot;,&#160;&quot;~&quot;]</text>
+<text x="16" y="327">+&#160;&#160;&#160;&#160;&#160;&#160;&quot;args&quot;:&#160;[&quot;proxy&quot;,&#160;&quot;--server&quot;,&#160;&quot;filesystem&quot;,&#160;&quot;--app&quot;,&#160;&quot;Claude&#160;Desktop&quot;,&#160;&quot;--&quot;,&#160;&quot;npx&quot;,&#160;&quot;-y&quot;,&#160;&quot;@modelcontextprotocol/server-filesystem&quot;,&#160;&quot;~&quot;]</text>
+<text x="16" y="345">&#160;&#160;&#160;&#160;&#160;},</text>
+<text x="16" y="363">&#160;&#160;&#160;&#160;&#160;&quot;github&quot;:&#160;{</text>
+<text x="16" y="381">-&#160;&#160;&#160;&#160;&#160;&#160;&quot;command&quot;:&#160;&quot;npx&quot;,</text>
+<text x="16" y="399">+&#160;&#160;&#160;&#160;&#160;&#160;&quot;command&quot;:&#160;&quot;/usr/local/bin/mcpgraph&quot;,</text>
+<text x="16" y="417">...</text>
+<text x="16" y="435">Dry&#160;run:&#160;nothing&#160;was&#160;written.&#160;Run&#160;again&#160;with&#160;--yes&#160;to&#160;apply.</text>
+</g>
+</svg>

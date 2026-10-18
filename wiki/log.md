@@ -102,3 +102,10 @@ Times are UTC. Each entry links to the page with the details.
   `tools/fakemcp` and docs logs 18–19 were added. README has a new *MCP proxy* section.
 - **07:45** CI run 39108220573 failed on `c14a0dc`: the 2 MiB proxy test hit its 1 s policy deadline
   under `-race` and failed closed. The test now uses a 30 s deadline ([milestone notes](milestones/v2-m7-proxy.md#notes)).
+- **07:55** [v2 m8 install / uninstall](milestones/2026-10-18-v2-m8-install.md):
+  - [`internal/install`](components/2026-10-18-install.md) and `mcpgraph install` / `uninstall`;
+  - in-place edits and restore-vs-unwrap ([decision](decisions/2026-10-18-install-in-place-edits.md));
+  - JSON diff redaction fixed ([lesson](lessons/2026-10-18-json-diff-redaction.md));
+  - round trip is byte for byte and R4 clears after install.
+
+  Index pages ([milestones](milestones/index.md), [components](components/index.md), [decisions](decisions/index.md), [lessons](lessons/index.md)) and the [overview](overview.md) were updated.
