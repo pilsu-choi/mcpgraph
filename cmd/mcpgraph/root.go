@@ -14,6 +14,7 @@ import (
 	"github.com/pilsuchoi/mcpgraph/internal/collector/process"
 	"github.com/pilsuchoi/mcpgraph/internal/model"
 	"github.com/pilsuchoi/mcpgraph/internal/report"
+	"github.com/pilsuchoi/mcpgraph/internal/rules"
 	"github.com/pilsuchoi/mcpgraph/internal/scan"
 )
 
@@ -47,22 +48,73 @@ func newRootCmd() *cobra.Command {
 	root.PersistentFlags().BoolVarP(&opts.verbose, "verbose", "v", false, "debug logging")
 	root.PersistentFlags().BoolVar(&opts.noProcesses, "no-processes", false, "skip process discovery")
 
-	root.AddCommand(newScanCmd(opts), newExportCmd(opts))
+	root.AddCommand(newScanCmd(opts), newReportCmd(opts), newExportCmd(opts))
 	return root
 }
 
 func newScanCmd(opts *options) *cobra.Command {
 	return &cobra.Command{
 		Use:   "scan",
-		Short: "Scan this machine and print an inventory",
+		Short: "Scan this machine and print an inventory and findings",
+		Long:  "Scan this machine and print an inventory and findings.\nExit code 2 means at least one high-severity finding.",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			g, err := runScan(cmd.Context(), opts)
+			res, err := runScan(cmd.Context(), opts)
 			if err != nil {
 				return err
 			}
-			return report.Inventory(cmd.OutOrStdout(), g)
+			out := cmd.OutOrStdout()
+			if err := report.Inventory(out, res.graph); err != nil {
+				return err
+			}
+			fmt.Fprintln(out)
+			if err := report.Findings(out, res.findings); err != nil {
+				return err
+			}
+			return exitForFindings(res.findings)
 		},
 	}
+}
+
+func newReportCmd(opts *options) *cobra.Command {
+	var format string
+	cmd := &cobra.Command{
+		Use:   "report",
+		Short: "Scan and print only the findings (exit code 2 if any is high)",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := runScan(cmd.Context(), opts)
+			if err != nil {
+				return err
+			}
+			switch format {
+			case "table":
+				err = report.Findings(cmd.OutOrStdout(), res.findings)
+			case "json":
+				// Always emit a JSON array, never null.
+				findings := res.findings
+				if findings == nil {
+					findings = []model.Finding{}
+				}
+				err = report.JSON(cmd.OutOrStdout(), findings)
+			default:
+				err = fmt.Errorf("unknown format %q (want table or json)", format)
+			}
+			if err != nil {
+				return err
+			}
+			return exitForFindings(res.findings)
+		},
+	}
+	cmd.Flags().StringVarP(&format, "format", "f", "table", "output format: table or json")
+	return cmd
+}
+
+// exitForFindings returns exit code 2 when there is a high finding, so the
+// command can gate a CI job.
+func exitForFindings(findings []model.Finding) error {
+	if rules.HasHigh(findings) {
+		return exitError{code: 2}
+	}
+	return nil
 }
 
 func newExportCmd(opts *options) *cobra.Command {
@@ -71,15 +123,15 @@ func newExportCmd(opts *options) *cobra.Command {
 		Use:   "export",
 		Short: "Scan and print the graph as JSON or Mermaid",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			g, err := runScan(cmd.Context(), opts)
+			res, err := runScan(cmd.Context(), opts)
 			if err != nil {
 				return err
 			}
 			switch format {
 			case "json":
-				return report.JSON(cmd.OutOrStdout(), g)
+				return report.JSON(cmd.OutOrStdout(), res.graph)
 			case "mermaid":
-				return report.Mermaid(cmd.OutOrStdout(), g)
+				return report.Mermaid(cmd.OutOrStdout(), res.graph)
 			default:
 				return fmt.Errorf("unknown format %q (want json or mermaid)", format)
 			}
@@ -89,13 +141,19 @@ func newExportCmd(opts *options) *cobra.Command {
 	return cmd
 }
 
-// runScan runs every collector once and returns the graph.
-func runScan(ctx context.Context, opts *options) (*model.Graph, error) {
+// scanResult is the output of one scan.
+type scanResult struct {
+	graph    *model.Graph
+	findings []model.Finding
+}
+
+// runScan runs every collector once, then the rules.
+func runScan(ctx context.Context, opts *options) (scanResult, error) {
 	home := opts.home
 	if home == "" {
 		h, err := os.UserHomeDir()
 		if err != nil {
-			return nil, fmt.Errorf("find home directory: %w", err)
+			return scanResult{}, fmt.Errorf("find home directory: %w", err)
 		}
 		home = h
 	}
@@ -106,5 +164,12 @@ func runScan(ctx context.Context, opts *options) (*model.Graph, error) {
 	if !opts.noProcesses {
 		collectors = append(collectors, process.New())
 	}
-	return scan.Run(ctx, collectors)
+	g, err := scan.Run(ctx, collectors)
+	if err != nil {
+		return scanResult{}, err
+	}
+	for _, w := range g.Warnings {
+		slog.Warn(w)
+	}
+	return scanResult{graph: g, findings: rules.Evaluate(g, rules.Default(home))}, nil
 }

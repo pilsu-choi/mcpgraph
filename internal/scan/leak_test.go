@@ -12,6 +12,7 @@ import (
 	"github.com/pilsuchoi/mcpgraph/internal/collector/config"
 	"github.com/pilsuchoi/mcpgraph/internal/model"
 	"github.com/pilsuchoi/mcpgraph/internal/report"
+	"github.com/pilsuchoi/mcpgraph/internal/rules"
 	"github.com/pilsuchoi/mcpgraph/internal/testutil"
 )
 
@@ -58,6 +59,18 @@ func renderAll(t *testing.T, g *model.Graph) map[string]string {
 		t.Fatal(err)
 	}
 	out["mermaid"] = mer.String()
+
+	findings := rules.Evaluate(g, rules.Default("/home/u"))
+	var fb bytes.Buffer
+	if err := report.Findings(&fb, findings); err != nil {
+		t.Fatal(err)
+	}
+	out["findings-table"] = fb.String()
+	fj, err := json.Marshal(findings)
+	if err != nil {
+		t.Fatal(err)
+	}
+	out["findings-json"] = string(fj)
 	return out
 }
 

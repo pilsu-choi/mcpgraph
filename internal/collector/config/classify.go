@@ -1,12 +1,12 @@
 package config
 
 import (
-	"net"
 	"net/url"
 	"path/filepath"
 	"strings"
 
 	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsuchoi/mcpgraph/internal/netutil"
 )
 
 // pathFlags are flags whose value is a directory the server can access.
@@ -69,7 +69,7 @@ func dataSources(s serverConfig, home string) []model.DataSource {
 		}
 	}
 	// A remote server is itself a SaaS endpoint.
-	if u, err := url.Parse(s.URL); err == nil && u.Host != "" && !IsLoopbackHost(u.Hostname()) {
+	if u, err := url.Parse(s.URL); err == nil && u.Host != "" && !netutil.IsLoopbackHost(u.Hostname()) {
 		add(model.DataSourceSaaS, u.Hostname())
 	}
 	return out
@@ -129,15 +129,6 @@ func expandHome(p, home string) string {
 		return filepath.Join(home, p[2:])
 	}
 	return filepath.Clean(p)
-}
-
-// IsLoopbackHost reports whether host names this machine.
-func IsLoopbackHost(host string) bool {
-	if host == "localhost" || strings.HasSuffix(host, ".localhost") {
-		return true
-	}
-	ip := net.ParseIP(host)
-	return ip != nil && ip.IsLoopback()
 }
 
 // databaseIdentifier returns "scheme://host[:port]/db" for a database
