@@ -1,25 +1,25 @@
 $ go test ./...
 ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.166s
 ok  	github.com/pilsu-choi/mcpgraph/internal/audit	0.011s
-ok  	github.com/pilsu-choi/mcpgraph/internal/central	0.545s
+ok  	github.com/pilsu-choi/mcpgraph/internal/central	0.540s
 ?   	github.com/pilsu-choi/mcpgraph/internal/collector	[no test files]
-ok  	github.com/pilsu-choi/mcpgraph/internal/collector/config	0.013s
+ok  	github.com/pilsu-choi/mcpgraph/internal/collector/config	0.012s
 ok  	github.com/pilsu-choi/mcpgraph/internal/collector/process	0.003s
-ok  	github.com/pilsu-choi/mcpgraph/internal/graph	0.005s
+ok  	github.com/pilsu-choi/mcpgraph/internal/graph	0.003s
 ok  	github.com/pilsu-choi/mcpgraph/internal/hook	0.004s
-ok  	github.com/pilsu-choi/mcpgraph/internal/install	0.194s
-ok  	github.com/pilsu-choi/mcpgraph/internal/model	0.006s
-ok  	github.com/pilsu-choi/mcpgraph/internal/netutil	0.002s
+ok  	github.com/pilsu-choi/mcpgraph/internal/install	0.191s
+ok  	github.com/pilsu-choi/mcpgraph/internal/model	0.053s
+ok  	github.com/pilsu-choi/mcpgraph/internal/netutil	0.053s
 ok  	github.com/pilsu-choi/mcpgraph/internal/policy	0.069s
-ok  	github.com/pilsu-choi/mcpgraph/internal/posture	0.005s
-ok  	github.com/pilsu-choi/mcpgraph/internal/proxy	0.199s
-ok  	github.com/pilsu-choi/mcpgraph/internal/redact	0.004s
-ok  	github.com/pilsu-choi/mcpgraph/internal/report	0.002s
-ok  	github.com/pilsu-choi/mcpgraph/internal/scan	0.014s
-ok  	github.com/pilsu-choi/mcpgraph/internal/sink	0.072s
+ok  	github.com/pilsu-choi/mcpgraph/internal/posture	0.053s
+ok  	github.com/pilsu-choi/mcpgraph/internal/proxy	0.208s
+ok  	github.com/pilsu-choi/mcpgraph/internal/redact	0.053s
+ok  	github.com/pilsu-choi/mcpgraph/internal/report	0.054s
+ok  	github.com/pilsu-choi/mcpgraph/internal/scan	0.017s
+ok  	github.com/pilsu-choi/mcpgraph/internal/sink	0.075s
 ?   	github.com/pilsu-choi/mcpgraph/internal/testutil	[no test files]
 ?   	github.com/pilsu-choi/mcpgraph/policies	[no test files]
 ?   	github.com/pilsu-choi/mcpgraph/tools/fakemcp	[no test files]
 ?   	github.com/pilsu-choi/mcpgraph/tools/replay	[no test files]
-ok  	github.com/pilsu-choi/mcpgraph/tools/termsvg	0.002s
+ok  	github.com/pilsu-choi/mcpgraph/tools/termsvg	0.003s
 # exit code: 0
