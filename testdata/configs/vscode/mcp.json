@@ -1,0 +1,21 @@
+// VS Code mcp.json is JSONC: comments and trailing commas are allowed.
+{
+  "inputs": [
+    { "type": "promptString", "id": "github_token", "description": "GitHub PAT", "password": true },
+  ],
+  "servers": {
+    /* remote server, token comes from an input prompt */
+    "github-remote": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": { "Authorization": "Bearer ${input:github_token}" },
+    },
+    "custom": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/opt/tools/server.js", "--api-key", "sk-ant-FAKE0123456789abcdefFAKE"],
+      "envFile": "${workspaceFolder}/.env",
+      "env": { "API_KEY": "Zx9Qw8Er7Ty6Ui5Op4As3Df2FAKE" },
+    },
+  },
+}

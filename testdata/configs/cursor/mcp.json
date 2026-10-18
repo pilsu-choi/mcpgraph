@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "remote-insecure": {
+      "url": "http://10.0.0.5:8080/mcp?api_key=FAKEqueryKey1234567890abcd"
+    },
+    "local-http": {
+      "url": "http://localhost:3000/mcp"
+    },
+    "git": {
+      "command": "uvx",
+      "args": ["mcp-server-git", "--repository", "~/code/project"],
+      "env": {
+        "GIT_TOKEN": "${GIT_TOKEN}"
+      }
+    }
+  }
+}

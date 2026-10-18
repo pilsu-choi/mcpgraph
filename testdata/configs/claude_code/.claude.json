@@ -1,0 +1,28 @@
+{
+  "numStartups": 42,
+  "mcpServers": {
+    "sentry": {
+      "type": "http",
+      "url": "https://mcp.sentry.dev/mcp"
+    }
+  },
+  "projects": {
+    "/work/app": {
+      "allowedTools": [],
+      "mcpServers": {
+        "slack": {
+          "type": "stdio",
+          "command": "npx",
+          "args": ["-y", "slack-mcp-server@1.2.0"],
+          "env": {
+            "SLACK_BOT_TOKEN": "xoxb-FAKE00000000-FAKEFAKEFAKEFAKE",
+            "SLACK_TEAM_ID": "T01234567"
+          }
+        }
+      }
+    },
+    "/work/empty": {
+      "mcpServers": {}
+    }
+  }
+}

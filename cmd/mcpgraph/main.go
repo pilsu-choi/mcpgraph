@@ -3,20 +3,27 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
-	// Execute returns an exitError when a command wants a specific exit
-	// code (for example 2 when a high-severity finding exists).
-	if err := newRootCmd().Execute(); err != nil {
+	// NotifyContext returns a context that is cancelled on Ctrl-C, so a
+	// running scan stops cleanly. stop releases the signal handler.
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	err := newRootCmd().ExecuteContext(ctx)
+	stop()
+	if err != nil {
 		os.Exit(exitCode(err))
 	}
 }
 
-// exitCode maps an error returned by a command to a process exit code.
+// exitCode maps an error returned by a command to a process exit code and
+// prints it, unless the error only carries an exit code.
 func exitCode(err error) int {
 	// errors.As walks the chain of wrapped errors (like isinstance on
 	// each cause) and fills e if one of them is an exitError.
@@ -28,10 +35,10 @@ func exitCode(err error) int {
 	return 1
 }
 
-// exitError carries a process exit code through cobra's error return.
+// exitError carries a process exit code through cobra's error return
+// without printing anything extra.
 type exitError struct {
 	code int
-	msg  string
 }
 
-func (e exitError) Error() string { return fmt.Sprintf("exit %d: %s", e.code, e.msg) }
+func (e exitError) Error() string { return fmt.Sprintf("exit status %d", e.code) }
