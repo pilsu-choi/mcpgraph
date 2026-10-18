@@ -66,12 +66,13 @@ svg() {
 }
 
 # --- environment ------------------------------------------------------------
-{
-	echo "# generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-	echo "# commit:    $(git describe --always --dirty) ($(git log -1 --format=%s))"
-	echo "# go:        $(go version)"
-	echo "# os:        $(uname -srm)"
-} > "$LOGS/00-environment.log"
+# Build the text first: "> file" truncates the file before the commands run,
+# which would make git describe report a dirty tree.
+ENV_INFO="# generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+# commit:    $(git describe --always --dirty) ($(git log -1 --format=%s))
+# go:        $(go version)
+# os:        $(uname -srm)"
+echo "$ENV_INFO" > "$LOGS/00-environment.log"
 echo "wrote docs/logs/00-environment.log"
 
 # --- one-shot CLI against fixtures -----------------------------------------
