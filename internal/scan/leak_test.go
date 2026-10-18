@@ -46,6 +46,18 @@ func renderAll(t *testing.T, g *model.Graph) map[string]string {
 		t.Fatal(err)
 	}
 	out["graph-json"] = string(raw)
+
+	var exp bytes.Buffer
+	if err := report.JSON(&exp, g); err != nil {
+		t.Fatal(err)
+	}
+	out["export-json"] = exp.String()
+
+	var mer bytes.Buffer
+	if err := report.Mermaid(&mer, g); err != nil {
+		t.Fatal(err)
+	}
+	out["mermaid"] = mer.String()
 	return out
 }
 

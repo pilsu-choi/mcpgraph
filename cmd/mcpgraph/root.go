@@ -47,7 +47,7 @@ func newRootCmd() *cobra.Command {
 	root.PersistentFlags().BoolVarP(&opts.verbose, "verbose", "v", false, "debug logging")
 	root.PersistentFlags().BoolVar(&opts.noProcesses, "no-processes", false, "skip process discovery")
 
-	root.AddCommand(newScanCmd(opts))
+	root.AddCommand(newScanCmd(opts), newExportCmd(opts))
 	return root
 }
 
@@ -63,6 +63,30 @@ func newScanCmd(opts *options) *cobra.Command {
 			return report.Inventory(cmd.OutOrStdout(), g)
 		},
 	}
+}
+
+func newExportCmd(opts *options) *cobra.Command {
+	var format string
+	cmd := &cobra.Command{
+		Use:   "export",
+		Short: "Scan and print the graph as JSON or Mermaid",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			g, err := runScan(cmd.Context(), opts)
+			if err != nil {
+				return err
+			}
+			switch format {
+			case "json":
+				return report.JSON(cmd.OutOrStdout(), g)
+			case "mermaid":
+				return report.Mermaid(cmd.OutOrStdout(), g)
+			default:
+				return fmt.Errorf("unknown format %q (want json or mermaid)", format)
+			}
+		},
+	}
+	cmd.Flags().StringVarP(&format, "format", "f", "json", "output format: json or mermaid")
+	return cmd
 }
 
 // runScan runs every collector once and returns the graph.
