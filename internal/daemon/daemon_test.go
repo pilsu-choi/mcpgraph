@@ -76,7 +76,7 @@ func startDaemon(t *testing.T, home string) (*Daemon, *syncBuffer, *store.Store)
 		}
 	})
 
-	if !waitFor(t, 5*time.Second, func() bool { return d.Current() != nil }) {
+	if !waitFor(t, 5*time.Second, func() bool { return d.State() != nil }) {
 		t.Fatal("daemon never published its first snapshot")
 	}
 	return d, logs, st

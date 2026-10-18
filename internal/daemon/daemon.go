@@ -70,9 +70,19 @@ func New(opts Options) *Daemon {
 	return &Daemon{opts: opts}
 }
 
-// Current returns the latest state, or nil before the first scan finished.
-func (d *Daemon) Current() *State {
+// State returns the latest state, or nil before the first scan finished.
+func (d *Daemon) State() *State {
 	return d.current.Load()
+}
+
+// Current returns the latest graph and findings; ok is false before the
+// first scan finished. It satisfies api.StateSource.
+func (d *Daemon) Current() (*model.Graph, []model.Finding, bool) {
+	st := d.current.Load()
+	if st == nil {
+		return nil, nil, false
+	}
+	return st.Graph, st.Findings, true
 }
 
 // Run blocks until ctx is cancelled or a component fails.

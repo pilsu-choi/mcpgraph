@@ -14,6 +14,9 @@ import (
 	"syscall"
 	"time"
 
+	"golang.org/x/sync/errgroup"
+
+	"github.com/pilsuchoi/mcpgraph/internal/api"
 	"github.com/pilsuchoi/mcpgraph/internal/daemon"
 	"github.com/pilsuchoi/mcpgraph/internal/store"
 )
@@ -27,6 +30,7 @@ func main() {
 
 func run() error {
 	var (
+		addr        = flag.String("addr", "127.0.0.1:7878", "API listen address (must be 127.0.0.1:<port>)")
 		home        = flag.String("home", "", "home directory to scan (default: current user's home)")
 		dataDir     = flag.String("data-dir", "", "where snapshots are stored (default: per-OS user data dir)")
 		interval    = flag.Duration("interval", time.Minute, "full re-scan interval")
@@ -34,6 +38,12 @@ func run() error {
 		verbose     = flag.Bool("v", false, "debug logging")
 	)
 	flag.Parse()
+
+	// Validate the API address before doing any work (or creating the
+	// data dir), so a bad --addr fails fast.
+	if err := api.ValidateAddr(*addr); err != nil {
+		return err
+	}
 
 	level := slog.LevelInfo
 	if *verbose {
@@ -72,8 +82,18 @@ func run() error {
 		Store:     st,
 		Log:       log,
 	})
+	srv, err := api.New(*addr, d, st, log)
+	if err != nil {
+		return err
+	}
+
 	log.Info("mcpgraphd starting", "home", *home, "data_dir", *dataDir)
-	return d.Run(ctx)
+	// Run the daemon and the API side by side. If either fails, the
+	// errgroup cancels gctx and the other one shuts down too.
+	g, gctx := errgroup.WithContext(ctx)
+	g.Go(func() error { return d.Run(gctx) })
+	g.Go(func() error { return srv.Serve(gctx) })
+	return g.Wait()
 }
 
 // defaultDataDir follows each OS's convention for per-user app data.
