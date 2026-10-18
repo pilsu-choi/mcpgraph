@@ -39,6 +39,13 @@ a proxy that stops judging.
   the client accepts the `isError` result and `_meta`; `DROP TABLE`, `WHERE 1=1` and an unlisted
   tool were blocked, and four decisions were written.
 
+## Notes
+
+- The first CI run failed `TestLongMessageIsForwardedUnchanged`: judging a 2 MiB argument takes
+  about 130 ms, and over 1 s under `-race` on a CI runner, so the test's 1 s deadline made the proxy
+  fail closed. That is the intended behaviour; the test now uses a 30 s deadline. In real use, a
+  very large argument can hit the 2 s default and be denied; `--decision-timeout` raises it.
+
 ## TODO(verify)
 
 - `_meta` key names `mcpgraph/rule_id` and `mcpgraph/verdict`: they follow the spec's

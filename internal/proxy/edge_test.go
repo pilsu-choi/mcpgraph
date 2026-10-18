@@ -81,7 +81,10 @@ func TestMalformedInput(t *testing.T) {
 }
 
 func TestLongMessageIsForwardedUnchanged(t *testing.T) {
-	h := newHarness(t, nil, time.Second)
+	// Judging 2 MiB takes ~130ms, and ten times that under -race on a CI
+	// runner. A 1s deadline would (correctly) fail closed, so this framing
+	// test gets a generous one.
+	h := newHarness(t, nil, 30*time.Second)
 	big := strings.Repeat("a", 2<<20) // 2 MiB, far past bufio.Scanner's 64 KiB default
 	line := `{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"query","arguments":{"sql":"SELECT '` + big + `'"}}}`
 	h.send(line)

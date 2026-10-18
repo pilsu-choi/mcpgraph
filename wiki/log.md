@@ -100,3 +100,5 @@ Times are UTC. Each entry links to the page with the details.
   - the [revision issue](issues/mcp-revision-per-client.md) partly answered (SDK speaks 2025-11-25).
 
   `tools/fakemcp` and docs logs 18–19 were added. README has a new *MCP proxy* section.
+- **07:45** CI run 39108220573 failed on `c14a0dc`: the 2 MiB proxy test hit its 1 s policy deadline
+  under `-race` and failed closed. The test now uses a 30 s deadline ([milestone notes](milestones/v2-m7-proxy.md#notes)).
