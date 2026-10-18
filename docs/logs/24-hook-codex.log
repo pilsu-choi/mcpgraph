@@ -1,0 +1,60 @@
+$ mcpgraph hook codex < testdata/hooks/codex/*.json   # ask becomes deny with an explanation
+$ mcpgraph hook codex < testdata/hooks/codex/bash-drop-table.json
+tool_name: Bash   input: psql -c "DROP TABLE users"
+stdout:
+  {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"mcpgraph blocked this by rule block-destructive-sql: Destructive SQL is blocked: DROP TABLE, DROP DATABASE/SCHEMA, TRUNCATE and DELETE without a limiting WHERE clause (WHERE 1=1 does not count)."}}
+stderr:
+exit code: 0
+
+$ mcpgraph hook codex < testdata/hooks/codex/bash-ls.json
+tool_name: Bash   input: ls -la
+stdout:
+stderr:
+exit code: 0
+
+$ mcpgraph hook codex < testdata/hooks/codex/bash-rm-rf-home.json
+tool_name: Bash   input: rm -rf ~/
+stdout:
+  {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"mcpgraph needs human approval (rule ask-recursive-delete): Recursive delete (rm -r) of a path outside the current project directory needs approval. Do not retry; ask the user to run it themselves or to change that rule in the mcpgraph policy."}}
+stderr:
+exit code: 0
+
+$ mcpgraph hook codex < testdata/hooks/codex/apply-patch-env.json
+tool_name: apply_patch   input: *** Begin Patch | *** Update File: /home/testuser/project/.env | @@ | -A=1 | +A=2 | *** End Patch
+stdout:
+  {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"mcpgraph blocked this by rule block-secret-read: Access to secret files is blocked: SSH keys (~/.ssh), AWS credentials and .env files."}}
+stderr:
+exit code: 0
+
+$ mcpgraph hook codex < testdata/hooks/codex/mcp-delete.json
+tool_name: mcp__postgres__query   input: {"sql": "DELETE FROM users"}
+stdout:
+  {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"mcpgraph blocked this by rule block-destructive-sql: Destructive SQL is blocked: DROP TABLE, DROP DATABASE/SCHEMA, TRUNCATE and DELETE without a limiting WHERE clause (WHERE 1=1 does not count)."}}
+stderr:
+exit code: 0
+
+$ mcpgraph hook codex < testdata/hooks/codex/malformed.json
+payload: not valid JSON (truncated on purpose)
+stdout:
+stderr:
+  mcpgraph hook: blocked (rule mcpgraph-fail-closed): invalid hook payload: unexpected EOF
+exit code: 2
+
+$ mcpgraph hook codex --print-config --bin /usr/local/bin/mcpgraph
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "'/usr/local/bin/mcpgraph' hook codex",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash|apply_patch|mcp__.*"
+      }
+    ]
+  }
+}
+# exit code: 0

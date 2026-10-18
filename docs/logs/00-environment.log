@@ -1,4 +1,4 @@
-# generated: 2026-10-18T07:50:16Z
-# commit:    e01289c (m8: README, wiki and docs for install/uninstall)
+# generated: 2026-10-18T08:04:52Z
+# commit:    4ae8fa9-dirty (m9+m11: merge hook and collector; hooks ship decisions to the sink)
 # go:        go version go1.27.2 linux/amd64
 # os:        Linux 5.15.167.4-microsoft-standard-WSL2 x86_64

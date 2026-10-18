@@ -2,13 +2,13 @@ $ goreleaser build --snapshot --clean && file dist/*/*
     • ignoring errors because this is a snapshot     error=git doesn't contain any tags - either add a tag or use --snapshot
     • building snapshot...                           version=0.0.1-snapshot
   • building binaries
-    • building                                       paths=cmd/mcpgraph binaries=mcpgraph target=linux_amd64_v1
-    • building                                       paths=cmd/mcpgraph binaries=mcpgraph target=linux_arm64_v8.0
     • building                                       paths=cmd/mcpgraph binaries=mcpgraph target=darwin_arm64_v8.0
+    • building                                       paths=cmd/mcpgraph binaries=mcpgraph target=linux_arm64_v8.0
     • building                                       paths=cmd/mcpgraph binaries=mcpgraph target=darwin_amd64_v1
+    • building                                       paths=cmd/mcpgraph binaries=mcpgraph target=linux_amd64_v1
   • build succeeded after 0s
 dist/mcpgraph_darwin_amd64_v1/mcpgraph:   Mach-O 64-bit x86_64 executable, flags:<|DYLDLINK|PIE>
 dist/mcpgraph_darwin_arm64_v8.0/mcpgraph: Mach-O 64-bit arm64 executable, flags:<|DYLDLINK|PIE>
-dist/mcpgraph_linux_amd64_v1/mcpgraph:    ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, Go BuildID=cmwAmS180Ei831uYV3KV/Q8l4QNGdFjcJAzK5zgtG/qVcNQQUJi-Iqxr1At6li/PrtLLnOnDUrVmxIpuMpb, BuildID[sha1]=c28e5311d2549468a21aadeae54294764c5d0d58, stripped
-dist/mcpgraph_linux_arm64_v8.0/mcpgraph:  ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, Go BuildID=U7EUUGsDvOo_hQ1RXO5A/nn14zflW4gZP4qq4XsP8/Xpymb8vQZvqMSar3_ImN/DNtyIugF55wBC_poHf_q, BuildID[sha1]=3493b95e034f80ec969b544b3cc53e703049aef2, stripped
+dist/mcpgraph_linux_amd64_v1/mcpgraph:    ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, Go BuildID=Pt0G7MitGdzkcMvIubqW/Z6GQCVsBJhsHOcQQm4Vh/6hdetDsrvy-wkeSn40nW/aH7hIlkWI8xSxdcnbeee, BuildID[sha1]=c452e16c52faf27e611ef31c2447be1a9b4ee288, stripped
+dist/mcpgraph_linux_arm64_v8.0/mcpgraph:  ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, Go BuildID=GtTtWo2TOjfkfBFW7hti/-7DTsEpanF0LHo92EWUO/p3J1bYTz4TZhX_T6VCPM/1D8GcR5CmS6qEjOthN3I, BuildID[sha1]=baca95785e7cc9a80d61fb8f35cb57cd7373c39a, stripped
 # exit code: 0

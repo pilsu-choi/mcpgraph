@@ -3,7 +3,7 @@ type: Index
 title: Milestones
 description: What each milestone delivered and how it was verified.
 tags: [milestone]
-timestamp: 2026-10-18T07:25:00Z
+timestamp: 2026-10-18T08:30:00Z
 ---
 
 # Milestones
@@ -32,5 +32,6 @@ v1 milestones (AGENTS.md v1 §11), each committed separately. The v2 milestones 
 | 6 | [Audit log + events + Decision nodes](v2-m6-audit-log.md) | done |
 | 7 | [MCP proxy](v2-m7-proxy.md) | done |
 | 8 | [Install / uninstall](2026-10-18-v2-m8-install.md) | done |
-| 9 | Coding-agent hook | planned ([fails open](../issues/hook-fails-open.md)) |
-| 10 | Demo (PostgreSQL) + README | planned |
+| 9 | [Coding-agent hook](2026-10-18-v2-m9-hook.md) | done (Codex end-to-end [unverified](../issues/2026-10-18-codex-hook-unverified.md)) |
+| 10 | Demo (PostgreSQL in Docker, scripted) + animated SVG at the top of the README | planned |
+| 11 | [Event sink + collector](2026-10-18-v2-m11-collector.md) | done |

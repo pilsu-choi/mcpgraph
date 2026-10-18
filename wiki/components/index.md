@@ -3,7 +3,7 @@ type: Index
 title: Components
 description: One page per Go package.
 tags: [component]
-timestamp: 2026-10-18T07:25:00Z
+timestamp: 2026-10-18T08:30:00Z
 ---
 
 # Components
@@ -21,11 +21,13 @@ timestamp: 2026-10-18T07:25:00Z
 | [`internal/install`](2026-10-18-install.md) | Rewrites AI app configs to run stdio MCP servers through the proxy, with in-place edits, backups and uninstall. |
 | [`internal/policy`](policy.md) | Runtime policy engine: YAML, matchers, SQL classifier, Decide, fail-closed Judge. |
 | [`internal/report`](report.md) | Inventory and findings tables, JSON, Mermaid. |
-| [`internal/sink`](sink.md) | Interface for forwarding snapshots to a central server; only a no-op exists. |
+| [`internal/hook`](2026-10-18-hook.md) | Claude Code and Codex PreToolUse adapters: payload to `policy.Action`, Decision to the agent's answer, fail closed with exit 2. |
+| [`internal/sink`](2026-10-18-sink-collector.md) | Opt-in shipper of audit decisions to a collector (offsets, content-hash IDs). Replaces the [old no-op sink](sink.md). |
+| [`internal/central`](2026-10-18-sink-collector.md) | Minimal collector: stores events from several machines and serves a small API. |
 | [`tools/termsvg`](termsvg.md) | Renders terminal output as an SVG terminal window for README captures. |
 
 Command: `cmd/mcpgraph`, one cobra binary. `scan`, `report` and `export` work. `events` reads the audit
-log. `proxy` wraps a stdio MCP server. `install` and `uninstall` rewrite and restore AI app configs. `hook` is still a stub that names its milestone.
+log. `proxy` wraps a stdio MCP server. `install` and `uninstall` rewrite and restore AI app configs. `hook` judges one coding-agent payload (Claude Code or Codex). `sink` and `collector` ship and receive audit decisions (opt-in).
 `tools/replay` judges recorded actions into an audit log, for the docs and tests. `tools/fakemcp` is a scripted MCP server for the docs.
 
 ## Archived (branch `archive/v1-daemon`)

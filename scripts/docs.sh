@@ -157,6 +157,106 @@ log 22-uninstall.log "mcpgraph uninstall --yes   # then compare with the untouch
 			if cmp -s '$IHOME'/\$f '$DEMO_HOME'/\$f; then echo \"byte-identical  /home/dev/\$f\"; else echo \"DIFFERENT  /home/dev/\$f\"; fi
 		done"
 
+# --- hooks: Claude Code and Codex PreToolUse payloads ----------------------
+# Payloads come from testdata/hooks. The hook reads one JSON payload on
+# stdin and answers on stdout; exit code 2 means it failed closed.
+HDATA=$WORK/hook-data
+payload_summary() { # FILE -> one line with tool_name and command / file_path / path
+	python3 - "$1" <<'PY'
+import json, sys
+try:
+    d = json.load(open(sys.argv[1]))
+except Exception:
+    print("payload: not valid JSON (truncated on purpose)")
+    sys.exit()
+ti = d.get("tool_input") or {}
+if "secret" in sys.argv[1]:
+    print("tool_name: %s" % d.get("tool_name"))
+    sys.exit()
+what = ti.get("command") or ti.get("file_path") or ti.get("path") or json.dumps(ti)
+print("tool_name: %s   input: %s" % (d.get("tool_name"), str(what).replace("\n", " | ")))
+PY
+}
+hook_demo() { # AGENT FILE...: show each payload and what the hook answers
+	local agent=$1 f code first=1
+	shift
+	for f in "$@"; do
+		[ "$first" = 1 ] || echo
+		first=0
+		echo "\$ mcpgraph hook $agent < testdata/hooks/$agent/$f"
+		payload_summary "testdata/hooks/$agent/$f"
+		code=0
+		mcpgraph hook "$agent" --home /home/testuser --data-dir "$HDATA" < "testdata/hooks/$agent/$f" > "$WORK/hook.out" 2> "$WORK/hook.err" || code=$?
+		echo "stdout:"; sed 's/^/  /' "$WORK/hook.out"
+		echo "stderr:"; sed 's/^/  /' "$WORK/hook.err"
+		echo "exit code: $code"
+	done
+}
+hook_claude() {
+	hook_demo claude-code bash-drop-table.json bash-ls.json bash-rm-rf-home.json read-ssh-key.json mcp-delete.json captured-bash-echo.json malformed.json bash-secret-drop-table.json
+	echo
+	echo "\$ mcpgraph hook claude-code --print-config --bin /usr/local/bin/mcpgraph"
+	mcpgraph hook claude-code --print-config --bin /usr/local/bin/mcpgraph
+}
+hook_codex() {
+	hook_demo codex bash-drop-table.json bash-ls.json bash-rm-rf-home.json apply-patch-env.json mcp-delete.json malformed.json
+	echo
+	echo "\$ mcpgraph hook codex --print-config --bin /usr/local/bin/mcpgraph"
+	mcpgraph hook codex --print-config --bin /usr/local/bin/mcpgraph
+}
+log 23-hook-claude-code.log "mcpgraph hook claude-code < testdata/hooks/claude-code/*.json   # one payload at a time" hook_claude
+log 24-hook-codex.log "mcpgraph hook codex < testdata/hooks/codex/*.json   # ask becomes deny with an explanation" hook_codex
+log 25-hook-events.log "mcpgraph events   # decisions the hooks wrote" mcpgraph events --data-dir "$HDATA"
+
+# --- collector: two laptops ship decisions to one central server -----------
+CPORT=$(python3 -c 'import socket;s=socket.socket();s.bind(("127.0.0.1",0));print(s.getsockname()[1])')
+CURL=http://127.0.0.1:$CPORT
+SINK_A=$WORK/laptop-a
+SINK_B=$WORK/laptop-b
+mkdir -p "$SINK_A" "$SINK_B"
+cp "$HDATA/audit.jsonl" "$SINK_A/audit.jsonl"
+mcpgraph collector --listen "127.0.0.1:$CPORT" --data "$WORK/central" > "$WORK/collector.log" 2>&1 &
+COLLECTOR_PID=$!
+trap 'kill "$COLLECTOR_PID" 2>/dev/null || true; rm -rf "$WORK"' EXIT
+for _ in $(seq 1 50); do curl -sf "$CURL/healthz" > /dev/null 2>&1 && break; sleep 0.1; done
+collector_demo() {
+	echo "# started in the background: mcpgraph collector --listen 127.0.0.1:7600 --data /srv/mcpgraph"
+	echo "\$ curl -s http://127.0.0.1:7600/healthz"
+	curl -s "$CURL/healthz"; echo
+	echo
+	echo "# laptop A: switch the sink on, then ship the decisions it already has"
+	echo "\$ mcpgraph sink set http://127.0.0.1:7600 --host laptop-a"
+	mcpgraph sink set "$CURL" --host laptop-a --data-dir "$SINK_A" 2>&1
+	echo "\$ mcpgraph sink status"
+	mcpgraph sink status --data-dir "$SINK_A" 2>&1
+	echo "\$ mcpgraph sink flush"
+	mcpgraph sink flush --data-dir "$SINK_A" 2>&1
+	echo
+	echo "# laptop B: every hook decision is shipped as it happens"
+	echo "\$ mcpgraph sink set http://127.0.0.1:7600 --host laptop-b"
+	mcpgraph sink set "$CURL" --host laptop-b --data-dir "$SINK_B" 2>&1
+	echo "\$ mcpgraph hook claude-code < testdata/hooks/claude-code/bash-drop-table.json"
+	mcpgraph hook claude-code --home /home/testuser --data-dir "$SINK_B" < testdata/hooks/claude-code/bash-drop-table.json > /dev/null 2>&1 || true
+	echo "\$ mcpgraph hook claude-code < testdata/hooks/claude-code/bash-ls.json"
+	mcpgraph hook claude-code --home /home/testuser --data-dir "$SINK_B" < testdata/hooks/claude-code/bash-ls.json > /dev/null 2>&1 || true
+	echo "\$ mcpgraph sink status"
+	mcpgraph sink status --data-dir "$SINK_B" 2>&1
+	echo
+	echo "# the central view"
+	echo "\$ curl -s http://127.0.0.1:7600/v1/hosts | python3 -m json.tool"
+	curl -s "$CURL/v1/hosts" | python3 -m json.tool
+	echo
+	echo "\$ mcpgraph events --collector http://127.0.0.1:7600"
+	mcpgraph events --collector "$CURL" 2>&1
+	echo
+	echo "\$ mcpgraph events --collector http://127.0.0.1:7600 --host laptop-b"
+	mcpgraph events --collector "$CURL" --host laptop-b 2>&1
+}
+log 26-collector.log "mcpgraph collector + two laptops with mcpgraph sink" collector_demo
+sed -i "s/$CPORT/7600/g" "$LOGS/26-collector.log"
+kill "$COLLECTOR_PID" 2>/dev/null || true
+wait "$COLLECTOR_PID" 2>/dev/null || true
+
 # --- quality gates ----------------------------------------------------------
 log 07-go-test.log "go test -v ./..." go test -count=1 -v ./...
 log 08-go-test-summary.log "go test ./..." go test -count=1 ./...
@@ -202,6 +302,17 @@ echo "wrote docs/images/18-proxy.svg"
 } > "$WORK/install-short.log"
 termsvg -title "mcpgraph install" -o "$IMAGES/20-install.svg" < "$WORK/install-short.log"
 echo "wrote docs/images/20-install.svg"
+
+# Hook capture: the DROP TABLE deny, the ask case and the events table.
+{
+	sed -n '1,/^exit code/p' "$LOGS/23-hook-claude-code.log"
+	echo
+	sed -n '/rm-rf-home.json$/,/^exit code/p' "$LOGS/23-hook-claude-code.log"
+	echo
+	cat "$LOGS/25-hook-events.log"
+} > "$WORK/hook-short.log"
+termsvg -title "mcpgraph hook" -o "$IMAGES/23-hook.svg" < "$WORK/hook-short.log"
+echo "wrote docs/images/23-hook.svg"
 
 # --- hard rule 2: no fake secret may appear in any generated file ------------
 SECRETS=$(sed -n 's/^\t"\(.*\)",$/\1/p' internal/testutil/fakehome.go)

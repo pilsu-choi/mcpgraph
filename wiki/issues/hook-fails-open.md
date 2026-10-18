@@ -1,21 +1,28 @@
 ---
 type: Issue
 title: Claude Code hooks fail open by default
-description: A crashed, timed-out or malformed PreToolUse hook lets the tool call run unless the handler sets onFailure: block (Claude Code 2.1.295+).
-tags: [issue, open, hook, m9, fail-closed]
-timestamp: 2026-10-18T07:05:00Z
+description: Mitigated in milestone 9. A crashed, timed-out or malformed PreToolUse hook lets the tool call run unless the handler sets onFailure: block (Claude Code 2.1.295+).
+tags: [issue, mitigated, hook, m9, fail-closed]
+timestamp: 2026-10-18T08:30:00Z
 ---
 
 # Claude Code hooks fail open by default
 
-**Status:** open, for [milestone 9](../milestones/index.md).
+**Status:** mitigated (not closed) by [milestone 9](../milestones/2026-10-18-v2-m9-hook.md).
+
+- Claude Code: `mcpgraph hook claude-code --print-config` emits `"onFailure": "block"`, and the
+  hook ([`internal/hook`](../components/2026-10-18-hook.md)) exits 2 on any internal error.
+- Codex: no `onFailure` equivalent is documented ([research](../research/2026-10-18-codex-hooks.md)),
+  so the hook always answers explicitly (deny JSON or exit 2). Codex end-to-end is still
+  [unverified](2026-10-18-codex-hook-unverified.md).
+- Remaining risk: a user who writes the hook config by hand without `onFailure`.
 
 According to the [research](../research/external-formats.md) (§B4), a PreToolUse hook that times
 out, crashes, exits with a code other than 0 or 2, or prints invalid JSON does **not** block the
 tool call. The call continues through the normal permission flow. This is the opposite of the
 proxy's hard rule 4 (fail closed).
 
-**Mitigations for m9:**
+**Planned mitigations (now implemented, see above):**
 
 - When the hook config is written, set `"onFailure": "block"` on the handler. It exists in Claude
   Code 2.1.295+, and this machine has 2.1.302.

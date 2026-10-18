@@ -98,4 +98,4 @@ $ go test -run 'TestBlockDestructiveSQL|TestAskRecursiveDelete|TestBlockSecretRe
 --- PASS: TestAskUnknownTool/unknown_server
 --- PASS: TestAskUnknownTool/known_tool
 --- PASS: TestAskUnknownTool/hook_actions_are_not_MCP_tools
-ok  	github.com/pilsu-choi/mcpgraph/internal/policy	0.010s
+ok  	github.com/pilsu-choi/mcpgraph/internal/policy	0.008s

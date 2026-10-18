@@ -3,7 +3,7 @@ goos: linux
 goarch: amd64
 pkg: github.com/pilsu-choi/mcpgraph/internal/policy
 cpu: 13th Gen Intel(R) Core(TM) i5-13400F
-BenchmarkDecide-16    	   97328	     12071 ns/op	    3569 B/op	      87 allocs/op
+BenchmarkDecide-16    	   91867	     12578 ns/op	    3574 B/op	      87 allocs/op
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/policy	1.179s
+ok  	github.com/pilsu-choi/mcpgraph/internal/policy	1.159s
 # exit code: 0

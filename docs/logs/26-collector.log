@@ -1,0 +1,78 @@
+$ mcpgraph collector + two laptops with mcpgraph sink
+# started in the background: mcpgraph collector --listen 127.0.0.1:7600 --data /srv/mcpgraph
+$ curl -s http://127.0.0.1:7600/healthz
+{"status":"ok"}
+
+
+# laptop A: switch the sink on, then ship the decisions it already has
+$ mcpgraph sink set http://127.0.0.1:7600 --host laptop-a
+sink on: shipping to http://127.0.0.1:7600 as "laptop-a"
+$ mcpgraph sink status
+sink: on
+url: http://127.0.0.1:7600
+host: laptop-a
+token: (none)
+not shipped yet: 12
+$ mcpgraph sink flush
+flushed; not shipped yet: 0
+
+# laptop B: every hook decision is shipped as it happens
+$ mcpgraph sink set http://127.0.0.1:7600 --host laptop-b
+sink on: shipping to http://127.0.0.1:7600 as "laptop-b"
+$ mcpgraph hook claude-code < testdata/hooks/claude-code/bash-drop-table.json
+$ mcpgraph hook claude-code < testdata/hooks/claude-code/bash-ls.json
+$ mcpgraph sink status
+sink: on
+url: http://127.0.0.1:7600
+host: laptop-b
+token: (none)
+not shipped yet: 0
+
+# the central view
+$ curl -s http://127.0.0.1:7600/v1/hosts | python3 -m json.tool
+[
+    {
+        "host": "laptop-a",
+        "last_seen": "2026-10-18T08:04:54.069264721Z",
+        "events": 12,
+        "verdicts": {
+            "allow": 3,
+            "ask": 2,
+            "deny": 7
+        }
+    },
+    {
+        "host": "laptop-b",
+        "last_seen": "2026-10-18T08:04:54.077464808Z",
+        "events": 2,
+        "verdicts": {
+            "allow": 1,
+            "deny": 1
+        }
+    }
+]
+
+$ mcpgraph events --collector http://127.0.0.1:7600
+DECISIONS (14)
+TIME (UTC)           VERDICT  RULE                   SOURCE  AGENT                      TOOL                  ACTION
+2026-10-18 08:04:53  DENY     block-destructive-sql  hook    claude-code (Claude Code)  Bash                  psql -c "DROP TABLE users"
+2026-10-18 08:04:53  ALLOW    -                      hook    claude-code (Claude Code)  Bash                  ls -la
+2026-10-18 08:04:53  ASK      ask-recursive-delete   hook    claude-code (Claude Code)  Bash                  rm -rf ~/
+2026-10-18 08:04:53  DENY     block-secret-read      hook    claude-code (Claude Code)  Read                  /home/testuser/.ssh/id_rsa
+2026-10-18 08:04:53  DENY     block-destructive-sql  hook    claude-code (Claude Code)  mcp__postgres__query  DELETE FROM users
+2026-10-18 08:04:53  ALLOW    -                      hook    claude-code (Claude Code)  Bash                  echo hello
+2026-10-18 08:04:53  DENY     block-destructive-sql  hook    claude-code (Claude Code)  Bash                  PGPASSWORD=****dXyz psql -c "DROP TABLE users"
+2026-10-18 08:04:53  DENY     block-destructive-sql  hook    codex                      Bash                  psql -c "DROP TABLE users"
+2026-10-18 08:04:53  ALLOW    -                      hook    codex                      Bash                  ls -la
+2026-10-18 08:04:53  ASK      ask-recursive-delete   hook    codex                      Bash                  rm -rf ~/
+2026-10-18 08:04:53  DENY     block-secret-read      hook    codex                      apply_patch           *** Begin Patch *** Update File: /home/testuser/project/.env @@ -A=1 …
+2026-10-18 08:04:53  DENY     block-destructive-sql  hook    codex                      mcp__postgres__query  DELETE FROM users
+2026-10-18 08:04:54  DENY     block-destructive-sql  hook    claude-code (Claude Code)  Bash                  psql -c "DROP TABLE users"
+2026-10-18 08:04:54  ALLOW    -                      hook    claude-code (Claude Code)  Bash                  ls -la
+
+$ mcpgraph events --collector http://127.0.0.1:7600 --host laptop-b
+DECISIONS (2)
+TIME (UTC)           VERDICT  RULE                   SOURCE  AGENT                      TOOL  ACTION
+2026-10-18 08:04:54  DENY     block-destructive-sql  hook    claude-code (Claude Code)  Bash  psql -c "DROP TABLE users"
+2026-10-18 08:04:54  ALLOW    -                      hook    claude-code (Claude Code)  Bash  ls -la
+# exit code: 0
