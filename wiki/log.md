@@ -43,3 +43,7 @@ Times are UTC. Each entry links to the page with the details.
   pushed ([runbook](runbooks/github-repo.md)).
 - **06:45** Found that `scripts/demo.sh` reported a dirty tree: `> file` truncates
   `00-environment.log` before `git describe` runs. Fixed (`6eb59da`), and logs regenerated at a clean commit.
+- **06:47** CI enabled for `dev` (`24846a9`). First GitHub Actions run
+  [39105184003](https://github.com/pilsu-choi/mcpgraph/actions/runs/39105184003) passed:
+  golangci-lint, `go test -race ./...` and the cgo-free build. This is the first `-race` run of the
+  project ([issue](issues/race-detector-local.md)).

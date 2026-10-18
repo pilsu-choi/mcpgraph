@@ -15,3 +15,7 @@ sudo is not available, so it was not installed.
 - CI (`ubuntu-latest`) runs `go test -race ./...`.
 
 **Fix:** `sudo apt install -y build-essential`.
+
+**Update 2026-10-18 06:47Z:** CI on `dev` ran `go test -race ./...` and it passed
+([run 39105184003](https://github.com/pilsu-choi/mcpgraph/actions/runs/39105184003)). The issue
+stays open only for local runs.
