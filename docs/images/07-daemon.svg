@@ -8,20 +8,20 @@
 <g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace" font-size="13" fill="#c9d1d9" xml:space="preserve" style="white-space:pre">
 <text x="16" y="57"><tspan fill="#7ee787">$&#160;</tspan><tspan fill="#ffffff">mcpgraphd&#160;--home&#160;/home/dev&#160;--no-processes&#160;--addr&#160;127.0.0.1:17878</tspan></text>
 <text x="16" y="75">INFO&#160;&#160;mcpgraphd&#160;starting&#160;&#160;&quot;home&quot;:&quot;/home/dev&quot;,&quot;data_dir&quot;:&quot;/tmp/mcpgraph-demo/data&quot;</text>
-<text x="16" y="93">INFO&#160;&#160;new&#160;AI&#160;app&#160;config&#160;found:&#160;Claude&#160;Code&#160;(/home/dev/.claude.json)&#160;&#160;</text>
-<text x="16" y="111">INFO&#160;&#160;new&#160;AI&#160;app&#160;config&#160;found:&#160;Claude&#160;Desktop&#160;(/home/dev/.config/Claude/claude_desktop_config.json)&#160;&#160;</text>
-<text x="16" y="129">INFO&#160;&#160;new&#160;AI&#160;app&#160;config&#160;found:&#160;VS&#160;Code&#160;(/home/dev/.config/Code/User/mcp.json)&#160;&#160;</text>
-<text x="16" y="147">INFO&#160;&#160;new&#160;AI&#160;app&#160;config&#160;found:&#160;Cursor&#160;(/home/dev/.cursor/mcp.json)&#160;&#160;</text>
+<text x="16" y="93">INFO&#160;&#160;new&#160;AI&#160;app&#160;config&#160;found:&#160;Cursor&#160;(/home/dev/.cursor/mcp.json)&#160;&#160;</text>
+<text x="16" y="111">INFO&#160;&#160;new&#160;AI&#160;app&#160;config&#160;found:&#160;VS&#160;Code&#160;(/home/dev/.config/Code/User/mcp.json)&#160;&#160;</text>
+<text x="16" y="129">INFO&#160;&#160;new&#160;AI&#160;app&#160;config&#160;found:&#160;Claude&#160;Code&#160;(/home/dev/.claude.json)&#160;&#160;</text>
+<text x="16" y="147">INFO&#160;&#160;new&#160;AI&#160;app&#160;config&#160;found:&#160;Claude&#160;Desktop&#160;(/home/dev/.config/Claude/claude_desktop_config.json)&#160;&#160;</text>
 <text x="16" y="165">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;remote-insecure&quot;&#160;added&#160;to&#160;Cursor&#160;config&#160;&#160;</text>
-<text x="16" y="183">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;local-http&quot;&#160;added&#160;to&#160;Cursor&#160;config&#160;&#160;</text>
-<text x="16" y="201">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;github&quot;&#160;added&#160;to&#160;Claude&#160;Desktop&#160;config&#160;&#160;</text>
-<text x="16" y="219">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;custom&quot;&#160;added&#160;to&#160;VS&#160;Code&#160;config&#160;&#160;</text>
-<text x="16" y="237">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;filesystem&quot;&#160;added&#160;to&#160;Claude&#160;Desktop&#160;config&#160;&#160;</text>
-<text x="16" y="255">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;github-remote&quot;&#160;added&#160;to&#160;VS&#160;Code&#160;config&#160;&#160;</text>
-<text x="16" y="273">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;slack&quot;&#160;added&#160;to&#160;Claude&#160;Code&#160;config&#160;&#160;</text>
-<text x="16" y="291">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;postgres&quot;&#160;added&#160;to&#160;Claude&#160;Desktop&#160;config&#160;&#160;</text>
+<text x="16" y="183">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;postgres&quot;&#160;added&#160;to&#160;Claude&#160;Desktop&#160;config&#160;&#160;</text>
+<text x="16" y="201">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;local-http&quot;&#160;added&#160;to&#160;Cursor&#160;config&#160;&#160;</text>
+<text x="16" y="219">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;filesystem&quot;&#160;added&#160;to&#160;Claude&#160;Desktop&#160;config&#160;&#160;</text>
+<text x="16" y="237">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;github-remote&quot;&#160;added&#160;to&#160;VS&#160;Code&#160;config&#160;&#160;</text>
+<text x="16" y="255">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;custom&quot;&#160;added&#160;to&#160;VS&#160;Code&#160;config&#160;&#160;</text>
+<text x="16" y="273">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;git&quot;&#160;added&#160;to&#160;Cursor&#160;config&#160;&#160;</text>
+<text x="16" y="291">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;slack&quot;&#160;added&#160;to&#160;Claude&#160;Code&#160;config&#160;&#160;</text>
 <text x="16" y="309">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;sentry&quot;&#160;added&#160;to&#160;Claude&#160;Code&#160;config&#160;&#160;</text>
-<text x="16" y="327">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;git&quot;&#160;added&#160;to&#160;Cursor&#160;config&#160;&#160;</text>
+<text x="16" y="327">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;github&quot;&#160;added&#160;to&#160;Claude&#160;Desktop&#160;config&#160;&#160;</text>
 <text x="16" y="345">INFO&#160;&#160;snapshot&#160;saved&#160;&#160;&quot;id&quot;:1,&quot;nodes&quot;:33,&quot;findings&quot;:13,&quot;changes&quot;:33</text>
 <text x="16" y="363">INFO&#160;&#160;API&#160;listening&#160;&#160;&quot;addr&quot;:&quot;127.0.0.1:17878&quot;</text>
 <text x="16" y="381">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;notion&quot;&#160;added&#160;to&#160;Cursor&#160;config&#160;&#160;</text>

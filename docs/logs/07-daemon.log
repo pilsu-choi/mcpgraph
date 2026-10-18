@@ -1,44 +1,44 @@
 $ mcpgraphd --home /home/dev --no-processes --addr 127.0.0.1:17878
-{"time":"2026-10-18T15:44:04.355158752+09:00","level":"INFO","msg":"mcpgraphd starting","home":"/home/dev","data_dir":"/tmp/mcpgraph-demo/data"}
-{"time":"2026-10-18T15:44:04.356275091+09:00","level":"INFO","msg":"new AI app config found: Claude Code (/home/dev/.claude.json)","change":"added","kind":"AIApp","node_id":"AIApp:9f8d35650ddd"}
-{"time":"2026-10-18T15:44:04.35630393+09:00","level":"INFO","msg":"new AI app config found: Claude Desktop (/home/dev/.config/Claude/claude_desktop_config.json)","change":"added","kind":"AIApp","node_id":"AIApp:b38576a84064"}
-{"time":"2026-10-18T15:44:04.35630853+09:00","level":"INFO","msg":"new AI app config found: VS Code (/home/dev/.config/Code/User/mcp.json)","change":"added","kind":"AIApp","node_id":"AIApp:bd370e874fd2"}
-{"time":"2026-10-18T15:44:04.356311504+09:00","level":"INFO","msg":"new AI app config found: Cursor (/home/dev/.cursor/mcp.json)","change":"added","kind":"AIApp","node_id":"AIApp:c27895563cd8"}
-{"time":"2026-10-18T15:44:04.35631432+09:00","level":"INFO","msg":"new file credential \"envFile\" at /home/dev/.config/Code/User/mcp.json#$.servers.custom.envFile","change":"added","kind":"Credential","node_id":"Credential:0b9b89b56185"}
-{"time":"2026-10-18T15:44:04.356317481+09:00","level":"INFO","msg":"new inline credential \"SLACK_BOT_TOKEN\" at /home/dev/.claude.json#$.projects[\"/work/app\"].mcpServers.slack.env.SLACK_BOT_TOKEN","change":"added","kind":"Credential","node_id":"Credential:0e4f5e900d7c"}
-{"time":"2026-10-18T15:44:04.356320541+09:00","level":"INFO","msg":"new inline credential \"API_KEY\" at /home/dev/.config/Code/User/mcp.json#$.servers.custom.env.API_KEY","change":"added","kind":"Credential","node_id":"Credential:1ccfed136f7f"}
-{"time":"2026-10-18T15:44:04.356323444+09:00","level":"INFO","msg":"new env credential \"Authorization\" at /home/dev/.config/Code/User/mcp.json#$.servers.github-remote.headers.Authorization","change":"added","kind":"Credential","node_id":"Credential:61ef7a79afd2"}
-{"time":"2026-10-18T15:44:04.356326327+09:00","level":"INFO","msg":"new inline credential \"url\" at /home/dev/.cursor/mcp.json#$.mcpServers.remote-insecure.url","change":"added","kind":"Credential","node_id":"Credential:8a5777b7a894"}
-{"time":"2026-10-18T15:44:04.356329194+09:00","level":"INFO","msg":"new inline credential \"GITHUB_PERSONAL_ACCESS_TOKEN\" at /home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.github.env.GITHUB_PERSONAL_ACCESS_TOKEN","change":"added","kind":"Credential","node_id":"Credential:8d99a9ab7e4b"}
-{"time":"2026-10-18T15:44:04.356332241+09:00","level":"INFO","msg":"new inline credential \"args[2]\" at /home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.postgres.args[2]","change":"added","kind":"Credential","node_id":"Credential:ad28de78f015"}
-{"time":"2026-10-18T15:44:04.356335112+09:00","level":"INFO","msg":"new env credential \"GIT_TOKEN\" at /home/dev/.cursor/mcp.json#$.mcpServers.git.env.GIT_TOKEN","change":"added","kind":"Credential","node_id":"Credential:b6b7c3479979"}
-{"time":"2026-10-18T15:44:04.356337894+09:00","level":"INFO","msg":"new inline credential \"--api-key\" at /home/dev/.config/Code/User/mcp.json#$.servers.custom.args[2]","change":"added","kind":"Credential","node_id":"Credential:d0231aeb5049"}
-{"time":"2026-10-18T15:44:04.356340627+09:00","level":"INFO","msg":"DataSource \"/home/dev\" added","change":"added","kind":"DataSource","node_id":"DataSource:056d46a4fd61"}
-{"time":"2026-10-18T15:44:04.356343369+09:00","level":"INFO","msg":"DataSource \"postgresql://db.internal:5432/prod\" added","change":"added","kind":"DataSource","node_id":"DataSource:21abe27a441f"}
-{"time":"2026-10-18T15:44:04.356346092+09:00","level":"INFO","msg":"DataSource \"slack\" added","change":"added","kind":"DataSource","node_id":"DataSource:244406e1a7d4"}
-{"time":"2026-10-18T15:44:04.356348784+09:00","level":"INFO","msg":"DataSource \"10.0.0.5\" added","change":"added","kind":"DataSource","node_id":"DataSource:9fd74444a94c"}
-{"time":"2026-10-18T15:44:04.35635802+09:00","level":"INFO","msg":"DataSource \"mcp.sentry.dev\" added","change":"added","kind":"DataSource","node_id":"DataSource:a4fe234aa714"}
-{"time":"2026-10-18T15:44:04.356360946+09:00","level":"INFO","msg":"DataSource \"sentry\" added","change":"added","kind":"DataSource","node_id":"DataSource:d5abfc73992f"}
-{"time":"2026-10-18T15:44:04.35636369+09:00","level":"INFO","msg":"DataSource \"api.githubcopilot.com\" added","change":"added","kind":"DataSource","node_id":"DataSource:dfbf70335e81"}
-{"time":"2026-10-18T15:44:04.356366431+09:00","level":"INFO","msg":"DataSource \"github\" added","change":"added","kind":"DataSource","node_id":"DataSource:e6d4e38df883"}
-{"time":"2026-10-18T15:44:04.356369011+09:00","level":"INFO","msg":"DataSource \"/home/dev/code/project\" added","change":"added","kind":"DataSource","node_id":"DataSource:f9576068d871"}
-{"time":"2026-10-18T15:44:04.356371978+09:00","level":"INFO","msg":"new MCP server \"remote-insecure\" added to Cursor config","change":"added","kind":"MCPServer","node_id":"MCPServer:2f03ae282126"}
-{"time":"2026-10-18T15:44:04.356374901+09:00","level":"INFO","msg":"new MCP server \"local-http\" added to Cursor config","change":"added","kind":"MCPServer","node_id":"MCPServer:5938ba67ead0"}
-{"time":"2026-10-18T15:44:04.35637783+09:00","level":"INFO","msg":"new MCP server \"github\" added to Claude Desktop config","change":"added","kind":"MCPServer","node_id":"MCPServer:5f5e3b3e4e72"}
-{"time":"2026-10-18T15:44:04.356380704+09:00","level":"INFO","msg":"new MCP server \"custom\" added to VS Code config","change":"added","kind":"MCPServer","node_id":"MCPServer:6166a1a30dbe"}
-{"time":"2026-10-18T15:44:04.35638444+09:00","level":"INFO","msg":"new MCP server \"filesystem\" added to Claude Desktop config","change":"added","kind":"MCPServer","node_id":"MCPServer:b190755c3116"}
-{"time":"2026-10-18T15:44:04.356387102+09:00","level":"INFO","msg":"new MCP server \"github-remote\" added to VS Code config","change":"added","kind":"MCPServer","node_id":"MCPServer:b78fbb638fbf"}
-{"time":"2026-10-18T15:44:04.356389704+09:00","level":"INFO","msg":"new MCP server \"slack\" added to Claude Code config","change":"added","kind":"MCPServer","node_id":"MCPServer:bb35adfcc9d2"}
-{"time":"2026-10-18T15:44:04.356392293+09:00","level":"INFO","msg":"new MCP server \"postgres\" added to Claude Desktop config","change":"added","kind":"MCPServer","node_id":"MCPServer:c269b1be810c"}
-{"time":"2026-10-18T15:44:04.35639486+09:00","level":"INFO","msg":"new MCP server \"sentry\" added to Claude Code config","change":"added","kind":"MCPServer","node_id":"MCPServer:e4ead9fcf429"}
-{"time":"2026-10-18T15:44:04.356397441+09:00","level":"INFO","msg":"new MCP server \"git\" added to Cursor config","change":"added","kind":"MCPServer","node_id":"MCPServer:e59d8133bded"}
-{"time":"2026-10-18T15:44:04.358498797+09:00","level":"INFO","msg":"snapshot saved","id":1,"nodes":33,"findings":13,"changes":33}
-{"time":"2026-10-18T15:44:04.365430844+09:00","level":"INFO","msg":"API listening","addr":"127.0.0.1:17878"}
-{"time":"2026-10-18T15:44:05.644421867+09:00","level":"INFO","msg":"DataSource \"notion\" added","change":"added","kind":"DataSource","node_id":"DataSource:070163255f47"}
-{"time":"2026-10-18T15:44:05.644474144+09:00","level":"INFO","msg":"new MCP server \"notion\" added to Cursor config","change":"added","kind":"MCPServer","node_id":"MCPServer:4d620b460f82"}
-{"time":"2026-10-18T15:44:05.649731992+09:00","level":"INFO","msg":"snapshot saved","id":2,"nodes":35,"findings":14,"changes":2}
-{"time":"2026-10-18T15:44:07.148587177+09:00","level":"INFO","msg":"Credential \"url\" removed","change":"removed","kind":"Credential","node_id":"Credential:8a5777b7a894"}
-{"time":"2026-10-18T15:44:07.148652796+09:00","level":"INFO","msg":"DataSource \"10.0.0.5\" removed","change":"removed","kind":"DataSource","node_id":"DataSource:9fd74444a94c"}
-{"time":"2026-10-18T15:44:07.148667409+09:00","level":"INFO","msg":"MCP server \"remote-insecure\" removed from Cursor config","change":"removed","kind":"MCPServer","node_id":"MCPServer:2f03ae282126"}
-{"time":"2026-10-18T15:44:07.15478589+09:00","level":"INFO","msg":"snapshot saved","id":3,"nodes":32,"findings":12,"changes":3}
+{"time":"2026-10-18T15:44:50.068571094+09:00","level":"INFO","msg":"mcpgraphd starting","home":"/home/dev","data_dir":"/tmp/mcpgraph-demo/data"}
+{"time":"2026-10-18T15:44:50.069218764+09:00","level":"INFO","msg":"new AI app config found: Cursor (/home/dev/.cursor/mcp.json)","change":"added","kind":"AIApp","node_id":"AIApp:6cf1f558a63e"}
+{"time":"2026-10-18T15:44:50.069237501+09:00","level":"INFO","msg":"new AI app config found: VS Code (/home/dev/.config/Code/User/mcp.json)","change":"added","kind":"AIApp","node_id":"AIApp:6e741da5021a"}
+{"time":"2026-10-18T15:44:50.069240274+09:00","level":"INFO","msg":"new AI app config found: Claude Code (/home/dev/.claude.json)","change":"added","kind":"AIApp","node_id":"AIApp:712bfb17bccc"}
+{"time":"2026-10-18T15:44:50.069242232+09:00","level":"INFO","msg":"new AI app config found: Claude Desktop (/home/dev/.config/Claude/claude_desktop_config.json)","change":"added","kind":"AIApp","node_id":"AIApp:d9e89cb3b057"}
+{"time":"2026-10-18T15:44:50.069244082+09:00","level":"INFO","msg":"new inline credential \"url\" at /home/dev/.cursor/mcp.json#$.mcpServers.remote-insecure.url","change":"added","kind":"Credential","node_id":"Credential:5f15e871ed76"}
+{"time":"2026-10-18T15:44:50.069246199+09:00","level":"INFO","msg":"new env credential \"GIT_TOKEN\" at /home/dev/.cursor/mcp.json#$.mcpServers.git.env.GIT_TOKEN","change":"added","kind":"Credential","node_id":"Credential:99cef6b921b8"}
+{"time":"2026-10-18T15:44:50.069248071+09:00","level":"INFO","msg":"new env credential \"Authorization\" at /home/dev/.config/Code/User/mcp.json#$.servers.github-remote.headers.Authorization","change":"added","kind":"Credential","node_id":"Credential:ce2bca0a7ce3"}
+{"time":"2026-10-18T15:44:50.069249964+09:00","level":"INFO","msg":"new inline credential \"GITHUB_PERSONAL_ACCESS_TOKEN\" at /home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.github.env.GITHUB_PERSONAL_ACCESS_TOKEN","change":"added","kind":"Credential","node_id":"Credential:d4a5ad82878a"}
+{"time":"2026-10-18T15:44:50.069251895+09:00","level":"INFO","msg":"new file credential \"envFile\" at /home/dev/.config/Code/User/mcp.json#$.servers.custom.envFile","change":"added","kind":"Credential","node_id":"Credential:df38da1f1fad"}
+{"time":"2026-10-18T15:44:50.069253742+09:00","level":"INFO","msg":"new inline credential \"SLACK_BOT_TOKEN\" at /home/dev/.claude.json#$.projects[\"/work/app\"].mcpServers.slack.env.SLACK_BOT_TOKEN","change":"added","kind":"Credential","node_id":"Credential:dfd4fe98b77b"}
+{"time":"2026-10-18T15:44:50.069255669+09:00","level":"INFO","msg":"new inline credential \"args[2]\" at /home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.postgres.args[2]","change":"added","kind":"Credential","node_id":"Credential:e04ae48791d0"}
+{"time":"2026-10-18T15:44:50.069257488+09:00","level":"INFO","msg":"new inline credential \"--api-key\" at /home/dev/.config/Code/User/mcp.json#$.servers.custom.args[2]","change":"added","kind":"Credential","node_id":"Credential:e64db514184a"}
+{"time":"2026-10-18T15:44:50.069259325+09:00","level":"INFO","msg":"new inline credential \"API_KEY\" at /home/dev/.config/Code/User/mcp.json#$.servers.custom.env.API_KEY","change":"added","kind":"Credential","node_id":"Credential:ea5e0f4d3a63"}
+{"time":"2026-10-18T15:44:50.069261121+09:00","level":"INFO","msg":"DataSource \"/home/dev/code/project\" added","change":"added","kind":"DataSource","node_id":"DataSource:02590d8ceca6"}
+{"time":"2026-10-18T15:44:50.069262946+09:00","level":"INFO","msg":"DataSource \"postgresql://db.internal:5432/prod\" added","change":"added","kind":"DataSource","node_id":"DataSource:21abe27a441f"}
+{"time":"2026-10-18T15:44:50.069264776+09:00","level":"INFO","msg":"DataSource \"slack\" added","change":"added","kind":"DataSource","node_id":"DataSource:244406e1a7d4"}
+{"time":"2026-10-18T15:44:50.069266522+09:00","level":"INFO","msg":"DataSource \"/home/dev\" added","change":"added","kind":"DataSource","node_id":"DataSource:3c2a7832a3dc"}
+{"time":"2026-10-18T15:44:50.0692721+09:00","level":"INFO","msg":"DataSource \"10.0.0.5\" added","change":"added","kind":"DataSource","node_id":"DataSource:9fd74444a94c"}
+{"time":"2026-10-18T15:44:50.069274055+09:00","level":"INFO","msg":"DataSource \"mcp.sentry.dev\" added","change":"added","kind":"DataSource","node_id":"DataSource:a4fe234aa714"}
+{"time":"2026-10-18T15:44:50.069275894+09:00","level":"INFO","msg":"DataSource \"sentry\" added","change":"added","kind":"DataSource","node_id":"DataSource:d5abfc73992f"}
+{"time":"2026-10-18T15:44:50.069277618+09:00","level":"INFO","msg":"DataSource \"api.githubcopilot.com\" added","change":"added","kind":"DataSource","node_id":"DataSource:dfbf70335e81"}
+{"time":"2026-10-18T15:44:50.069279429+09:00","level":"INFO","msg":"DataSource \"github\" added","change":"added","kind":"DataSource","node_id":"DataSource:e6d4e38df883"}
+{"time":"2026-10-18T15:44:50.069281286+09:00","level":"INFO","msg":"new MCP server \"remote-insecure\" added to Cursor config","change":"added","kind":"MCPServer","node_id":"MCPServer:264061586a56"}
+{"time":"2026-10-18T15:44:50.069283232+09:00","level":"INFO","msg":"new MCP server \"postgres\" added to Claude Desktop config","change":"added","kind":"MCPServer","node_id":"MCPServer:274499565fc5"}
+{"time":"2026-10-18T15:44:50.069285097+09:00","level":"INFO","msg":"new MCP server \"local-http\" added to Cursor config","change":"added","kind":"MCPServer","node_id":"MCPServer:48402e14d404"}
+{"time":"2026-10-18T15:44:50.069286922+09:00","level":"INFO","msg":"new MCP server \"filesystem\" added to Claude Desktop config","change":"added","kind":"MCPServer","node_id":"MCPServer:69fe4014fa2d"}
+{"time":"2026-10-18T15:44:50.069288756+09:00","level":"INFO","msg":"new MCP server \"github-remote\" added to VS Code config","change":"added","kind":"MCPServer","node_id":"MCPServer:7eef7e6ec873"}
+{"time":"2026-10-18T15:44:50.069290501+09:00","level":"INFO","msg":"new MCP server \"custom\" added to VS Code config","change":"added","kind":"MCPServer","node_id":"MCPServer:bc58347f402c"}
+{"time":"2026-10-18T15:44:50.069292283+09:00","level":"INFO","msg":"new MCP server \"git\" added to Cursor config","change":"added","kind":"MCPServer","node_id":"MCPServer:c107c8a67954"}
+{"time":"2026-10-18T15:44:50.069294017+09:00","level":"INFO","msg":"new MCP server \"slack\" added to Claude Code config","change":"added","kind":"MCPServer","node_id":"MCPServer:c6948e5efc3b"}
+{"time":"2026-10-18T15:44:50.069295803+09:00","level":"INFO","msg":"new MCP server \"sentry\" added to Claude Code config","change":"added","kind":"MCPServer","node_id":"MCPServer:cacbf7e1470e"}
+{"time":"2026-10-18T15:44:50.069297578+09:00","level":"INFO","msg":"new MCP server \"github\" added to Claude Desktop config","change":"added","kind":"MCPServer","node_id":"MCPServer:e3536f473328"}
+{"time":"2026-10-18T15:44:50.07093633+09:00","level":"INFO","msg":"snapshot saved","id":1,"nodes":33,"findings":13,"changes":33}
+{"time":"2026-10-18T15:44:50.07710655+09:00","level":"INFO","msg":"API listening","addr":"127.0.0.1:17878"}
+{"time":"2026-10-18T15:44:51.368310872+09:00","level":"INFO","msg":"DataSource \"notion\" added","change":"added","kind":"DataSource","node_id":"DataSource:070163255f47"}
+{"time":"2026-10-18T15:44:51.368378386+09:00","level":"INFO","msg":"new MCP server \"notion\" added to Cursor config","change":"added","kind":"MCPServer","node_id":"MCPServer:ccb342aa259f"}
+{"time":"2026-10-18T15:44:51.37362562+09:00","level":"INFO","msg":"snapshot saved","id":2,"nodes":35,"findings":14,"changes":2}
+{"time":"2026-10-18T15:44:52.872077826+09:00","level":"INFO","msg":"Credential \"url\" removed","change":"removed","kind":"Credential","node_id":"Credential:5f15e871ed76"}
+{"time":"2026-10-18T15:44:52.872150149+09:00","level":"INFO","msg":"DataSource \"10.0.0.5\" removed","change":"removed","kind":"DataSource","node_id":"DataSource:9fd74444a94c"}
+{"time":"2026-10-18T15:44:52.872165277+09:00","level":"INFO","msg":"MCP server \"remote-insecure\" removed from Cursor config","change":"removed","kind":"MCPServer","node_id":"MCPServer:264061586a56"}
+{"time":"2026-10-18T15:44:52.877816788+09:00","level":"INFO","msg":"snapshot saved","id":3,"nodes":32,"findings":12,"changes":3}
 # (SIGINT sent) exit code: 0
