@@ -3,7 +3,7 @@ type: Index
 title: Lessons
 description: Bugs and surprises found during development.
 tags: [lesson]
-timestamp: 2026-10-18T07:15:00Z
+timestamp: 2026-10-18T07:25:00Z
 ---
 
 # Lessons
@@ -15,3 +15,4 @@ Bugs found while building, and what they taught.
 - [SVG captures lost column alignment](svg-whitespace.md): Chromium collapsed runs of spaces inside SVG text despite xml:space=preserve.
 - [Two tildes in a Mermaid label become strikethrough](mermaid-tilde.md): Mermaid parsed '~/.ssh ... ~/.aws' as markdown strikethrough and rendered an error box.
 - [Trailing-quote trim and prose SQL](sql-quote-and-prose.md): Two policy SQL classifier bugs found by tricky-case table tests.
+- [Redacting twice masked the mask](redaction-idempotent.md): Defence-in-depth re-redaction needed redaction to be idempotent.

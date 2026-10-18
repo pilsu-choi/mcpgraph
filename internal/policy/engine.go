@@ -16,7 +16,10 @@ import (
 type Action struct {
 	Source string // model.SourceProxy or model.SourceHook
 	Agent  string // e.g. "claude-code", or the MCP server name
-	Tool   string // MCP tool name, or "Bash" etc. for hooks
+	// App is the AI app the action came from ("Claude Code"), when known.
+	// It is copied to the Decision so the graph can link it.
+	App  string
+	Tool string // MCP tool name, or "Bash" etc. for hooks
 	// Args are the raw tool arguments. They may hold secrets: never log
 	// them; the Decision only carries a redacted summary.
 	Args map[string]any
@@ -99,6 +102,7 @@ func (e *RuleEngine) decision(a Action, text, ruleID string, v model.Verdict, re
 		Time:    e.opts.Now().UTC(),
 		Source:  a.Source,
 		Agent:   a.Agent,
+		App:     a.App,
 		Tool:    a.Tool,
 		Summary: Summary(text),
 		RuleID:  ruleID,
@@ -282,6 +286,7 @@ func failClosed(a Action, err error) model.Decision {
 		Time:    time.Now().UTC(),
 		Source:  a.Source,
 		Agent:   a.Agent,
+		App:     a.App,
 		Tool:    a.Tool,
 		Summary: Summary(text),
 		RuleID:  FailClosedRuleID,

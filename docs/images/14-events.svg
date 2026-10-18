@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="258" viewBox="0 0 1240 258">
+<rect width="1240" height="258" rx="8" fill="#0d1117"/>
+<rect width="1240" height="30" rx="8" fill="#161b22"/><rect y="22" width="1240" height="8" fill="#161b22"/>
+<circle cx="18" cy="15" r="6" fill="#ff5f56"/>
+<circle cx="38" cy="15" r="6" fill="#ffbd2e"/>
+<circle cx="58" cy="15" r="6" fill="#27c93f"/>
+<text x="620" y="19" fill="#8b949e" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" text-anchor="middle">mcpgraph&#160;events</text>
+<g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace" font-size="13" fill="#c9d1d9" xml:space="preserve" style="white-space:pre">
+<text x="16" y="57"><tspan fill="#7ee787">$&#160;</tspan><tspan fill="#ffffff">mcpgraph&#160;events</tspan></text>
+<text x="16" y="75"><tspan fill="#79c0ff" font-weight="bold">DECISIONS&#160;(7)</tspan></text>
+<text x="16" y="93"><tspan fill="#79c0ff" font-weight="bold">TIME&#160;(UTC)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;VERDICT&#160;&#160;RULE&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SOURCE&#160;&#160;AGENT&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;TOOL&#160;&#160;&#160;&#160;&#160;&#160;&#160;ACTION</tspan></text>
+<text x="16" y="111">2026-10-18&#160;09:00:00&#160;&#160;ALLOW&#160;&#160;&#160;&#160;-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;hook&#160;&#160;&#160;&#160;claude-code&#160;(Claude&#160;Code)&#160;&#160;&#160;&#160;Bash&#160;&#160;&#160;&#160;&#160;&#160;&#160;go&#160;test&#160;./...</text>
+<text x="16" y="129">2026-10-18&#160;09:01:00&#160;&#160;DENY&#160;&#160;&#160;&#160;&#160;block-destructive-sql&#160;&#160;hook&#160;&#160;&#160;&#160;claude-code&#160;(Claude&#160;Code)&#160;&#160;&#160;&#160;Bash&#160;&#160;&#160;&#160;&#160;&#160;&#160;PGPASSWORD=<tspan fill="#d2a8ff" font-weight="bold">****dXyz</tspan>&#160;psql&#160;-h&#160;db&#160;-c&#160;&quot;DROP&#160;TABLE&#160;users&quot;</text>
+<text x="16" y="147">2026-10-18&#160;09:02:00&#160;&#160;DENY&#160;&#160;&#160;&#160;&#160;block-secret-read&#160;&#160;&#160;&#160;&#160;&#160;hook&#160;&#160;&#160;&#160;claude-code&#160;(Claude&#160;Code)&#160;&#160;&#160;&#160;Bash&#160;&#160;&#160;&#160;&#160;&#160;&#160;rm&#160;-rf&#160;~/.ssh</text>
+<text x="16" y="165">2026-10-18&#160;09:03:00&#160;&#160;ASK&#160;&#160;&#160;&#160;&#160;&#160;ask-recursive-delete&#160;&#160;&#160;hook&#160;&#160;&#160;&#160;claude-code&#160;(Claude&#160;Code)&#160;&#160;&#160;&#160;Bash&#160;&#160;&#160;&#160;&#160;&#160;&#160;rm&#160;-rf&#160;/tmp/build-cache&#160;&amp;&amp;&#160;git&#160;push&#160;--force</text>
+<text x="16" y="183">2026-10-18&#160;09:04:00&#160;&#160;ALLOW&#160;&#160;&#160;&#160;-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;proxy&#160;&#160;&#160;postgres&#160;(Claude&#160;Desktop)&#160;&#160;&#160;&#160;query&#160;&#160;&#160;&#160;&#160;&#160;SELECT&#160;id,&#160;email&#160;FROM&#160;users&#160;WHERE&#160;id&#160;=&#160;7</text>
+<text x="16" y="201">2026-10-18&#160;09:05:00&#160;&#160;DENY&#160;&#160;&#160;&#160;&#160;block-destructive-sql&#160;&#160;proxy&#160;&#160;&#160;postgres&#160;(Claude&#160;Desktop)&#160;&#160;&#160;&#160;query&#160;&#160;&#160;&#160;&#160;&#160;DELETE&#160;FROM&#160;users&#160;WHERE&#160;1=1</text>
+<text x="16" y="219">2026-10-18&#160;09:06:00&#160;&#160;DENY&#160;&#160;&#160;&#160;&#160;block-secret-read&#160;&#160;&#160;&#160;&#160;&#160;proxy&#160;&#160;&#160;filesystem&#160;(Claude&#160;Desktop)&#160;&#160;read_file&#160;&#160;~/.aws/credentials</text>
+<text x="16" y="237"><tspan fill="#8b949e">#&#160;exit&#160;code:&#160;0</tspan></text>
+</g>
+</svg>

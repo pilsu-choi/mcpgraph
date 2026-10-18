@@ -4,10 +4,10 @@ title: internal/model
 description: Shared types: Node, Edge, Graph, Event, Finding, NodeID.
 resource: https://github.com/pilsu-choi/mcpgraph/blob/dev/internal/model
 tags: [component, go]
-timestamp: 2026-10-18T07:05:00Z
+timestamp: 2026-10-18T07:25:00Z
 ---
 
-> **v2 additions:** `KindDecision`, `EdgeDecidedOn` (Decision → MCPServer or AIApp), `MCPServer.Proxied`, and the `Decision` type with `Verdict` (`allow`/`deny`/`ask`) and source (`proxy`/`hook`). The summary on a decision is redacted before the node is created.
+> **v2 additions:** `KindDecision`, `EdgeDecidedOn` (Decision → MCPServer or AIApp), `MCPServer.Proxied`, and the `Decision` type with `Verdict` (`allow`/`deny`/`ask`) and source (`proxy`/`hook`). The summary on a decision is redacted before the node is created. In m6 `Decision.App` was added (the AI app the action came from), which hook decisions need for linking.
 
 # `internal/model`
 

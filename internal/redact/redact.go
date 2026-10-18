@@ -96,7 +96,9 @@ func isEnvName(s string) bool {
 // (e.g. API_KEY) any non-empty literal value counts as a secret.
 func Detect(key, value string) (bool, string) {
 	v := strings.TrimSpace(value)
-	if v == "" || IsReference(v) {
+	// A value that is already masked stays as it is, so redacting twice
+	// (collector, then audit log) gives the same text as redacting once.
+	if v == "" || IsReference(v) || strings.HasPrefix(v, maskPrefix) {
 		return false, ""
 	}
 	// "Bearer abc..." / "Basic abc..." headers: inspect the token part.
@@ -246,7 +248,7 @@ func Args(args []string) []string {
 }
 
 func maskUnlessSafe(v string) string {
-	if IsReference(v) || looksLikePlainValue(v) {
+	if IsReference(v) || looksLikePlainValue(v) || strings.HasPrefix(v, maskPrefix) {
 		return v
 	}
 	return Mask(v)
@@ -317,7 +319,7 @@ func Text(s string) string {
 	for i, f := range fields {
 		core := cores[i]
 		switch {
-		case i > 0 && maskNextWord(cores[i-1]) && core != "":
+		case i > 0 && maskNextWord(cores[i-1]) && core != "" && !strings.HasPrefix(core, maskPrefix):
 			out[i] = Mask(core)
 		case isEnvAssignment(core):
 			name, v, _ := strings.Cut(core, "=")

@@ -4,10 +4,12 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"os"
 	"runtime"
 	"strings"
 	"testing"
 
+	"github.com/pilsu-choi/mcpgraph/internal/audit"
 	"github.com/pilsu-choi/mcpgraph/internal/collector"
 	"github.com/pilsu-choi/mcpgraph/internal/collector/config"
 	"github.com/pilsu-choi/mcpgraph/internal/graph"
@@ -17,23 +19,26 @@ import (
 	"github.com/pilsu-choi/mcpgraph/internal/testutil"
 )
 
-// scanFixtures runs a full scan over a fake home filled with every fixture.
-func scanFixtures(t *testing.T) *model.Graph {
+// scanFixtures runs a full scan over a fake home filled with every
+// fixture, plus an audit log of decisions replayed from secretActions.
+func scanFixtures(t *testing.T) (*model.Graph, string) {
 	t.Helper()
 	home := testutil.FakeHome(t)
+	auditPath := replayDecisions(t, secretActions())
 	g, err := Run(context.Background(), []collector.Collector{
 		collector.Host{},
 		config.New(home, "linux"),
+		audit.Collector{Path: auditPath},
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
-	return g
+	return g, auditPath
 }
 
 // renderAll renders the graph in every output format mcpgraph produces.
 // When a new format is added, add it here so the leak test covers it.
-func renderAll(t *testing.T, g *model.Graph) map[string]string {
+func renderAll(t *testing.T, g *model.Graph, auditPath string) map[string]string {
 	t.Helper()
 	out := map[string]string{}
 
@@ -73,6 +78,26 @@ func renderAll(t *testing.T, g *model.Graph) map[string]string {
 	}
 	out["findings-json"] = string(fj)
 
+	// The audit log file itself, and both `mcpgraph events` formats.
+	raw, err = os.ReadFile(auditPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	out["audit-jsonl"] = string(raw)
+	res, err := audit.ReadFile(auditPath, audit.Filter{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var ev, evj bytes.Buffer
+	if err := report.Events(&ev, res.Decisions); err != nil {
+		t.Fatal(err)
+	}
+	if err := report.EventsJSONL(&evj, res.Decisions); err != nil {
+		t.Fatal(err)
+	}
+	out["events-table"] = ev.String()
+	out["events-jsonl"] = evj.String()
+
 	// Diff messages are what drift alerts (milestone 12) will print.
 	diff, err := json.Marshal(graph.Diff(nil, g))
 	if err != nil {
@@ -88,14 +113,14 @@ func TestNoSecretInAnyOutput(t *testing.T) {
 	if runtime.GOOS == "windows" {
 		t.Skip("fixtures use Linux paths")
 	}
-	g := scanFixtures(t)
+	g, auditPath := scanFixtures(t)
 
 	creds := g.NodesOfKind(model.KindCredential)
 	if len(creds) < len(testutil.FakeSecrets) {
 		t.Fatalf("found %d credentials, expected at least %d: detection is not working", len(creds), len(testutil.FakeSecrets))
 	}
 
-	for format, text := range renderAll(t, g) {
+	for format, text := range renderAll(t, g, auditPath) {
 		for _, secret := range testutil.FakeSecrets {
 			if strings.Contains(text, secret) {
 				t.Errorf("%s output contains raw secret %q", format, secret)

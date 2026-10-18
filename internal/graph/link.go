@@ -108,3 +108,33 @@ func hasArg(args []string, want string) bool {
 	}
 	return false
 }
+
+// linkDecisions adds DECIDED_ON edges from runtime decisions to what they
+// were about:
+//   - a proxy decision points at the MCP server named Agent, limited to
+//     servers of App when the decision names one;
+//   - a hook decision points at the AIApp named App.
+//
+// A decision whose target is not in the graph (a server since removed from
+// its config, say) stays in the graph without an edge.
+func linkDecisions(g *model.Graph) {
+	servers := g.NodesOfKind(model.KindMCPServer)
+	apps := g.NodesOfKind(model.KindAIApp)
+	for _, n := range g.NodesOfKind(model.KindDecision) {
+		d := n.Decision
+		switch d.Source {
+		case model.SourceProxy:
+			for _, s := range servers {
+				if strings.EqualFold(s.Server.Name, d.Agent) && (d.App == "" || strings.EqualFold(s.Server.App, d.App)) {
+					g.Edges = append(g.Edges, model.Edge{From: n.ID, To: s.ID, Kind: model.EdgeDecidedOn})
+				}
+			}
+		case model.SourceHook:
+			for _, a := range apps {
+				if d.App != "" && strings.EqualFold(a.App.Name, d.App) {
+					g.Edges = append(g.Edges, model.Edge{From: n.ID, To: a.ID, Kind: model.EdgeDecidedOn})
+				}
+			}
+		}
+	}
+}

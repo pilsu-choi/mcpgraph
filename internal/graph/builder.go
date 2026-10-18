@@ -116,6 +116,7 @@ func (b *Builder) Graph() *model.Graph {
 	}
 
 	linkProcesses(g)
+	linkDecisions(g)
 	sortEdges(g.Edges)
 	// Snapshot deep-copies the nodes so the result does not share pointer
 	// fields with the events still stored in b.sources.

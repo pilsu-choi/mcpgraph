@@ -2,13 +2,13 @@
 type: Issue
 title: How the proxy should answer a denied tools/call
 description: AGENTS.md asks for a JSON-RPC error carrying the rule ID; the MCP spec says clients only MAY show JSON-RPC errors to the model but SHOULD show results with isError. Needs an owner decision before milestone 7.
-tags: [issue, open, proxy, m7, decision-needed]
-timestamp: 2026-10-18T07:05:00Z
+tags: [issue, resolved, proxy, m7]
+timestamp: 2026-10-18T07:25:00Z
 ---
 
 # How the proxy should answer a denied `tools/call`
 
-**Status:** open. The owner must decide before [milestone 7](../milestones/index.md).
+**Status:** resolved on 2026-10-18. The owner chose option 2 ([decision](../decisions/proxy-denial-iserror.md)).
 
 The m7 acceptance check in AGENTS.md says a denied `tools/call` is "answered with a JSON-RPC error
 that carries the rule ID". The [format research](../research/external-formats.md) (§A4) found:

@@ -31,6 +31,7 @@ All secrets there are fake, and they appear masked (<code>****abcd</code>). Ever
 - [Quick start](#quick-start)
 - [What it finds](#what-it-finds)
 - [Runtime policy](#runtime-policy)
+- [Audit log and events](#audit-log-and-events)
 - [Architecture](#architecture)
 - [Design decisions](#design-decisions)
 - [Roadmap](#roadmap)
@@ -78,6 +79,7 @@ make build                     # CGO_ENABLED=0 go build ./cmd/...
 ./mcpgraph scan                # inventory + findings; exit code 2 if any finding is high
 ./mcpgraph report -f json      # findings only, for CI
 ./mcpgraph export -f mermaid   # graph as a Mermaid flowchart
+./mcpgraph events --verdict deny --since 24h   # runtime decisions from the audit log
 make docs                      # regenerate docs/logs and docs/images from real runs
 ```
 
@@ -199,10 +201,16 @@ The shipped policy, [`policies/default.yaml`](policies/default.yaml), is embedde
 | Rule | Matches | Verdict |
 | --- | --- | --- |
 | `block-destructive-sql` | `DROP TABLE`, `DROP DATABASE/SCHEMA`, `TRUNCATE`, `DELETE` without a limiting `WHERE` | deny |
-| `ask-recursive-delete` | `rm -r` / `-rf` / `--recursive` on a path that is not strictly inside the project directory | ask |
 | `block-secret-read` | any path under `~/.ssh/`, `~/.aws/credentials`, `.env` / `.env.*` (not `.env.example`) | deny |
+| `ask-recursive-delete` | `rm -r` / `-rf` / `--recursive` on a path that is not strictly inside the project directory | ask |
 | `ask-git-force-push` | `git push --force`, `-f`, `--force-with-lease`, `+refspec` | ask |
 | `ask-unknown-tool` | an MCP tool the last scan did not see (proxy only) | ask |
+
+Deny rules come first, so when an action matches both kinds the deny wins: `rm -rf ~/.ssh` is
+denied, not asked. When the proxy (milestone 7) blocks or asks, it answers `tools/call` with a
+normal result marked `isError: true`. The text names the rule and the reason, and `_meta` carries
+the rule ID. The MCP spec says clients *should* show tool errors to the model but only *may* show
+JSON-RPC errors, and the agent has to see why it was stopped.
 
 A rule looks like this:
 
@@ -248,6 +256,67 @@ test enforces that budget on every `make test`.
   <img src="docs/images/11-bench.svg" alt="make bench" width="80%">
 </p>
 
+## Audit log and events
+
+Every decision is appended as one JSON line to `audit.jsonl` in mcpgraph's data directory
+(`~/.local/share/mcpgraph`, or `~/Library/Application Support/mcpgraph` on macOS; override with
+`--data-dir`):
+
+```json
+{"time":"2026-10-18T09:01:00Z","source":"hook","agent":"claude-code","app":"Claude Code","tool":"Bash","summary":"PGPASSWORD=****dXyz psql -h db -c \"DROP TABLE users\"","rule_id":"block-destructive-sql","verdict":"deny","reason":"Destructive SQL is blocked: ..."}
+```
+
+- **Append-only.** The file is opened with `O_APPEND` and mode 0600, and each decision is a single
+  `write`. Every hook call is a separate process, and several proxies can log at once; the kernel
+  appends each line at the end of the file, so lines never overwrite each other. mcpgraph never
+  rewrites or truncates the file.
+- **Redacted twice.** The policy engine stores only the summary that `redact.Text` produced, and
+  `audit.Log.Append` redacts the summary and the reason again before writing. Redaction is
+  idempotent, so the second pass changes nothing that was already masked.
+- **Robust reading.** A torn last line (after a crash) or a malformed line is skipped and counted,
+  not fatal. Lines longer than `bufio.Scanner`'s 64 KiB default are accepted.
+
+`mcpgraph events` lists and filters decisions (`--verdict`, `--source`, `--agent`, `--tool`,
+`--rule`, `--since 24h|7d|RFC3339`, `-n`, `-f table|jsonl`):
+
+<p align="center">
+  <img src="docs/images/14-events.svg" alt="mcpgraph events" width="100%">
+</p>
+
+`scan`, `report` and `export` add the newest decisions (`--decisions`, default 50) to the graph as
+`Decision` nodes. The graph builder links each one with `DECIDED_ON`: a proxy decision to its MCP
+server, a hook decision to its AI app. Below are the decisions above on the fixture graph
+([`docs/logs/17-export-decisions-mermaid.log`](docs/logs/17-export-decisions-mermaid.log)):
+
+```mermaid
+flowchart LR
+  classDef AIApp fill:#dbeafe,stroke:#1d4ed8,color:#000000
+  classDef MCPServer fill:#ede9fe,stroke:#6d28d9,color:#000000
+  classDef Decision fill:#fce7f3,stroke:#be185d,color:#000000
+  n_AIApp_e6e695d8b633["AIApp<br/>Claude Code"]:::AIApp
+  n_Decision_5a40b3c6668c["Decision<br/>allow Bash"]:::Decision
+  n_Decision_645a5a65bd29["Decision<br/>deny Bash (block-secret-read)"]:::Decision
+  n_Decision_68869cc998bc["Decision<br/>deny read_file (block-secret-read)"]:::Decision
+  n_Decision_83d6460361e4["Decision<br/>allow query"]:::Decision
+  n_Decision_a19651063d3c["Decision<br/>ask Bash (ask-recursive-delete)"]:::Decision
+  n_Decision_a27401665883["Decision<br/>deny Bash (block-destructive-sql)"]:::Decision
+  n_Decision_c5f7ca59a919["Decision<br/>deny query (block-destructive-sql)"]:::Decision
+  n_MCPServer_b3a12a332024["MCPServer<br/>Claude Desktop / filesystem"]:::MCPServer
+  n_MCPServer_e88807ebc6c1["MCPServer<br/>Claude Desktop / postgres"]:::MCPServer
+  n_Decision_5a40b3c6668c -->|DECIDED_ON| n_AIApp_e6e695d8b633
+  n_Decision_645a5a65bd29 -->|DECIDED_ON| n_AIApp_e6e695d8b633
+  n_Decision_68869cc998bc -->|DECIDED_ON| n_MCPServer_b3a12a332024
+  n_Decision_83d6460361e4 -->|DECIDED_ON| n_MCPServer_e88807ebc6c1
+  n_Decision_a19651063d3c -->|DECIDED_ON| n_AIApp_e6e695d8b633
+  n_Decision_a27401665883 -->|DECIDED_ON| n_AIApp_e6e695d8b633
+  n_Decision_c5f7ca59a919 -->|DECIDED_ON| n_MCPServer_e88807ebc6c1
+```
+
+Until the proxy and the hook exist, decisions come from
+[`tools/replay`](tools/replay/main.go). It judges recorded actions
+([`testdata/actions/demo.jsonl`](testdata/actions/demo.jsonl)) with the shipped policy and appends
+them exactly as those paths will.
+
 ## Architecture
 
 ```mermaid
@@ -290,7 +359,9 @@ flowchart LR
 | `policies` | The shipped `default.yaml`, embedded with `//go:embed` |
 | `internal/report` | Inventory and findings tables, JSON, Mermaid |
 | `internal/sink` | `Sink` interface for a future central server; only a no-op exists |
+| `internal/audit` | Append-only JSONL decision log, filters, and the collector that turns decisions into graph nodes |
 | `tools/termsvg` | Renders terminal output as the SVG captures in this README |
+| `tools/replay` | Judges recorded actions and appends the decisions to an audit log (docs and tests) |
 
 ### Graph model
 
@@ -306,7 +377,7 @@ flowchart LR
   Srv -->|RUNS_AS| Proc
   Srv -->|USES_SECRET| Cred
   Srv -->|ACCESSES| DS
-  Dec["Decision (milestone 6)<br/>time · source · agent · tool · summary* · rule_id · verdict"]
+  Dec["Decision<br/>time · source · agent · tool · summary* · rule_id · verdict"]
   Proc -->|CHILD_OF| Proc
   Dec -->|DECIDED_ON| Srv
   Dec -->|DECIDED_ON| App
@@ -415,7 +486,7 @@ Tests never read the real machine. They build a fake `$HOME` in `t.TempDir()` fr
 
 | What | Test |
 | --- | --- |
-| No secret in any output (table, JSON, Mermaid, findings, diff) | `internal/scan/leak_test.go`, `cmd/mcpgraph/main_test.go` |
+| No secret in any output (table, JSON, Mermaid, findings, diff, audit log, events) | `internal/scan/leak_test.go`, `cmd/mcpgraph/main_test.go` |
 | Every posture rule: positive and negative cases | `internal/posture/r*_test.go` |
 | Concurrent producers, single writer (run with `-race`) | `internal/graph/builder_test.go` |
 | A `mcpgraph proxy -- ...` entry is recognised as proxied | `internal/collector/config/proxied_test.go` |
@@ -423,6 +494,9 @@ Tests never read the real machine. They build a fake `$HOME` in `t.TempDir()` fr
 | Fail closed on engine error, panic or timeout | `internal/policy/engine_test.go` |
 | No secret in a Decision (command, URL, headers, nested args) | `internal/policy/engine_test.go` |
 | Under 5 ms per decision | `internal/policy/bench_test.go` |
+| Audit log: append-only, 0600, concurrent writers, torn lines, long lines, redaction | `internal/audit/audit_test.go` |
+| Replayed decisions become Decision nodes with the right `DECIDED_ON` edges | `internal/scan/replay_test.go` |
+| `events` filters, formats and bad flags | `cmd/mcpgraph/events_test.go` |
 | Exit code 2 on high findings | `cmd/mcpgraph/main_test.go` |
 
 <p align="center">
@@ -451,18 +525,22 @@ GoReleaser builds the binary for darwin/linux × amd64/arm64 as a static, stripp
 | [10-release-build](docs/logs/10-release-build.log) | GoReleaser cross build + `file` output |
 | [11-bench](docs/logs/11-bench.log) | policy engine benchmark |
 | [12-policy-tests](docs/logs/12-policy-tests.log) | every runtime policy table case, by name |
+| [13-replay-decisions](docs/logs/13-replay-decisions.log) | recorded actions judged and appended to the audit log |
+| [14-events](docs/logs/14-events.log) · [15 deny as JSONL](docs/logs/15-events-deny-jsonl.log) | `mcpgraph events` |
+| [16-scan-with-decisions](docs/logs/16-scan-with-decisions.log) | scan with a *RECENT DECISIONS* section |
+| [17-export-decisions-mermaid](docs/logs/17-export-decisions-mermaid.log) | Decision nodes and their `DECIDED_ON` targets |
 
 Development history and design notes are kept in the [`wiki/`](wiki/index.md) knowledge bundle.
 
 ## Roadmap
 
-The spec is [`AGENTS.md`](AGENTS.md). Posture (milestones 1–4) and the policy engine (5) are done.
+The spec is [`AGENTS.md`](AGENTS.md). Posture (milestones 1–4), the policy engine (5) and the audit log (6) are done.
 
 | # | Milestone | Status |
 | --- | --- | --- |
 | 1–4 | Skeleton, discovery, redaction, graph + posture | done |
 | 5 | Policy engine: YAML policy, matchers, SQL classifier, `Engine.Decide` | done |
-| 6 | Append-only JSONL audit log, `mcpgraph events`, `Decision` nodes | planned |
+| 6 | Append-only JSONL audit log, `mcpgraph events`, `Decision` nodes | done |
 | 7 | `mcpgraph proxy -- <server>`: stdio MCP proxy that judges `tools/call` | planned |
 | 8 | `mcpgraph install` / `uninstall`: route servers through the proxy, with backups | planned |
 | 9 | `mcpgraph hook claude-code`: PreToolUse hook | planned |

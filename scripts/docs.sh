@@ -24,6 +24,7 @@ mkdir -p "$BIN" "$DEMO_HOME"
 cd "$ROOT"
 CGO_ENABLED=0 go build -o "$BIN/" ./cmd/mcpgraph
 go build -o "$BIN/termsvg" ./tools/termsvg
+go build -o "$BIN/replay" ./tools/replay
 export PATH=$BIN:$PATH
 
 # --- fake home --------------------------------------------------------------
@@ -94,6 +95,27 @@ log 05-export-fixtures-json.log "mcpgraph export -f json --home /home/dev --no-p
 } > "$LOGS/06-scan-real-machine.log"
 echo "wrote docs/logs/06-scan-real-machine.log"
 
+# --- runtime decisions: audit log, events, Decision nodes ------------------
+# tools/replay judges recorded actions with the shipped policy and appends
+# the decisions to the audit log, as `mcpgraph proxy` / `hook` will.
+DATA=$WORK/data
+log 13-replay-decisions.log "replay -data-dir /home/dev/.local/share/mcpgraph < testdata/actions/demo.jsonl" \
+	sh -c "replay -data-dir '$DATA' -home /home/dev < testdata/actions/demo.jsonl"
+log 14-events.log "mcpgraph events" mcpgraph events --data-dir "$DATA"
+log 15-events-deny-jsonl.log "mcpgraph events --verdict deny -f jsonl" mcpgraph events --data-dir "$DATA" --verdict deny -f jsonl
+log 16-scan-with-decisions.log "mcpgraph scan --home /home/dev --no-processes   # with the audit log above" \
+	mcpgraph scan --home "$DEMO_HOME" --no-processes --data-dir "$DATA"
+# Only the decision part of the graph: Decision nodes, the edges they
+# start and the nodes those edges point at (awk reads the export twice).
+mcpgraph export -f mermaid --home "$DEMO_HOME" --no-processes --data-dir "$DATA" > "$WORK/full.mmd"
+{
+	echo "\$ mcpgraph export -f mermaid   # Decision nodes and what they were decided on"
+	awk 'NR == FNR { if ($0 ~ /DECIDED_ON/) want[$NF] = 1; next }
+		/^flowchart|classDef (Decision|MCPServer|AIApp)|:::Decision|DECIDED_ON/ { print; next }
+		/\[/ { id = $1; sub(/\[.*/, "", id); if (id in want) print }' "$WORK/full.mmd" "$WORK/full.mmd"
+} | tidy > "$LOGS/17-export-decisions-mermaid.log"
+echo "wrote docs/logs/17-export-decisions-mermaid.log"
+
 # --- quality gates ----------------------------------------------------------
 log 07-go-test.log "go test -v ./..." go test -count=1 -v ./...
 log 08-go-test-summary.log "go test ./..." go test -count=1 ./...
@@ -118,6 +140,7 @@ svg 02-report-fixtures.log "mcpgraph report"
 svg 08-go-test-summary.log "go test"
 svg 09-lint.log "golangci-lint"
 svg 11-bench.log "make bench"
+svg 14-events.log "mcpgraph events"
 
 # --- hard rule 2: no fake secret may appear in any generated file ------------
 SECRETS=$(sed -n 's/^\t"\(.*\)",$/\1/p' internal/testutil/fakehome.go)

@@ -72,6 +72,12 @@ func Inventory(w io.Writer, g *model.Graph) error {
 		}
 	}
 
+	decisions := g.NodesOfKind(model.KindDecision)
+	if len(decisions) > 0 {
+		fmt.Fprintf(tw, "\nRECENT DECISIONS (%d)\n", len(decisions))
+		writeDecisionRows(tw, g, decisions)
+	}
+
 	if len(g.Warnings) > 0 {
 		fmt.Fprintf(tw, "\nWARNINGS (%d)\n", len(g.Warnings))
 		for _, warn := range g.Warnings {

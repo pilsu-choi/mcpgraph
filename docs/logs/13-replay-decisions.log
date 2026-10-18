@@ -1,0 +1,9 @@
+$ replay -data-dir /home/dev/.local/share/mcpgraph < testdata/actions/demo.jsonl
+allow  -                       hook   go test ./...
+deny   block-destructive-sql   hook   PGPASSWORD=****dXyz psql -h db -c "DROP TABLE users"
+deny   block-secret-read       hook   rm -rf ~/.ssh
+ask    ask-recursive-delete    hook   rm -rf /tmp/build-cache && git push --force
+allow  -                       proxy  SELECT id, email FROM users WHERE id = 7
+deny   block-destructive-sql   proxy  DELETE FROM users WHERE 1=1
+deny   block-secret-read       proxy  ~/.aws/credentials
+# exit code: 0

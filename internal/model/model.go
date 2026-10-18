@@ -166,11 +166,16 @@ const (
 // Decision is one runtime policy decision. Summary is redacted before the
 // Decision is created; the raw action text is never stored.
 type Decision struct {
-	Time    time.Time `json:"time"`
-	Source  string    `json:"source"`
-	Agent   string    `json:"agent"`
-	Tool    string    `json:"tool"`
-	Summary string    `json:"summary"`
+	Time   time.Time `json:"time"`
+	Source string    `json:"source"`
+	Agent  string    `json:"agent"`
+	// App is the AI app the action came from ("Claude Code", "Cursor"),
+	// when known. The graph uses Agent and App to draw DECIDED_ON edges:
+	// proxy decisions point at the MCP server named Agent (in App, if
+	// set), hook decisions point at the AIApp named App.
+	App     string `json:"app,omitempty"`
+	Tool    string `json:"tool"`
+	Summary string `json:"summary"`
 	// RuleID is the policy rule that matched, or "" when no rule matched
 	// and the policy default applied.
 	RuleID  string  `json:"rule_id,omitempty"`

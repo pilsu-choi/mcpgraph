@@ -44,3 +44,16 @@ func TestIsEnvAssignment(t *testing.T) {
 		}
 	}
 }
+
+func TestTextIsIdempotent(t *testing.T) {
+	for _, in := range []string{
+		`PGPASSWORD=FakePassw0rdXyz psql postgres://u:FakePassw0rdXyz@h/db`,
+		`curl -H "Authorization: Bearer Zx9Qw8Er7Ty6Ui5Op4As3Df2FAKE"`,
+		`server --api-key sk-ant-FAKE0123456789abcdefFAKE`,
+	} {
+		once := Text(in)
+		if twice := Text(once); twice != once {
+			t.Errorf("Text not idempotent:\n once  %q\n twice %q", once, twice)
+		}
+	}
+}

@@ -3,7 +3,7 @@ type: Log
 title: Work log
 description: Chronological history of work on mcpgraph, newest last.
 tags: [log, history]
-timestamp: 2026-10-18T07:15:00Z
+timestamp: 2026-10-18T07:25:00Z
 ---
 
 # Work log
@@ -76,4 +76,20 @@ Times are UTC. Each entry links to the page with the details.
   - Two classifier bugs were found by the tests ([lesson](lessons/sql-quote-and-prose.md)).
   - `Action.Cwd` was added ([decision](decisions/action-cwd.md)).
   - The README has a new *Runtime policy* section.
+- **07:20** CI run [39106767302](https://github.com/pilsu-choi/mcpgraph/actions/runs/39106767302)
+  passed on `f75d409` (m5), including `-race`.
+- **07:22** Owner decisions:
+  - proxy denials are `isError` results ([decision](decisions/proxy-denial-iserror.md), which
+    closes the [issue](issues/proxy-denial-format.md));
+  - deny rules come before ask rules ([decision](decisions/deny-before-ask.md)).
+
+  `default.yaml` was reordered, and AGENTS.md §15 updated.
+- **07:25** [v2 m6 audit log](milestones/v2-m6-audit-log.md):
+  - [`internal/audit`](components/audit.md), with `mcpgraph events`;
+  - Decision nodes linked with `DECIDED_ON`;
+  - `tools/replay`;
+  - the replay acceptance test and an extended leak test.
+
+  Redaction made idempotent ([lesson](lessons/redaction-idempotent.md)). README has a new *Audit log
+  and events* section, and docs logs 13–17 were added.
 

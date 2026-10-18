@@ -69,6 +69,7 @@ $ go test -run 'TestBlockDestructiveSQL|TestAskRecursiveDelete|TestBlockSecretRe
 --- PASS: TestBlockSecretRead/env_file_variant
 --- PASS: TestBlockSecretRead/flag_value
 --- PASS: TestBlockSecretRead/chained
+--- PASS: TestBlockSecretRead/deny_beats_ask:_recursive_delete_of_ssh
 --- PASS: TestBlockSecretRead/read_tool_ssh
 --- PASS: TestBlockSecretRead/read_tool_env
 --- PASS: TestBlockSecretRead/mcp_filesystem_tool
@@ -97,4 +98,4 @@ $ go test -run 'TestBlockDestructiveSQL|TestAskRecursiveDelete|TestBlockSecretRe
 --- PASS: TestAskUnknownTool/unknown_server
 --- PASS: TestAskUnknownTool/known_tool
 --- PASS: TestAskUnknownTool/hook_actions_are_not_MCP_tools
-ok  	github.com/pilsu-choi/mcpgraph/internal/policy	0.010s
+ok  	github.com/pilsu-choi/mcpgraph/internal/policy	0.008s

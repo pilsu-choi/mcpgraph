@@ -3,7 +3,7 @@ type: Index
 title: Components
 description: One page per Go package.
 tags: [component]
-timestamp: 2026-10-18T07:15:00Z
+timestamp: 2026-10-18T07:25:00Z
 ---
 
 # Components
@@ -16,13 +16,15 @@ timestamp: 2026-10-18T07:15:00Z
 | [`internal/graph`](graph-builder.md) | Single-writer builder, RUNS_AS linking and snapshot diff. |
 | [`internal/redact`](redact.md) | Secret detection and masking. |
 | [`internal/posture`](posture.md) | Posture rule interface, Default set (R1–R7), Evaluate and HasHigh. |
+| [`internal/audit`](audit.md) | Append-only JSONL decision log, filters, Decision-node collector. |
 | [`internal/policy`](policy.md) | Runtime policy engine: YAML, matchers, SQL classifier, Decide, fail-closed Judge. |
 | [`internal/report`](report.md) | Inventory and findings tables, JSON, Mermaid. |
 | [`internal/sink`](sink.md) | Interface for forwarding snapshots to a central server; only a no-op exists. |
 | [`tools/termsvg`](termsvg.md) | Renders terminal output as an SVG terminal window for README captures. |
 
-Command: `cmd/mcpgraph`, one cobra binary. `scan`, `report` and `export` work. `proxy`, `hook`,
-`install`, `uninstall` and `events` are stubs that name their milestone.
+Command: `cmd/mcpgraph`, one cobra binary. `scan`, `report` and `export` work. `events` reads the audit
+log. `proxy`, `hook`, `install` and `uninstall` are stubs that name their milestone.
+`tools/replay` judges recorded actions into an audit log, for the docs and tests.
 
 ## Archived (branch `archive/v1-daemon`)
 

@@ -1,0 +1,11 @@
+$ mcpgraph events
+DECISIONS (7)
+TIME (UTC)           VERDICT  RULE                   SOURCE  AGENT                        TOOL       ACTION
+2026-10-18 09:00:00  ALLOW    -                      hook    claude-code (Claude Code)    Bash       go test ./...
+2026-10-18 09:01:00  DENY     block-destructive-sql  hook    claude-code (Claude Code)    Bash       PGPASSWORD=****dXyz psql -h db -c "DROP TABLE users"
+2026-10-18 09:02:00  DENY     block-secret-read      hook    claude-code (Claude Code)    Bash       rm -rf ~/.ssh
+2026-10-18 09:03:00  ASK      ask-recursive-delete   hook    claude-code (Claude Code)    Bash       rm -rf /tmp/build-cache && git push --force
+2026-10-18 09:04:00  ALLOW    -                      proxy   postgres (Claude Desktop)    query      SELECT id, email FROM users WHERE id = 7
+2026-10-18 09:05:00  DENY     block-destructive-sql  proxy   postgres (Claude Desktop)    query      DELETE FROM users WHERE 1=1
+2026-10-18 09:06:00  DENY     block-secret-read      proxy   filesystem (Claude Desktop)  read_file  ~/.aws/credentials
+# exit code: 0

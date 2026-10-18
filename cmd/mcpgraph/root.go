@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"path/filepath"
 	"runtime"
 
 	"github.com/spf13/cobra"
 
+	"github.com/pilsu-choi/mcpgraph/internal/audit"
 	"github.com/pilsu-choi/mcpgraph/internal/collector"
 	"github.com/pilsu-choi/mcpgraph/internal/collector/config"
 	"github.com/pilsu-choi/mcpgraph/internal/collector/process"
@@ -23,6 +25,37 @@ type options struct {
 	home        string
 	verbose     bool
 	noProcesses bool
+	dataDir     string
+	decisions   int
+}
+
+// homeDir returns --home, or the current user's home directory.
+func (o *options) homeDir() (string, error) {
+	if o.home != "" {
+		return o.home, nil
+	}
+	h, err := os.UserHomeDir()
+	if err != nil {
+		return "", fmt.Errorf("find home directory: %w", err)
+	}
+	return h, nil
+}
+
+// auditPath returns the audit log path: --data-dir, else the default data
+// directory. With --home set, $XDG_DATA_HOME is ignored so a fake home
+// never reads the real user's log.
+func (o *options) auditPath() (string, error) {
+	if o.dataDir != "" {
+		return filepath.Join(o.dataDir, audit.FileName), nil
+	}
+	home, err := o.homeDir()
+	if err != nil {
+		return "", err
+	}
+	if o.home != "" {
+		return filepath.Join(home, ".local", "share", "mcpgraph", audit.FileName), nil
+	}
+	return filepath.Join(audit.DefaultDataDir(home), audit.FileName), nil
 }
 
 // newRootCmd builds the command tree. Building it in a function (instead of
@@ -47,9 +80,11 @@ func newRootCmd() *cobra.Command {
 	root.PersistentFlags().StringVar(&opts.home, "home", "", "home directory to scan (default: current user's home)")
 	root.PersistentFlags().BoolVarP(&opts.verbose, "verbose", "v", false, "debug logging")
 	root.PersistentFlags().BoolVar(&opts.noProcesses, "no-processes", false, "skip process discovery")
+	root.PersistentFlags().StringVar(&opts.dataDir, "data-dir", "", "mcpgraph data directory holding audit.jsonl (default: ~/.local/share/mcpgraph, macOS ~/Library/Application Support/mcpgraph)")
+	root.PersistentFlags().IntVar(&opts.decisions, "decisions", audit.DefaultGraphLimit, "recent audit decisions to add to the graph (0 = none)")
 
 	root.AddCommand(newScanCmd(opts), newReportCmd(opts), newExportCmd(opts))
-	root.AddCommand(newProxyCmd(), newHookCmd(), newInstallCmd(), newUninstallCmd(), newEventsCmd())
+	root.AddCommand(newProxyCmd(), newHookCmd(), newInstallCmd(), newUninstallCmd(), newEventsCmd(opts))
 	return root
 }
 
@@ -150,13 +185,9 @@ type scanResult struct {
 
 // runScan runs every collector once, then the rules.
 func runScan(ctx context.Context, opts *options) (scanResult, error) {
-	home := opts.home
-	if home == "" {
-		h, err := os.UserHomeDir()
-		if err != nil {
-			return scanResult{}, fmt.Errorf("find home directory: %w", err)
-		}
-		home = h
+	home, err := opts.homeDir()
+	if err != nil {
+		return scanResult{}, err
 	}
 	collectors := []collector.Collector{
 		collector.Host{},
@@ -164,6 +195,13 @@ func runScan(ctx context.Context, opts *options) (scanResult, error) {
 	}
 	if !opts.noProcesses {
 		collectors = append(collectors, process.New())
+	}
+	if opts.decisions > 0 {
+		path, err := opts.auditPath()
+		if err != nil {
+			return scanResult{}, err
+		}
+		collectors = append(collectors, audit.Collector{Path: path, Limit: opts.decisions})
 	}
 	g, err := scan.Run(ctx, collectors)
 	if err != nil {

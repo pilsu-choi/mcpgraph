@@ -1,0 +1,7 @@
+{"time":"2026-10-18T09:00:00Z","source":"hook","agent":"claude-code","app":"Claude Code","tool":"Bash","cwd":"/work/app","text":"go test ./..."}
+{"time":"2026-10-18T09:01:00Z","source":"hook","agent":"claude-code","app":"Claude Code","tool":"Bash","cwd":"/work/app","text":"PGPASSWORD=FakePassw0rdXyz psql -h db -c \"DROP TABLE users\""}
+{"time":"2026-10-18T09:02:00Z","source":"hook","agent":"claude-code","app":"Claude Code","tool":"Bash","cwd":"/work/app","text":"rm -rf ~/.ssh"}
+{"time":"2026-10-18T09:03:00Z","source":"hook","agent":"claude-code","app":"Claude Code","tool":"Bash","cwd":"/work/app","text":"rm -rf /tmp/build-cache && git push --force"}
+{"time":"2026-10-18T09:04:00Z","source":"proxy","agent":"postgres","app":"Claude Desktop","tool":"query","args":{"sql":"SELECT id, email FROM users WHERE id = 7"}}
+{"time":"2026-10-18T09:05:00Z","source":"proxy","agent":"postgres","app":"Claude Desktop","tool":"query","args":{"sql":"DELETE FROM users WHERE 1=1"}}
+{"time":"2026-10-18T09:06:00Z","source":"proxy","agent":"filesystem","app":"Claude Desktop","tool":"read_file","args":{"path":"~/.aws/credentials"}}

@@ -234,7 +234,7 @@ Stop and ask the owner instead of guessing on: external formats (section 3, rule
 - One concept per file. Link pages with relative Markdown links. Every directory has an `index.md`.
 - If the change affects outputs, run `make docs` so `docs/logs` and `docs/images` stay current.
 
-## 15. Owner decisions (recorded 2026-10-18)
+## 15. Owner decisions (recorded 2026-10-18; these override earlier sections)
 
 - **v1 daemon archived.** The v1 daemon, SQLite store, localhost API and fsnotify watcher live on the
   `archive/v1-daemon` branch. They come back only for milestone 12 (stretch). `fsnotify` and
@@ -244,3 +244,10 @@ Stop and ask the owner instead of guessing on: external formats (section 3, rule
 - **Demo database is PostgreSQL.**
 - **`make docs`** regenerates `docs/logs` and `docs/images` (the v1 `make demo`); `make demo` is the
   DROP TABLE demo from milestone 10.
+- **Proxy denials use `isError` results** (supersedes the "JSON-RPC error" wording in milestone 7).
+  A denied or ask-ed `tools/call` is answered with a normal result, `isError: true`, a text item
+  that names the rule and the reason, and the rule ID and verdict in `_meta`. The MCP spec says
+  clients SHOULD show tool errors to the model but only MAY show JSON-RPC errors; the agent must
+  see why it was blocked.
+- **Deny rules before ask rules** in `policies/default.yaml` (first match wins), so for example
+  `rm -rf ~/.ssh` is denied rather than asked.

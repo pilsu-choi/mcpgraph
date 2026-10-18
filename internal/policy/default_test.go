@@ -160,6 +160,7 @@ func TestBlockSecretRead(t *testing.T) {
 		{"env file variant", bash(`grep KEY ./config/.env.production`), true},
 		{"flag value", bash(`docker run --env-file=.env app`), true},
 		{"chained", bash(`ls && cat .env`), true},
+		{"deny beats ask: recursive delete of ssh", bash(`rm -rf ~/.ssh`), true},
 		{"read tool ssh", read("/home/u/.ssh/config"), true},
 		{"read tool env", read("/home/u/proj/.env"), true},
 		{"mcp filesystem tool", Action{Source: model.SourceProxy, Agent: "postgres", Tool: "query", Args: map[string]any{"path": "~/.aws/credentials"}}, true},

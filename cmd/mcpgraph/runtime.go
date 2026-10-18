@@ -50,11 +50,3 @@ func newUninstallCmd() *cobra.Command {
 		RunE:  notYet("m8"),
 	}
 }
-
-func newEventsCmd() *cobra.Command {
-	return &cobra.Command{
-		Use:   "events",
-		Short: "List and filter runtime decisions from the audit log",
-		RunE:  notYet("m6"),
-	}
-}

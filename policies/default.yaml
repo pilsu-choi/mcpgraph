@@ -2,7 +2,8 @@
 #
 # Every action an agent is about to take (an MCP tools/call seen by
 # `mcpgraph proxy`, or a tool use seen by `mcpgraph hook`) is checked
-# against these rules in order. The first rule that matches decides:
+# against these rules in order. The first rule that matches decides, so
+# deny rules come before ask rules: `rm -rf ~/.ssh` is denied, not asked.
 #
 #   allow  run it
 #   deny   do not run it; the agent is told the reason
@@ -25,14 +26,6 @@ rules:
     match:
       sql: [drop_table, drop_database, truncate, delete_without_where]
 
-  - id: ask-recursive-delete
-    verdict: ask
-    reason: >-
-      Recursive delete (rm -r) of a path outside the current project
-      directory needs approval.
-    match:
-      recursive_delete: outside_project
-
   - id: block-secret-read
     verdict: deny
     reason: >-
@@ -48,6 +41,14 @@ rules:
         - "**/.env.example"
         - "**/.env.sample"
         - "**/.env.template"
+
+  - id: ask-recursive-delete
+    verdict: ask
+    reason: >-
+      Recursive delete (rm -r) of a path outside the current project
+      directory needs approval.
+    match:
+      recursive_delete: outside_project
 
   - id: ask-git-force-push
     verdict: ask
