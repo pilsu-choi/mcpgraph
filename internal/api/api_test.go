@@ -11,8 +11,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
-	"github.com/pilsuchoi/mcpgraph/internal/store"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/store"
 )
 
 type fakeState struct {

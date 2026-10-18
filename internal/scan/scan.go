@@ -7,9 +7,9 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
-	"github.com/pilsuchoi/mcpgraph/internal/collector"
-	"github.com/pilsuchoi/mcpgraph/internal/graph"
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/collector"
+	"github.com/pilsu-choi/mcpgraph/internal/graph"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // Run starts every collector in its own goroutine, feeds their events to a

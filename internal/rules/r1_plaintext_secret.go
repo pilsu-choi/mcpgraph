@@ -3,7 +3,7 @@ package rules
 import (
 	"fmt"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // PlaintextSecret (R1) flags secrets written literally into an MCP

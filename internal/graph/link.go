@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // linkProcesses adds RUNS_AS edges from declared stdio MCP servers to the

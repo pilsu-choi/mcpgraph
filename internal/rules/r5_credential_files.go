@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // CredentialFiles (R5) flags well-known credential files that sit inside a

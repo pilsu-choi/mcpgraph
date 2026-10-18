@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // Collector discovers part of the graph and sends it as Events.

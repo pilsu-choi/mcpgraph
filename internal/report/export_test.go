@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 func sampleGraph() *model.Graph {

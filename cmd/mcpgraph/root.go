@@ -9,13 +9,13 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/pilsuchoi/mcpgraph/internal/collector"
-	"github.com/pilsuchoi/mcpgraph/internal/collector/config"
-	"github.com/pilsuchoi/mcpgraph/internal/collector/process"
-	"github.com/pilsuchoi/mcpgraph/internal/model"
-	"github.com/pilsuchoi/mcpgraph/internal/report"
-	"github.com/pilsuchoi/mcpgraph/internal/rules"
-	"github.com/pilsuchoi/mcpgraph/internal/scan"
+	"github.com/pilsu-choi/mcpgraph/internal/collector"
+	"github.com/pilsu-choi/mcpgraph/internal/collector/config"
+	"github.com/pilsu-choi/mcpgraph/internal/collector/process"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/report"
+	"github.com/pilsu-choi/mcpgraph/internal/rules"
+	"github.com/pilsu-choi/mcpgraph/internal/scan"
 )
 
 // options holds flags shared by every subcommand.

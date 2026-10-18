@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
-	"github.com/pilsuchoi/mcpgraph/internal/netutil"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/netutil"
 )
 
 // PlainHTTP (R4) flags remote MCP servers reached over unencrypted HTTP.

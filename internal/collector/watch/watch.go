@@ -11,8 +11,8 @@ import (
 
 	"github.com/fsnotify/fsnotify"
 
-	"github.com/pilsuchoi/mcpgraph/internal/collector/config"
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/collector/config"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // DefaultDebounce is how long to wait after the last change to a file

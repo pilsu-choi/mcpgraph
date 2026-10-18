@@ -8,7 +8,7 @@ package sink
 import (
 	"context"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // Sink receives every new snapshot.

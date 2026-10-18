@@ -1,4 +1,4 @@
-module github.com/pilsuchoi/mcpgraph
+module github.com/pilsu-choi/mcpgraph
 
 go 1.27.2
 

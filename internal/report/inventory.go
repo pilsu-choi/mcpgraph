@@ -9,7 +9,7 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // Inventory writes a human-readable list of apps, servers and processes.
@@ -25,6 +25,12 @@ func Inventory(w io.Writer, g *model.Graph) error {
 	}
 
 	apps := g.NodesOfKind(model.KindAIApp)
+	sort.Slice(apps, func(i, j int) bool {
+		if apps[i].App.Name != apps[j].App.Name {
+			return apps[i].App.Name < apps[j].App.Name
+		}
+		return apps[i].App.ConfigPath < apps[j].App.ConfigPath
+	})
 	fmt.Fprintf(tw, "AI APPS (%d)\n", len(apps))
 	if len(apps) > 0 {
 		fmt.Fprintln(tw, "APP\tSERVERS\tCONFIG")
@@ -91,7 +97,7 @@ func accesses(g *model.Graph, serverID string) string {
 	if len(parts) == 0 {
 		return "-"
 	}
-	return truncate(strings.Join(parts, ", "), 50)
+	return truncate(strings.Join(parts, ", "), 70)
 }
 
 func pids(g *model.Graph, serverID string) string {

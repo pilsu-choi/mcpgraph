@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/pilsuchoi/mcpgraph/internal/testutil"
+	"github.com/pilsu-choi/mcpgraph/internal/testutil"
 )
 
 func TestParsers(t *testing.T) {

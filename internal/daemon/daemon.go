@@ -11,16 +11,16 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
-	"github.com/pilsuchoi/mcpgraph/internal/collector"
-	"github.com/pilsuchoi/mcpgraph/internal/collector/config"
-	"github.com/pilsuchoi/mcpgraph/internal/collector/process"
-	"github.com/pilsuchoi/mcpgraph/internal/collector/watch"
-	"github.com/pilsuchoi/mcpgraph/internal/graph"
-	"github.com/pilsuchoi/mcpgraph/internal/model"
-	"github.com/pilsuchoi/mcpgraph/internal/rules"
-	"github.com/pilsuchoi/mcpgraph/internal/scan"
-	"github.com/pilsuchoi/mcpgraph/internal/sink"
-	"github.com/pilsuchoi/mcpgraph/internal/store"
+	"github.com/pilsu-choi/mcpgraph/internal/collector"
+	"github.com/pilsu-choi/mcpgraph/internal/collector/config"
+	"github.com/pilsu-choi/mcpgraph/internal/collector/process"
+	"github.com/pilsu-choi/mcpgraph/internal/collector/watch"
+	"github.com/pilsu-choi/mcpgraph/internal/graph"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/rules"
+	"github.com/pilsu-choi/mcpgraph/internal/scan"
+	"github.com/pilsu-choi/mcpgraph/internal/sink"
+	"github.com/pilsu-choi/mcpgraph/internal/store"
 )
 
 // Options configures a Daemon.

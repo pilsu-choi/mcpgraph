@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/pilsuchoi/mcpgraph/internal/graph"
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/graph"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 func openTemp(t *testing.T) *Store {

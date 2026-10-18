@@ -3,7 +3,7 @@ package rules
 import (
 	"testing"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 func proc(id string, pid int32, mcp bool) model.Node {

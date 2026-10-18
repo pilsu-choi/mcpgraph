@@ -3,7 +3,7 @@ package rules
 import (
 	"testing"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // graphBuilder makes small graphs for rule tests.

@@ -13,8 +13,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
-	"github.com/pilsuchoi/mcpgraph/internal/store"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/store"
 )
 
 // LoopbackIP is the only address the API may bind (AGENTS.md hard rule 3).

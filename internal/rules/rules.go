@@ -7,7 +7,7 @@ package rules
 import (
 	"sort"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // Rule inspects a graph and returns findings.

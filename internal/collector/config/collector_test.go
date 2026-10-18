@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
-	"github.com/pilsuchoi/mcpgraph/internal/testutil"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/testutil"
 )
 
 // collectAll runs the collector and returns every event it sent.

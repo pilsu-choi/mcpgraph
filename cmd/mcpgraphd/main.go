@@ -16,9 +16,9 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
-	"github.com/pilsuchoi/mcpgraph/internal/api"
-	"github.com/pilsuchoi/mcpgraph/internal/daemon"
-	"github.com/pilsuchoi/mcpgraph/internal/store"
+	"github.com/pilsu-choi/mcpgraph/internal/api"
+	"github.com/pilsu-choi/mcpgraph/internal/daemon"
+	"github.com/pilsu-choi/mcpgraph/internal/store"
 )
 
 func main() {

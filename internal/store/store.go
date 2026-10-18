@@ -19,8 +19,8 @@ import (
 	// "sqlite" driver with database/sql. We never call it directly.
 	_ "modernc.org/sqlite"
 
-	"github.com/pilsuchoi/mcpgraph/internal/graph"
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/graph"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // DefaultKeep is how many snapshots are kept before old ones are pruned.

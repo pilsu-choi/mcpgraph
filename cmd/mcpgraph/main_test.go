@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pilsuchoi/mcpgraph/internal/testutil"
+	"github.com/pilsu-choi/mcpgraph/internal/testutil"
 )
 
 // run executes the CLI in-process with a fake home and no process scan.

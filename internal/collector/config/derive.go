@@ -4,8 +4,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
-	"github.com/pilsuchoi/mcpgraph/internal/redact"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/redact"
 )
 
 // deriver accumulates the nodes and edges produced from one config file.

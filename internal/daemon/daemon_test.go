@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/pilsuchoi/mcpgraph/internal/store"
-	"github.com/pilsuchoi/mcpgraph/internal/testutil"
+	"github.com/pilsu-choi/mcpgraph/internal/store"
+	"github.com/pilsu-choi/mcpgraph/internal/testutil"
 )
 
 // syncBuffer is a bytes.Buffer safe for use from several goroutines: the

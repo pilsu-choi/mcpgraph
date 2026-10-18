@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // Change types.

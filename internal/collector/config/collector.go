@@ -12,7 +12,7 @@ import (
 	"io/fs"
 	"os"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // maxConfigSize caps how much of a config file we read. ~/.claude.json can

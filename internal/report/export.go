@@ -6,7 +6,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // JSON writes v as indented JSON.

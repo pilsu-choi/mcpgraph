@@ -3,7 +3,7 @@ package rules
 import (
 	"fmt"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // ShadowServer (R6) flags running processes that look like MCP servers but

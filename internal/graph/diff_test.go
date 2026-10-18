@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 func server(id, name, app, cmd string) model.Node {

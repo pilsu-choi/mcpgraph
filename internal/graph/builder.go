@@ -6,7 +6,7 @@ import (
 	"context"
 	"sort"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // Builder merges collector events into a graph.

@@ -13,8 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
-	"github.com/pilsuchoi/mcpgraph/internal/redact"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/redact"
 )
 
 // Source is the Event.Source used for process events.

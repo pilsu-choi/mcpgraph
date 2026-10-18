@@ -5,7 +5,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/pilsuchoi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/model"
 )
 
 // Findings writes findings grouped by severity, most severe first.
