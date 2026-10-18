@@ -1,4 +1,4 @@
-# generated: 2026-10-18T07:19:26Z
-# commit:    f75d409-dirty (docs: refresh run logs at m5)
+# generated: 2026-10-18T07:21:12Z
+# commit:    fc53792 (m6: audit log, events and Decision nodes)
 # go:        go version go1.27.2 linux/amd64
 # os:        Linux 5.15.167.4-microsoft-standard-WSL2 x86_64

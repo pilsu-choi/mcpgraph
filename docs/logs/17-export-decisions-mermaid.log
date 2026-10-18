@@ -3,7 +3,7 @@ flowchart LR
   classDef AIApp fill:#dbeafe,stroke:#1d4ed8,color:#000000
   classDef MCPServer fill:#ede9fe,stroke:#6d28d9,color:#000000
   classDef Decision fill:#fce7f3,stroke:#be185d,color:#000000
-  n_AIApp_e6e695d8b633["AIApp<br/>Claude Code"]:::AIApp
+  n_AIApp_7bb3b30fd8fe["AIApp<br/>Claude Code"]:::AIApp
   n_Decision_5a40b3c6668c["Decision<br/>allow Bash"]:::Decision
   n_Decision_645a5a65bd29["Decision<br/>deny Bash (block-secret-read)"]:::Decision
   n_Decision_68869cc998bc["Decision<br/>deny read_file (block-secret-read)"]:::Decision
@@ -11,12 +11,12 @@ flowchart LR
   n_Decision_a19651063d3c["Decision<br/>ask Bash (ask-recursive-delete)"]:::Decision
   n_Decision_a27401665883["Decision<br/>deny Bash (block-destructive-sql)"]:::Decision
   n_Decision_c5f7ca59a919["Decision<br/>deny query (block-destructive-sql)"]:::Decision
-  n_MCPServer_b3a12a332024["MCPServer<br/>Claude Desktop / filesystem"]:::MCPServer
-  n_MCPServer_e88807ebc6c1["MCPServer<br/>Claude Desktop / postgres"]:::MCPServer
-  n_Decision_5a40b3c6668c -->|DECIDED_ON| n_AIApp_e6e695d8b633
-  n_Decision_645a5a65bd29 -->|DECIDED_ON| n_AIApp_e6e695d8b633
-  n_Decision_68869cc998bc -->|DECIDED_ON| n_MCPServer_b3a12a332024
-  n_Decision_83d6460361e4 -->|DECIDED_ON| n_MCPServer_e88807ebc6c1
-  n_Decision_a19651063d3c -->|DECIDED_ON| n_AIApp_e6e695d8b633
-  n_Decision_a27401665883 -->|DECIDED_ON| n_AIApp_e6e695d8b633
-  n_Decision_c5f7ca59a919 -->|DECIDED_ON| n_MCPServer_e88807ebc6c1
+  n_MCPServer_c344a1e1441b["MCPServer<br/>Claude Desktop / filesystem"]:::MCPServer
+  n_MCPServer_ee354d1f3506["MCPServer<br/>Claude Desktop / postgres"]:::MCPServer
+  n_Decision_5a40b3c6668c -->|DECIDED_ON| n_AIApp_7bb3b30fd8fe
+  n_Decision_645a5a65bd29 -->|DECIDED_ON| n_AIApp_7bb3b30fd8fe
+  n_Decision_68869cc998bc -->|DECIDED_ON| n_MCPServer_c344a1e1441b
+  n_Decision_83d6460361e4 -->|DECIDED_ON| n_MCPServer_ee354d1f3506
+  n_Decision_a19651063d3c -->|DECIDED_ON| n_AIApp_7bb3b30fd8fe
+  n_Decision_a27401665883 -->|DECIDED_ON| n_AIApp_7bb3b30fd8fe
+  n_Decision_c5f7ca59a919 -->|DECIDED_ON| n_MCPServer_ee354d1f3506

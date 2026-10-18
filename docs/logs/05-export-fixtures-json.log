@@ -2,34 +2,7 @@ $ mcpgraph export -f json --home /home/dev --no-processes
 {
   "nodes": [
     {
-      "id": "AIApp:8a2199e92745",
-      "kind": "AIApp",
-      "label": "Claude Desktop",
-      "app": {
-        "name": "Claude Desktop",
-        "config_path": "/home/dev/.config/Claude/claude_desktop_config.json"
-      }
-    },
-    {
-      "id": "AIApp:dafdd5c6fb4a",
-      "kind": "AIApp",
-      "label": "Cursor",
-      "app": {
-        "name": "Cursor",
-        "config_path": "/home/dev/.cursor/mcp.json"
-      }
-    },
-    {
-      "id": "AIApp:e6e695d8b633",
-      "kind": "AIApp",
-      "label": "Claude Code",
-      "app": {
-        "name": "Claude Code",
-        "config_path": "/home/dev/.claude.json"
-      }
-    },
-    {
-      "id": "AIApp:fcbf5df262da",
+      "id": "AIApp:06f352b333b1",
       "kind": "AIApp",
       "label": "VS Code",
       "app": {
@@ -38,18 +11,34 @@ $ mcpgraph export -f json --home /home/dev --no-processes
       }
     },
     {
-      "id": "Credential:25c1e4cb73ce",
-      "kind": "Credential",
-      "label": "envFile",
-      "credential": {
-        "kind": "file",
-        "key_name": "envFile",
-        "location": "/home/dev/.config/Code/User/mcp.json#$.servers.custom.envFile",
-        "reason": "env file ${workspaceFolder}/.env"
+      "id": "AIApp:4ee87cf97cc9",
+      "kind": "AIApp",
+      "label": "Cursor",
+      "app": {
+        "name": "Cursor",
+        "config_path": "/home/dev/.cursor/mcp.json"
       }
     },
     {
-      "id": "Credential:25da6b6aa3c3",
+      "id": "AIApp:5ddfa3773958",
+      "kind": "AIApp",
+      "label": "Claude Desktop",
+      "app": {
+        "name": "Claude Desktop",
+        "config_path": "/home/dev/.config/Claude/claude_desktop_config.json"
+      }
+    },
+    {
+      "id": "AIApp:7bb3b30fd8fe",
+      "kind": "AIApp",
+      "label": "Claude Code",
+      "app": {
+        "name": "Claude Code",
+        "config_path": "/home/dev/.claude.json"
+      }
+    },
+    {
+      "id": "Credential:2092510eaed1",
       "kind": "Credential",
       "label": "url",
       "credential": {
@@ -60,51 +49,7 @@ $ mcpgraph export -f json --home /home/dev --no-processes
       }
     },
     {
-      "id": "Credential:3fa6c0d33429",
-      "kind": "Credential",
-      "label": "args[2]",
-      "credential": {
-        "kind": "inline",
-        "key_name": "args[2]",
-        "location": "/home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.postgres.args[2]",
-        "reason": "password or token inside a URL"
-      }
-    },
-    {
-      "id": "Credential:472a343cf11b",
-      "kind": "Credential",
-      "label": "SLACK_BOT_TOKEN",
-      "credential": {
-        "kind": "inline",
-        "key_name": "SLACK_BOT_TOKEN",
-        "location": "/home/dev/.claude.json#$.projects[\"/work/app\"].mcpServers.slack.env.SLACK_BOT_TOKEN",
-        "reason": "known token prefix xoxb-"
-      }
-    },
-    {
-      "id": "Credential:65dab4f1b5a9",
-      "kind": "Credential",
-      "label": "GIT_TOKEN",
-      "credential": {
-        "kind": "env",
-        "key_name": "GIT_TOKEN",
-        "location": "/home/dev/.cursor/mcp.json#$.mcpServers.git.env.GIT_TOKEN",
-        "reason": "value is read from the environment"
-      }
-    },
-    {
-      "id": "Credential:8a30e9d1a30a",
-      "kind": "Credential",
-      "label": "API_KEY",
-      "credential": {
-        "kind": "inline",
-        "key_name": "API_KEY",
-        "location": "/home/dev/.config/Code/User/mcp.json#$.servers.custom.env.API_KEY",
-        "reason": "secret-named key API_KEY"
-      }
-    },
-    {
-      "id": "Credential:9178249da0ae",
+      "id": "Credential:4759fb843af0",
       "kind": "Credential",
       "label": "GITHUB_PERSONAL_ACCESS_TOKEN",
       "credential": {
@@ -115,18 +60,7 @@ $ mcpgraph export -f json --home /home/dev --no-processes
       }
     },
     {
-      "id": "Credential:9f5ff0070454",
-      "kind": "Credential",
-      "label": "Authorization",
-      "credential": {
-        "kind": "env",
-        "key_name": "Authorization",
-        "location": "/home/dev/.config/Code/User/mcp.json#$.servers.github-remote.headers.Authorization",
-        "reason": "value is read from the environment"
-      }
-    },
-    {
-      "id": "Credential:f30bcfe321a1",
+      "id": "Credential:64215f33a01b",
       "kind": "Credential",
       "label": "--api-key",
       "credential": {
@@ -134,6 +68,72 @@ $ mcpgraph export -f json --home /home/dev --no-processes
         "key_name": "--api-key",
         "location": "/home/dev/.config/Code/User/mcp.json#$.servers.custom.args[2]",
         "reason": "known token prefix sk-ant-"
+      }
+    },
+    {
+      "id": "Credential:71bc31839197",
+      "kind": "Credential",
+      "label": "args[2]",
+      "credential": {
+        "kind": "inline",
+        "key_name": "args[2]",
+        "location": "/home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.postgres.args[2]",
+        "reason": "password or token inside a URL"
+      }
+    },
+    {
+      "id": "Credential:b9b13b061c02",
+      "kind": "Credential",
+      "label": "envFile",
+      "credential": {
+        "kind": "file",
+        "key_name": "envFile",
+        "location": "/home/dev/.config/Code/User/mcp.json#$.servers.custom.envFile",
+        "reason": "env file ${workspaceFolder}/.env"
+      }
+    },
+    {
+      "id": "Credential:cc7ce0458752",
+      "kind": "Credential",
+      "label": "SLACK_BOT_TOKEN",
+      "credential": {
+        "kind": "inline",
+        "key_name": "SLACK_BOT_TOKEN",
+        "location": "/home/dev/.claude.json#$.projects[\"/work/app\"].mcpServers.slack.env.SLACK_BOT_TOKEN",
+        "reason": "known token prefix xoxb-"
+      }
+    },
+    {
+      "id": "Credential:da004b83878c",
+      "kind": "Credential",
+      "label": "GIT_TOKEN",
+      "credential": {
+        "kind": "env",
+        "key_name": "GIT_TOKEN",
+        "location": "/home/dev/.cursor/mcp.json#$.mcpServers.git.env.GIT_TOKEN",
+        "reason": "value is read from the environment"
+      }
+    },
+    {
+      "id": "Credential:dafa58103e0d",
+      "kind": "Credential",
+      "label": "API_KEY",
+      "credential": {
+        "kind": "inline",
+        "key_name": "API_KEY",
+        "location": "/home/dev/.config/Code/User/mcp.json#$.servers.custom.env.API_KEY",
+        "reason": "secret-named key API_KEY"
+      }
+    },
+    {
+      "id": "Credential:f64590c84d15",
+      "kind": "Credential",
+      "label": "Authorization",
+      "credential": {
+        "kind": "env",
+        "key_name": "Authorization",
+        "location": "/home/dev/.config/Code/User/mcp.json#$.servers.github-remote.headers.Authorization",
+        "reason": "value is read from the environment"
       }
     },
     {
@@ -155,7 +155,7 @@ $ mcpgraph export -f json --home /home/dev --no-processes
       }
     },
     {
-      "id": "DataSource:48ce79a80858",
+      "id": "DataSource:450deae2bf89",
       "kind": "DataSource",
       "label": "/home/dev/code/project",
       "data_source": {
@@ -164,7 +164,7 @@ $ mcpgraph export -f json --home /home/dev --no-processes
       }
     },
     {
-      "id": "DataSource:59af6780be75",
+      "id": "DataSource:5cf745539097",
       "kind": "DataSource",
       "label": "/home/dev",
       "data_source": {
@@ -225,23 +225,11 @@ $ mcpgraph export -f json --home /home/dev --no-processes
         "hostname": "devbox",
         "os": "linux",
         "arch": "amd64",
-        "scanned_at": "2026-10-18T07:19:26Z"
+        "scanned_at": "2026-10-18T07:21:13Z"
       }
     },
     {
-      "id": "MCPServer:33023b2b2d00",
-      "kind": "MCPServer",
-      "label": "local-http",
-      "server": {
-        "name": "local-http",
-        "app": "Cursor",
-        "transport": "http",
-        "url": "http://localhost:3000/mcp",
-        "source_config": "/home/dev/.cursor/mcp.json"
-      }
-    },
-    {
-      "id": "MCPServer:37cd7016f3e4",
+      "id": "MCPServer:070518059353",
       "kind": "MCPServer",
       "label": "github",
       "server": {
@@ -260,51 +248,7 @@ $ mcpgraph export -f json --home /home/dev --no-processes
       }
     },
     {
-      "id": "MCPServer:3d250d03dfbd",
-      "kind": "MCPServer",
-      "label": "github-remote",
-      "server": {
-        "name": "github-remote",
-        "app": "VS Code",
-        "transport": "http",
-        "url": "https://api.githubcopilot.com/mcp/",
-        "source_config": "/home/dev/.config/Code/User/mcp.json"
-      }
-    },
-    {
-      "id": "MCPServer:6946abc4e384",
-      "kind": "MCPServer",
-      "label": "git",
-      "server": {
-        "name": "git",
-        "app": "Cursor",
-        "command": "uvx",
-        "args": [
-          "mcp-server-git",
-          "--repository",
-          "~/code/project"
-        ],
-        "env_keys": [
-          "GIT_TOKEN"
-        ],
-        "transport": "stdio",
-        "source_config": "/home/dev/.cursor/mcp.json"
-      }
-    },
-    {
-      "id": "MCPServer:7683c09991f3",
-      "kind": "MCPServer",
-      "label": "remote-insecure",
-      "server": {
-        "name": "remote-insecure",
-        "app": "Cursor",
-        "transport": "http",
-        "url": "http://10.0.0.5:8080/mcp?api_key=****abcd",
-        "source_config": "/home/dev/.cursor/mcp.json"
-      }
-    },
-    {
-      "id": "MCPServer:b14bfa27b4bc",
+      "id": "MCPServer:1863a3bd02ec",
       "kind": "MCPServer",
       "label": "custom",
       "server": {
@@ -324,24 +268,39 @@ $ mcpgraph export -f json --home /home/dev --no-processes
       }
     },
     {
-      "id": "MCPServer:b3a12a332024",
+      "id": "MCPServer:5831f2a1d374",
       "kind": "MCPServer",
-      "label": "filesystem",
+      "label": "git",
       "server": {
-        "name": "filesystem",
-        "app": "Claude Desktop",
-        "command": "npx",
+        "name": "git",
+        "app": "Cursor",
+        "command": "uvx",
         "args": [
-          "-y",
-          "@modelcontextprotocol/server-filesystem",
-          "~"
+          "mcp-server-git",
+          "--repository",
+          "~/code/project"
+        ],
+        "env_keys": [
+          "GIT_TOKEN"
         ],
         "transport": "stdio",
-        "source_config": "/home/dev/.config/Claude/claude_desktop_config.json"
+        "source_config": "/home/dev/.cursor/mcp.json"
       }
     },
     {
-      "id": "MCPServer:bc7e758ad3e9",
+      "id": "MCPServer:5c2cc998782c",
+      "kind": "MCPServer",
+      "label": "remote-insecure",
+      "server": {
+        "name": "remote-insecure",
+        "app": "Cursor",
+        "transport": "http",
+        "url": "http://10.0.0.5:8080/mcp?api_key=****abcd",
+        "source_config": "/home/dev/.cursor/mcp.json"
+      }
+    },
+    {
+      "id": "MCPServer:6ca96b3048fb",
       "kind": "MCPServer",
       "label": "sentry",
       "server": {
@@ -353,7 +312,7 @@ $ mcpgraph export -f json --home /home/dev --no-processes
       }
     },
     {
-      "id": "MCPServer:c7b19b0027a5",
+      "id": "MCPServer:8c6921750fa0",
       "kind": "MCPServer",
       "label": "slack",
       "server": {
@@ -373,7 +332,48 @@ $ mcpgraph export -f json --home /home/dev --no-processes
       }
     },
     {
-      "id": "MCPServer:e88807ebc6c1",
+      "id": "MCPServer:c344a1e1441b",
+      "kind": "MCPServer",
+      "label": "filesystem",
+      "server": {
+        "name": "filesystem",
+        "app": "Claude Desktop",
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-filesystem",
+          "~"
+        ],
+        "transport": "stdio",
+        "source_config": "/home/dev/.config/Claude/claude_desktop_config.json"
+      }
+    },
+    {
+      "id": "MCPServer:e47521ad9ffd",
+      "kind": "MCPServer",
+      "label": "local-http",
+      "server": {
+        "name": "local-http",
+        "app": "Cursor",
+        "transport": "http",
+        "url": "http://localhost:3000/mcp",
+        "source_config": "/home/dev/.cursor/mcp.json"
+      }
+    },
+    {
+      "id": "MCPServer:e978eda5b600",
+      "kind": "MCPServer",
+      "label": "github-remote",
+      "server": {
+        "name": "github-remote",
+        "app": "VS Code",
+        "transport": "http",
+        "url": "https://api.githubcopilot.com/mcp/",
+        "source_config": "/home/dev/.config/Code/User/mcp.json"
+      }
+    },
+    {
+      "id": "MCPServer:ee354d1f3506",
       "kind": "MCPServer",
       "label": "postgres",
       "server": {
@@ -392,148 +392,148 @@ $ mcpgraph export -f json --home /home/dev --no-processes
   ],
   "edges": [
     {
-      "from": "AIApp:8a2199e92745",
-      "to": "MCPServer:37cd7016f3e4",
+      "from": "AIApp:06f352b333b1",
+      "to": "MCPServer:1863a3bd02ec",
       "kind": "CONFIGURES"
     },
     {
-      "from": "AIApp:8a2199e92745",
-      "to": "MCPServer:b3a12a332024",
+      "from": "AIApp:06f352b333b1",
+      "to": "MCPServer:e978eda5b600",
       "kind": "CONFIGURES"
     },
     {
-      "from": "AIApp:8a2199e92745",
-      "to": "MCPServer:e88807ebc6c1",
+      "from": "AIApp:4ee87cf97cc9",
+      "to": "MCPServer:5831f2a1d374",
       "kind": "CONFIGURES"
     },
     {
-      "from": "AIApp:dafdd5c6fb4a",
-      "to": "MCPServer:33023b2b2d00",
+      "from": "AIApp:4ee87cf97cc9",
+      "to": "MCPServer:5c2cc998782c",
       "kind": "CONFIGURES"
     },
     {
-      "from": "AIApp:dafdd5c6fb4a",
-      "to": "MCPServer:6946abc4e384",
+      "from": "AIApp:4ee87cf97cc9",
+      "to": "MCPServer:e47521ad9ffd",
       "kind": "CONFIGURES"
     },
     {
-      "from": "AIApp:dafdd5c6fb4a",
-      "to": "MCPServer:7683c09991f3",
+      "from": "AIApp:5ddfa3773958",
+      "to": "MCPServer:070518059353",
       "kind": "CONFIGURES"
     },
     {
-      "from": "AIApp:e6e695d8b633",
-      "to": "MCPServer:bc7e758ad3e9",
+      "from": "AIApp:5ddfa3773958",
+      "to": "MCPServer:c344a1e1441b",
       "kind": "CONFIGURES"
     },
     {
-      "from": "AIApp:e6e695d8b633",
-      "to": "MCPServer:c7b19b0027a5",
+      "from": "AIApp:5ddfa3773958",
+      "to": "MCPServer:ee354d1f3506",
       "kind": "CONFIGURES"
     },
     {
-      "from": "AIApp:fcbf5df262da",
-      "to": "MCPServer:3d250d03dfbd",
+      "from": "AIApp:7bb3b30fd8fe",
+      "to": "MCPServer:6ca96b3048fb",
       "kind": "CONFIGURES"
     },
     {
-      "from": "AIApp:fcbf5df262da",
-      "to": "MCPServer:b14bfa27b4bc",
+      "from": "AIApp:7bb3b30fd8fe",
+      "to": "MCPServer:8c6921750fa0",
       "kind": "CONFIGURES"
     },
     {
-      "from": "MCPServer:37cd7016f3e4",
+      "from": "MCPServer:070518059353",
       "to": "DataSource:e6d4e38df883",
       "kind": "ACCESSES"
     },
     {
-      "from": "MCPServer:37cd7016f3e4",
-      "to": "Credential:9178249da0ae",
+      "from": "MCPServer:070518059353",
+      "to": "Credential:4759fb843af0",
       "kind": "USES_SECRET"
     },
     {
-      "from": "MCPServer:3d250d03dfbd",
-      "to": "DataSource:dfbf70335e81",
-      "kind": "ACCESSES"
-    },
-    {
-      "from": "MCPServer:3d250d03dfbd",
-      "to": "DataSource:e6d4e38df883",
-      "kind": "ACCESSES"
-    },
-    {
-      "from": "MCPServer:3d250d03dfbd",
-      "to": "Credential:9f5ff0070454",
+      "from": "MCPServer:1863a3bd02ec",
+      "to": "Credential:64215f33a01b",
       "kind": "USES_SECRET"
     },
     {
-      "from": "MCPServer:6946abc4e384",
-      "to": "DataSource:48ce79a80858",
-      "kind": "ACCESSES"
-    },
-    {
-      "from": "MCPServer:6946abc4e384",
-      "to": "Credential:65dab4f1b5a9",
+      "from": "MCPServer:1863a3bd02ec",
+      "to": "Credential:b9b13b061c02",
       "kind": "USES_SECRET"
     },
     {
-      "from": "MCPServer:7683c09991f3",
+      "from": "MCPServer:1863a3bd02ec",
+      "to": "Credential:dafa58103e0d",
+      "kind": "USES_SECRET"
+    },
+    {
+      "from": "MCPServer:5831f2a1d374",
+      "to": "DataSource:450deae2bf89",
+      "kind": "ACCESSES"
+    },
+    {
+      "from": "MCPServer:5831f2a1d374",
+      "to": "Credential:da004b83878c",
+      "kind": "USES_SECRET"
+    },
+    {
+      "from": "MCPServer:5c2cc998782c",
       "to": "DataSource:9fd74444a94c",
       "kind": "ACCESSES"
     },
     {
-      "from": "MCPServer:7683c09991f3",
-      "to": "Credential:25da6b6aa3c3",
+      "from": "MCPServer:5c2cc998782c",
+      "to": "Credential:2092510eaed1",
       "kind": "USES_SECRET"
     },
     {
-      "from": "MCPServer:b14bfa27b4bc",
-      "to": "Credential:25c1e4cb73ce",
-      "kind": "USES_SECRET"
-    },
-    {
-      "from": "MCPServer:b14bfa27b4bc",
-      "to": "Credential:8a30e9d1a30a",
-      "kind": "USES_SECRET"
-    },
-    {
-      "from": "MCPServer:b14bfa27b4bc",
-      "to": "Credential:f30bcfe321a1",
-      "kind": "USES_SECRET"
-    },
-    {
-      "from": "MCPServer:b3a12a332024",
-      "to": "DataSource:59af6780be75",
-      "kind": "ACCESSES"
-    },
-    {
-      "from": "MCPServer:bc7e758ad3e9",
+      "from": "MCPServer:6ca96b3048fb",
       "to": "DataSource:a4fe234aa714",
       "kind": "ACCESSES"
     },
     {
-      "from": "MCPServer:bc7e758ad3e9",
+      "from": "MCPServer:6ca96b3048fb",
       "to": "DataSource:d5abfc73992f",
       "kind": "ACCESSES"
     },
     {
-      "from": "MCPServer:c7b19b0027a5",
+      "from": "MCPServer:8c6921750fa0",
       "to": "DataSource:244406e1a7d4",
       "kind": "ACCESSES"
     },
     {
-      "from": "MCPServer:c7b19b0027a5",
-      "to": "Credential:472a343cf11b",
+      "from": "MCPServer:8c6921750fa0",
+      "to": "Credential:cc7ce0458752",
       "kind": "USES_SECRET"
     },
     {
-      "from": "MCPServer:e88807ebc6c1",
+      "from": "MCPServer:c344a1e1441b",
+      "to": "DataSource:5cf745539097",
+      "kind": "ACCESSES"
+    },
+    {
+      "from": "MCPServer:e978eda5b600",
+      "to": "DataSource:dfbf70335e81",
+      "kind": "ACCESSES"
+    },
+    {
+      "from": "MCPServer:e978eda5b600",
+      "to": "DataSource:e6d4e38df883",
+      "kind": "ACCESSES"
+    },
+    {
+      "from": "MCPServer:e978eda5b600",
+      "to": "Credential:f64590c84d15",
+      "kind": "USES_SECRET"
+    },
+    {
+      "from": "MCPServer:ee354d1f3506",
       "to": "DataSource:21abe27a441f",
       "kind": "ACCESSES"
     },
     {
-      "from": "MCPServer:e88807ebc6c1",
-      "to": "Credential:3fa6c0d33429",
+      "from": "MCPServer:ee354d1f3506",
+      "to": "Credential:71bc31839197",
       "kind": "USES_SECRET"
     }
   ]
