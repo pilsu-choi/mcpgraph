@@ -11,6 +11,7 @@ import (
 
 	"github.com/pilsuchoi/mcpgraph/internal/collector"
 	"github.com/pilsuchoi/mcpgraph/internal/collector/config"
+	"github.com/pilsuchoi/mcpgraph/internal/collector/process"
 	"github.com/pilsuchoi/mcpgraph/internal/model"
 	"github.com/pilsuchoi/mcpgraph/internal/report"
 	"github.com/pilsuchoi/mcpgraph/internal/scan"
@@ -18,8 +19,9 @@ import (
 
 // options holds flags shared by every subcommand.
 type options struct {
-	home    string
-	verbose bool
+	home        string
+	verbose     bool
+	noProcesses bool
 }
 
 // newRootCmd builds the command tree. Building it in a function (instead of
@@ -43,6 +45,7 @@ func newRootCmd() *cobra.Command {
 	}
 	root.PersistentFlags().StringVar(&opts.home, "home", "", "home directory to scan (default: current user's home)")
 	root.PersistentFlags().BoolVarP(&opts.verbose, "verbose", "v", false, "debug logging")
+	root.PersistentFlags().BoolVar(&opts.noProcesses, "no-processes", false, "skip process discovery")
 
 	root.AddCommand(newScanCmd(opts))
 	return root
@@ -75,6 +78,9 @@ func runScan(ctx context.Context, opts *options) (*model.Graph, error) {
 	collectors := []collector.Collector{
 		collector.Host{},
 		config.New(home, runtime.GOOS),
+	}
+	if !opts.noProcesses {
+		collectors = append(collectors, process.New())
 	}
 	return scan.Run(ctx, collectors)
 }

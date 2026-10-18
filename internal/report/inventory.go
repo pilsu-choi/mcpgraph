@@ -53,6 +53,7 @@ func Inventory(w io.Writer, g *model.Graph) error {
 	}
 
 	procs := g.NodesOfKind(model.KindProcess)
+	sort.Slice(procs, func(i, j int) bool { return procs[i].Process.PID < procs[j].Process.PID })
 	if len(procs) > 0 {
 		fmt.Fprintf(tw, "\nPROCESSES (%d)\n", len(procs))
 		fmt.Fprintln(tw, "PID\tPPID\tAPP\tMCP\tCOMMAND")
