@@ -11,9 +11,9 @@
 <text x="16" y="93">goarch:&#160;amd64</text>
 <text x="16" y="111">pkg:&#160;github.com/pilsu-choi/mcpgraph/internal/policy</text>
 <text x="16" y="129">cpu:&#160;13th&#160;Gen&#160;Intel(R)&#160;Core(TM)&#160;i5-13400F</text>
-<text x="16" y="147">BenchmarkDecide-16&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;97328&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;12071&#160;ns/op&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3569&#160;B/op&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;87&#160;allocs/op</text>
+<text x="16" y="147">BenchmarkDecide-16&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;98013&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;12718&#160;ns/op&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3570&#160;B/op&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;87&#160;allocs/op</text>
 <text x="16" y="165"><tspan fill="#79c0ff" font-weight="bold">PASS</tspan></text>
-<text x="16" y="183"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/policy&#160;&#160;&#160;&#160;1.179s</text>
+<text x="16" y="183"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/policy&#160;&#160;&#160;&#160;1.250s</text>
 <text x="16" y="201"><tspan fill="#8b949e">#&#160;exit&#160;code:&#160;0</tspan></text>
 </g>
 </svg>

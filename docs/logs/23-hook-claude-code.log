@@ -1,0 +1,78 @@
+$ mcpgraph hook claude-code < testdata/hooks/claude-code/*.json   # one payload at a time
+$ mcpgraph hook claude-code < testdata/hooks/claude-code/bash-drop-table.json
+tool_name: Bash   input: psql -c "DROP TABLE users"
+stdout:
+  {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"mcpgraph blocked this by rule block-destructive-sql: Destructive SQL is blocked: DROP TABLE, DROP DATABASE/SCHEMA, TRUNCATE and DELETE without a limiting WHERE clause (WHERE 1=1 does not count)."}}
+stderr:
+exit code: 0
+
+$ mcpgraph hook claude-code < testdata/hooks/claude-code/bash-ls.json
+tool_name: Bash   input: ls -la
+stdout:
+stderr:
+exit code: 0
+
+$ mcpgraph hook claude-code < testdata/hooks/claude-code/bash-rm-rf-home.json
+tool_name: Bash   input: rm -rf ~/
+stdout:
+  {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"ask","permissionDecisionReason":"mcpgraph asks for approval (rule ask-recursive-delete): Recursive delete (rm -r) of a path outside the current project directory needs approval."}}
+stderr:
+exit code: 0
+
+$ mcpgraph hook claude-code < testdata/hooks/claude-code/read-ssh-key.json
+tool_name: Read   input: /home/testuser/.ssh/id_rsa
+stdout:
+  {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"mcpgraph blocked this by rule block-secret-read: Access to secret files is blocked: SSH keys (~/.ssh), AWS credentials and .env files."}}
+stderr:
+exit code: 0
+
+$ mcpgraph hook claude-code < testdata/hooks/claude-code/mcp-delete.json
+tool_name: mcp__postgres__query   input: {"sql": "DELETE FROM users"}
+stdout:
+  {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"mcpgraph blocked this by rule block-destructive-sql: Destructive SQL is blocked: DROP TABLE, DROP DATABASE/SCHEMA, TRUNCATE and DELETE without a limiting WHERE clause (WHERE 1=1 does not count)."}}
+stderr:
+exit code: 0
+
+$ mcpgraph hook claude-code < testdata/hooks/claude-code/captured-bash-echo.json
+tool_name: Bash   input: echo hello
+stdout:
+stderr:
+exit code: 0
+
+$ mcpgraph hook claude-code < testdata/hooks/claude-code/malformed.json
+payload: not valid JSON (truncated on purpose)
+stdout:
+stderr:
+  mcpgraph hook: blocked (rule mcpgraph-fail-closed): invalid hook payload: unexpected EOF
+exit code: 2
+
+$ mcpgraph hook claude-code < testdata/hooks/claude-code/bash-secret-drop-table.json
+tool_name: Bash
+stdout:
+  {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"mcpgraph blocked this by rule block-destructive-sql: Destructive SQL is blocked: DROP TABLE, DROP DATABASE/SCHEMA, TRUNCATE and DELETE without a limiting WHERE clause (WHERE 1=1 does not count)."}}
+stderr:
+exit code: 0
+
+$ mcpgraph hook claude-code --print-config --bin /usr/local/bin/mcpgraph
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "args": [
+              "hook",
+              "claude-code"
+            ],
+            "command": "/usr/local/bin/mcpgraph",
+            "onFailure": "block",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash|Read|Edit|Write|mcp__.*"
+      }
+    ]
+  }
+}
+# exit code: 0

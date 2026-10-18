@@ -109,3 +109,19 @@ Times are UTC. Each entry links to the page with the details.
   - round trip is byte for byte and R4 clears after install.
 
   Index pages ([milestones](milestones/index.md), [components](components/index.md), [decisions](decisions/index.md), [lessons](lessons/index.md)) and the [overview](overview.md) were updated.
+- **08:30** Milestones 9 and 11, merged on branch `integrate-9-11`:
+  - [v2 m9 hook](milestones/2026-10-18-v2-m9-hook.md): [`internal/hook`](components/2026-10-18-hook.md)
+    with Claude Code and Codex adapters. Allow prints nothing; Codex has no ask, so ask becomes deny.
+    Fail closed with exit 2; `--print-config` prints the settings snippet. A real Claude Code run
+    blocked `DROP TABLE`. Codex end to end is unverified ([issue](issues/2026-10-18-codex-hook-unverified.md),
+    [research](research/2026-10-18-codex-hooks.md)). [Hooks fail open](issues/hook-fails-open.md) is now mitigated.
+  - [v2 m11 sink and collector](milestones/2026-10-18-v2-m11-collector.md):
+    [`internal/sink` and `internal/central`](components/2026-10-18-sink-collector.md), opt-in through
+    `sink.json`. It ships from the audit log with offsets and ids ([decision](decisions/2026-10-18-ship-from-audit-log.md)),
+    under flock, with a collector API. Acceptance: two agents report into one collector.
+  - Merge: hooks now also ship their decisions (300 ms budget), checked by `TestHookShipsToCollector`.
+  - Workflow: three parallel worktrees (`m9-hook`, `m10-demo`, `m11-collector`) with Sonnet
+    sub-agents, orchestrated from one session.
+
+  Updated indexes ([milestones](milestones/index.md), [components](components/index.md),
+  [decisions](decisions/index.md), [research](research/index.md), [issues](issues/index.md)) and the [overview](overview.md).

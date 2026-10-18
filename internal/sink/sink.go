@@ -1,28 +1,26 @@
-// Package sink defines where snapshots could be forwarded.
+// Package sink is the optional, opt-in outbound path: it ships audit
+// decisions to a self-hosted collector (hard rule 3).
 //
-// Shipping data to a central server is out of scope for the MVP (and would
-// break hard rule 3, no network egress), so only a no-op exists. The
-// interface marks the seam where a real implementation would plug in.
+// The sink is off unless <data-dir>/sink.json exists. The audit log stays
+// the source of truth: the shipper reads audit.jsonl from a byte offset,
+// POSTs new decisions in batches and moves the offset only after the
+// collector answered 2xx. A failed or interrupted send is simply retried
+// later (at-least-once); every event carries an ID (the SHA-256 of its
+// audit line) so the collector can drop duplicates.
 package sink
 
-import (
-	"context"
+import "github.com/pilsu-choi/mcpgraph/internal/model"
 
-	"github.com/pilsu-choi/mcpgraph/internal/model"
-)
-
-// Sink receives every new snapshot.
-type Sink interface {
-	Send(ctx context.Context, g *model.Graph, findings []model.Finding) error
+// Event is one decision on the wire: the decision's own fields plus an ID.
+// Embedding model.Decision makes encoding/json write its fields at the
+// same level as "id" (embedded struct fields are flattened).
+type Event struct {
+	ID string `json:"id"`
+	model.Decision
 }
 
-// Nop discards everything.
-type Nop struct{}
-
-// Send implements Sink.
-func (Nop) Send(context.Context, *model.Graph, []model.Finding) error { return nil }
-
-// Compile-time check that Nop satisfies Sink. Assigning to the blank
-// identifier costs nothing at runtime but fails the build if a method is
-// missing, since Go has no "implements" keyword.
-var _ Sink = Nop{}
+// Batch is the body of POST /v1/events.
+type Batch struct {
+	Host   string  `json:"host"`
+	Events []Event `json:"events"`
+}

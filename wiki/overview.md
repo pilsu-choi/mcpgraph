@@ -3,7 +3,7 @@ type: Project
 title: Project overview
 description: What mcpgraph does, its scope, the hard rules it follows and where it stands.
 tags: [mcpgraph, overview, scope]
-timestamp: 2026-10-18T07:25:00Z
+timestamp: 2026-10-18T08:30:00Z
 ---
 
 # Project overview
@@ -34,7 +34,7 @@ are not obvious.
 - YAML policy engine, stdio MCP proxy, Claude Code hook, append-only audit log, Decision nodes.
 - The DROP TABLE demo, with PostgreSQL.
 
-Stretch goals are an event sink with a collector ([`Sink`](components/sink.md)) and the daemon
+The opt-in event sink and collector ([`internal/sink`](components/2026-10-18-sink-collector.md)) are done. The remaining stretch goal is the daemon
 ([archived](decisions/archive-v1-daemon.md)). Out of scope: eBPF, Windows, remote HTTP MCP behind
 the proxy, and fleet UI.
 
@@ -51,6 +51,6 @@ the proxy, and fleet UI.
 ## Status
 
 The v1 milestones (posture) are done, and the [v2 transition](milestones/v2-transition.md) brought
-them in line with the new spec. The [policy engine](milestones/v2-m5-policy-engine.md) (milestone 5) and the [audit log](milestones/v2-m6-audit-log.md) (milestone 6) and the [MCP proxy](milestones/v2-m7-proxy.md) (milestone 7) and the [install / uninstall](milestones/2026-10-18-v2-m8-install.md) commands (milestone 8) are done. Next is milestone 9, the Claude Code hook, with Codex CLI hooks if their format can be verified, then milestone 10 (demo GIF) and milestone 11 (collector). See the
+them in line with the new spec. Milestones 5 to 9 and 11 are done: the [policy engine](milestones/v2-m5-policy-engine.md), the [audit log](milestones/v2-m6-audit-log.md), the [MCP proxy](milestones/v2-m7-proxy.md), [install / uninstall](milestones/2026-10-18-v2-m8-install.md), the [coding-agent hook](milestones/2026-10-18-v2-m9-hook.md) (Claude Code verified; Codex [unverified](issues/2026-10-18-codex-hook-unverified.md)) and the opt-in [sink with a central collector](milestones/2026-10-18-v2-m11-collector.md). Next is milestone 10, the demo: PostgreSQL in Docker, a real Claude Code run, and an animated SVG at the top of the README. Milestone 12 (daemon) is a stretch goal. See the
 [milestones](milestones/index.md). The code is on GitHub at
 [pilsu-choi/mcpgraph](https://github.com/pilsu-choi/mcpgraph) (`dev` branch).

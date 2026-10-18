@@ -11,8 +11,9 @@ A tiny EDR for AI agents, written in Go. One binary, two jobs:
    processes, credentials and data sources can those servers reach? *(done)*
 2. **Runtime control.** Catch what an agent is about to do (an MCP tool call, a shell command from a
    coding agent), check it against a policy, and **allow, deny or ask** before it runs. Every
-   decision goes to an audit log and into the graph. *(MCP proxy and installer done; the coding-agent
-   hook is next, see [Roadmap](#roadmap))*
+   decision goes to an audit log and into the graph. *(done on both paths: the MCP proxy and the
+   coding-agent hook. An opt-in central collector exists too. The scripted demo, milestone 10, is
+   next, see [Roadmap](#roadmap))*
 
 > The goal: Claude Code is asked to "clean up the database" and tries `DROP TABLE users`. The policy
 > rule `block-destructive-sql` matches, the command never runs, the agent is told why, and the
@@ -34,7 +35,9 @@ All secrets there are fake, and they appear masked (<code>****abcd</code>). Ever
 - [Runtime policy](#runtime-policy)
 - [MCP proxy](#mcp-proxy)
 - [Install and uninstall](#install-and-uninstall)
+- [Coding-agent hook](#coding-agent-hook)
 - [Audit log and events](#audit-log-and-events)
+- [Central collector (opt-in)](#central-collector-opt-in)
 - [Architecture](#architecture)
 - [Design decisions](#design-decisions)
 - [Roadmap](#roadmap)
@@ -182,8 +185,8 @@ flowchart LR
 Runtime control judges one action at a time: an MCP `tools/call` (through the proxy, milestone 7) or
 a coding-agent tool use such as a Bash command (through the hook, milestone 9). Both paths build the
 same `policy.Action` and call the same `policy.Engine`, so each rule is written once. The engine and
-the shipped policy are done (milestone 5), and so is the [MCP proxy](#mcp-proxy) (milestone 7). The
-hook comes next.
+the shipped policy are done (milestone 5), and so are the [MCP proxy](#mcp-proxy) (milestone 7) and
+the [coding-agent hook](#coding-agent-hook) (milestone 9).
 
 ```mermaid
 flowchart LR
@@ -425,6 +428,96 @@ after uninstall, and every file is byte-identical to the start
 ([`20`](docs/logs/20-install-dry-run.log), [`21`](docs/logs/21-install-apply.log),
 [`22`](docs/logs/22-uninstall.log)).
 
+## Coding-agent hook
+
+A coding agent runs shell commands itself (`psql`, `rm`, `git push`). Those never touch MCP, so the
+[proxy](#mcp-proxy) cannot see them. `mcpgraph hook` covers that path. Both interception points feed
+the same policy engine, audit log and graph:
+
+```mermaid
+flowchart LR
+  M["MCP tools/call<br/>AI app to MCP server"] --> PX["mcpgraph proxy"]
+  SH["Bash, Read, Edit, Write<br/>coding agent, no MCP"] --> HK["mcpgraph hook"]
+  PX --> PE["policy.Judge<br/>one rule set"]
+  HK --> PE
+  PE --> AL["audit.jsonl"]
+  AL --> GR["graph<br/>Decision nodes"]
+  AL -. "only if sink.json exists" .-> SK["collector"]
+```
+
+`mcpgraph hook claude-code|codex` is a `PreToolUse` hook. The agent starts it before each tool use
+and writes one JSON payload to its stdin. mcpgraph judges it with the same rules as the proxy,
+appends the decision to the audit log (`source: hook`) and answers in the agent's format.
+
+```sh
+mcpgraph hook claude-code --print-config   # prints the settings to add; writes nothing
+mcpgraph hook codex --print-config
+```
+
+For Claude Code, merge the output into `~/.claude/settings.json` (the path below is the binary you
+run it with):
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Read|Edit|Write|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/local/bin/mcpgraph",
+            "args": ["hook", "claude-code"],
+            "timeout": 10,
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Codex uses `~/.codex/hooks.json` and the matcher `Bash|apply_patch|mcp__.*`. Only `mcpgraph install`
+edits app configs, so `--print-config` just prints.
+
+| Verdict | What the hook does |
+| --- | --- |
+| allow | **Prints nothing**, exit 0. The agent's own permission prompt still applies; mcpgraph never auto-approves. |
+| deny | Prints a `hookSpecificOutput` deny answer. The reason names the rule ID, so the model can tell the user why. |
+| ask | Claude Code: an `ask` answer, and the agent prompts. Codex has no `ask`, so the hook denies and explains how to approve. |
+| any failure | Bad payload, bad policy, unknown agent or a non-`PreToolUse` event: reason on stderr, **exit 2**, which blocks the call. Fail closed (hard rule 4). |
+
+| | Claude Code | Codex |
+| --- | --- | --- |
+| Config file | `~/.claude/settings.json` | `~/.codex/hooks.json` |
+| Matcher | `Bash\|Read\|Edit\|Write\|mcp__.*` | `Bash\|apply_patch\|mcp__.*` |
+| `ask` | native | not supported; deny with approval hint |
+| If the hook crashes or times out | **fails open** by default, so the printed config sets `"onFailure": "block"` | the docs list no failure setting (`TODO(verify)`); mcpgraph itself exits 2 on every error it can detect |
+| Command form | `command` + `args` (no shell) | one shell string, quoted by mcpgraph |
+| Payload | captured from a real run ([`testdata/hooks/claude-code/captured-bash-echo.json`](testdata/hooks/claude-code/captured-bash-echo.json)) | written from the official docs and JSON schema in `openai/codex` |
+
+**A real run.** In Claude Code 2.1.302, `claude -p` was asked to run `psql -c "DROP TABLE users"`.
+The hook blocked it, and the model reported:
+
+```text
+PreToolUse:Bash hook error: mcpgraph blocked this by rule block-destructive-sql: Destructive SQL is blocked: ...
+```
+
+The audit log got a `deny` line with `source: hook` and `agent: claude-code`
+([`docs/logs/23-hook-claude-code.log`](docs/logs/23-hook-claude-code.log)). The Codex payloads
+([`24`](docs/logs/24-hook-codex.log)) and the resulting events ([`25`](docs/logs/25-hook-events.log))
+are replayed the same way, so the docs do not need a live agent:
+
+<p align="center">
+  <img src="docs/images/23-hook.svg" alt="mcpgraph hook" width="100%">
+</p>
+
+**Honest status for Codex.** The format was verified against the official docs, but a real
+`codex exec` run (0.162.1) did not invoke the project-local hook, so Codex end to end is still
+`TODO(verify)`. Hooks also see only what the agent reports in the payload (see
+[Limitations](#limitations)).
+
 ## Audit log and events
 
 Every decision is appended as one JSON line to `audit.jsonl` in mcpgraph's data directory
@@ -485,6 +578,67 @@ The decisions above come from [`tools/replay`](tools/replay/main.go), which judg
 ([`testdata/actions/demo.jsonl`](testdata/actions/demo.jsonl)) with the shipped policy and appends
 them exactly as the proxy and the hook do, so the docs do not depend on a live agent.
 
+## Central collector (opt-in)
+
+By default nothing leaves the machine (hard rule 3). The event sink is **off unless
+`<data-dir>/sink.json` exists**, and only `mcpgraph sink set` creates it. When it is on, the redacted
+decisions in the audit log are shipped to a collector, so one place shows what every laptop's agents
+tried to do.
+
+```mermaid
+flowchart LR
+  subgraph A["laptop-a"]
+    AA["proxy + hook"] --> LA["audit.jsonl"]
+    LA -- "sink: offset file" --> SA["shipper"]
+  end
+  subgraph B["laptop-b"]
+    BB["proxy + hook"] --> LB["audit.jsonl"]
+    LB -- "sink: offset file" --> SB["shipper"]
+  end
+  SA -- "POST /v1/events" --> C["mcpgraph collector<br/>dedup by event id"]
+  SB -- "POST /v1/events" --> C
+  C --> EV["events.jsonl<br/>0600"]
+  EV --> Q["GET /v1/events, /v1/hosts<br/>mcpgraph events --collector"]
+```
+
+```sh
+# on the collector machine (loopback by default)
+mcpgraph collector --listen 127.0.0.1:7600 --data ./collector-data
+mcpgraph collector --listen 0.0.0.0:7600 --data ./collector-data --token SECRET   # accept other machines
+
+# on each laptop
+mcpgraph sink set https://collector.example:7600 --token SECRET --host laptop-a
+mcpgraph sink status    # on/off, url, host, masked token, events not shipped yet
+mcpgraph sink flush     # ship the pending events now
+mcpgraph sink off       # removes sink.json
+
+# fleet-wide view
+mcpgraph events --collector https://collector.example:7600 --token SECRET --verdict deny
+```
+
+**Ships from the audit log.** The proxy and the hook never send anything themselves. They append to
+`audit.jsonl` as before. A shipper reads the log from a saved offset (`sink.offset`), POSTs batches
+and moves the offset only after a 2xx. Each event ID is the sha256 of its audit line, so delivery is
+at-least-once and the collector drops repeats. Network trouble can delay shipping but never loses or
+changes a decision ([decision note](wiki/decisions/2026-10-18-ship-from-audit-log.md)).
+
+**Never slows the agent much.** An exclusive `flock` on `sink.lock` keeps concurrent proxies and
+hook calls from sending the same lines twice. A request has a 2 s timeout in the proxy and a 300 ms
+budget in a hook call, since the agent waits for that process. Whatever is not sent now goes out
+with the next decision.
+
+**Redacted again.** Summary and reason are re-redacted before they leave the machine, and the
+collector redacts them once more. The token is never printed: `sink status` masks it. `sink set`
+warns about plain `http://` to a non-loopback host.
+
+**The collector.** `POST /v1/events`, `GET /v1/events`, `GET /v1/hosts` and `GET /healthz`. It listens
+on loopback by default and warns when bound elsewhere without `--token`. Bodies over 4 MiB are
+rejected, and `events.jsonl` is created with mode 0600. Dedup state is rebuilt from that file at
+start, so a restart does not forget what it has seen.
+
+**Acceptance.** Two agents (`laptop-a`, `laptop-b`) report into one collector: 0 duplicates and 0
+secrets ([`docs/logs/26-collector.log`](docs/logs/26-collector.log)).
+
 ## Architecture
 
 ```mermaid
@@ -526,7 +680,9 @@ flowchart LR
 | `internal/policy` | Runtime policy: YAML loading, SQL classifier, shell splitting, path globs, `Engine.Decide`, fail-closed `Judge` |
 | `policies` | The shipped `default.yaml`, embedded with `//go:embed` |
 | `internal/report` | Inventory and findings tables, JSON, Mermaid |
-| `internal/sink` | `Sink` interface for a future central server; only a no-op exists |
+| `internal/hook` | Coding-agent adapters (Claude Code, Codex): payload to `policy.Action`, decision to the agent's answer, `--print-config` snippets |
+| `internal/sink` | Opt-in shipping: `sink.json`, offset file, event IDs, `flock`, batches with short timeouts |
+| `internal/central` | The collector: HTTP handlers, bearer auth, dedup store over `events.jsonl` |
 | `internal/audit` | Append-only JSONL decision log, filters, and the collector that turns decisions into graph nodes |
 | `internal/install` | `install` / `uninstall`: span-preserving JSON/JSONC edits, plan and diff, backups, manifest, atomic writes |
 | `internal/proxy` | stdio MCP proxy: exact-key message parsing, `tools/call` judging, tool inventory, child process |
@@ -632,9 +788,11 @@ The raw parsed config type is unexported, so it cannot leave the config package.
 once, at collection time, so every output is safe by construction. `internal/scan/leak_test.go`
 runs the fixtures through every output format and fails if any fake secret appears. `make docs` checks the generated logs and images the same way.
 
-**Read-only, no network.** Scanning never writes outside mcpgraph's own data directory and makes no
-outbound connections. `mcpgraph install` / `uninstall` are the only
-commands that edit AI-app configs, with backups, a printed diff and `--yes`.
+**Read-only, almost no network.** Scanning never writes outside mcpgraph's own data directory and
+makes no outbound connections. The only outbound path is the opt-in [event sink](#central-collector-opt-in),
+which does nothing unless `<data-dir>/sink.json` exists. `mcpgraph install` / `uninstall` are the
+only commands that edit AI-app configs, with backups, a printed diff and `--yes`; `hook
+--print-config` only prints.
 
 **No cgo.** gopsutil is pure Go. `CGO_ENABLED=0` builds static binaries
 for darwin/linux × amd64/arm64.
@@ -675,6 +833,10 @@ Tests never read the real machine. They build a fake `$HOME` in `t.TempDir()` fr
 | Install safety: no secret in diffs or manifest, backups 0600 in a 0700 dir, atomic writes | `internal/install/install_test.go` |
 | JSONC span parser: comments, errors, line redaction | `internal/install/jsonscan_test.go` |
 | `mcpgraph install` CLI: dry run writes nothing, round trip, refuses a test binary without `--bin` | `cmd/mcpgraph/install_test.go` |
+| Hook: 13 payload cases across Claude Code and Codex, answer formats, allow prints nothing, 8 fail-closed cases, timeout gives `mcpgraph-fail-closed`, no secret in answers or audit | `internal/hook/hook_test.go`, `cmd/mcpgraph/hook_test.go` |
+| Hook ships to a collector (`TestHookShipsToCollector`) | `cmd/mcpgraph/hook_test.go` |
+| Sink: off without `sink.json`, offset, dedup IDs, `flock`, timeouts, redaction | `internal/sink/sink_test.go`, `cmd/mcpgraph/sink_test.go` |
+| Collector: two agents report into one (`TestTwoAgentsReportToOneCollector`), dedup, 401, 413, restart | `internal/central/central_test.go` |
 | Exit code 2 on high findings | `cmd/mcpgraph/main_test.go` |
 
 <p align="center">
@@ -709,13 +871,17 @@ GoReleaser builds the binary for darwin/linux × amd64/arm64 as a static, stripp
 | [17-export-decisions-mermaid](docs/logs/17-export-decisions-mermaid.log) | Decision nodes and their `DECIDED_ON` targets |
 | [18-proxy-session](docs/logs/18-proxy-session.log) · [19 events](docs/logs/19-proxy-events.log) | a captured SDK session through `mcpgraph proxy`, and the decisions it wrote |
 | [20-install-dry-run](docs/logs/20-install-dry-run.log) · [21 apply](docs/logs/21-install-apply.log) · [22 uninstall](docs/logs/22-uninstall.log) | `mcpgraph install` dry run; `--yes` and a report with no R4; `uninstall` and the byte-identical check |
+| [23-hook-claude-code](docs/logs/23-hook-claude-code.log) · [24 codex](docs/logs/24-hook-codex.log) | `mcpgraph hook` on recorded Claude Code and Codex payloads |
+| [25-hook-events](docs/logs/25-hook-events.log) | the hook decisions in the audit log |
+| [26-collector](docs/logs/26-collector.log) | two agents report into one collector: 0 duplicates, 0 secrets |
 
 Development history and design notes are kept in the [`wiki/`](wiki/index.md) knowledge bundle.
 
 ## Roadmap
 
 The spec is [`AGENTS.md`](AGENTS.md). Posture (milestones 1–4), the policy engine (5), the audit log (6), the
-MCP proxy (7) and the installer (8) are done.
+MCP proxy (7), the installer (8), the coding-agent hook (9) and the event sink with a central
+collector (11) are done.
 
 | # | Milestone | Status |
 | --- | --- | --- |
@@ -724,9 +890,10 @@ MCP proxy (7) and the installer (8) are done.
 | 6 | Append-only JSONL audit log, `mcpgraph events`, `Decision` nodes | done |
 | 7 | `mcpgraph proxy -- <server>`: stdio MCP proxy that judges `tools/call` | done |
 | 8 | `mcpgraph install` / `uninstall`: route servers through the proxy, with backups | done |
-| 9 | `mcpgraph hook claude-code`: PreToolUse hook | planned |
-| 10 | `make demo`: Postgres + DB MCP server, both paths blocking `DROP TABLE` | planned |
-| 11–12 | *(stretch)* event sink + collector; daemon with drift alerts | stretch |
+| 9 | `mcpgraph hook claude-code\|codex`: PreToolUse hook for coding agents | done |
+| 10 | `make demo`: Postgres + DB MCP server, both paths blocking `DROP TABLE` | planned (next) |
+| 11 | Opt-in event sink + `mcpgraph collector` | done |
+| 12 | *(stretch)* daemon with drift alerts | stretch |
 
 The v1 daemon, SQLite snapshot store and localhost API are kept on the
 [`archive/v1-daemon`](https://github.com/pilsu-choi/mcpgraph/tree/archive/v1-daemon) branch and come
@@ -755,6 +922,15 @@ back with milestone 12.
 - **Apps must be restarted** after `install` or `uninstall`; they read their MCP config at start.
   `install` also inherits the `TODO(verify)` config paths above, so for apps other than Claude Code
   on Linux it edits only the files it can find at the guessed locations.
+- **Codex end to end is unverified.** The hook format comes from the official docs and schema, but a
+  real `codex exec` run (0.162.1) did not invoke the project-local hook (`TODO(verify)`). What Codex
+  does when a hook crashes is also undocumented.
+- **Hooks see only what the agent reports.** A command built inside a script, or a tool the matcher
+  does not list, is judged on the text in the payload or not at all. The hook is a guard rail, not a
+  sandbox.
+- **The collector is small on purpose.** It keeps events in memory plus `events.jsonl`, runs on a
+  single node and has no TLS of its own. Put it behind a TLS proxy, or use an `https://` URL that
+  terminates elsewhere. Delivery is at-least-once, with dedup by event ID.
 
 ## Future work
 

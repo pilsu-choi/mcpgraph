@@ -3,7 +3,7 @@ type: Index
 title: Design decisions
 description: Why mcpgraph is built the way it is.
 tags: [decision]
-timestamp: 2026-10-18T07:25:00Z
+timestamp: 2026-10-18T08:30:00Z
 ---
 
 # Design decisions
@@ -24,5 +24,6 @@ timestamp: 2026-10-18T07:25:00Z
 | [Deny before ask](deny-before-ask.md) | Stricter rules first in `default.yaml`; `rm -rf ~/.ssh` is denied. |
 | [Plain HTTP becomes R7](plain-http-as-r7.md) | R4 now means "not proxied"; the old check keeps its logic as R7. |
 | [install edits configs in place](2026-10-18-install-in-place-edits.md) | Only `command` and `args` change; uninstall restores the backup or, if the app rewrote the file, just unwraps. |
+| [Ship events from the audit log](2026-10-18-ship-from-audit-log.md) | The sink reads `audit.jsonl` from a saved offset with content-hash IDs; opt-in via `sink.json`. |
 
 These match AGENTS.md §5 and the README's *Design decisions* section.

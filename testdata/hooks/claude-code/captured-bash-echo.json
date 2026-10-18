@@ -1,0 +1,17 @@
+{
+  "session_id": "891f2532-c7b6-4aad-8777-a442cce0d0a0",
+  "transcript_path": "/home/pilsu/.claude/projects/-tmp-claude-1000--home-pilsu-side-prj-d5cac854-2440-480c-9174-1cc00d26a9a7-scratchpad-m9-cap/891f2532-c7b6-4aad-8777-a442cce0d0a0.jsonl",
+  "cwd": "/tmp/claude-1000/-home-pilsu-side-prj/d5cac854-2440-480c-9174-1cc00d26a9a7/scratchpad/m9/cap",
+  "prompt_id": "5755bfec-186b-4d05-a786-c9de7d2d0e4d",
+  "permission_mode": "default",
+  "effort": {
+    "level": "medium"
+  },
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "tool_input": {
+    "command": "echo hello",
+    "description": "Print hello"
+  },
+  "tool_use_id": "toolu_01Fx5ud1BjujvSp3RBs1N3Ub"
+}
