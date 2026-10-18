@@ -1,0 +1,3 @@
+$ mcpgraphd --addr 0.0.0.0:7878   # must refuse
+error: refusing to listen on "0.0.0.0:7878": only 127.0.0.1 is allowed
+# exit code: 1

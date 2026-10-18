@@ -3,7 +3,7 @@
 # locally we run the tests without -race; CI always has one.
 RACE := $(shell command -v gcc >/dev/null 2>&1 && echo -race)
 
-.PHONY: build test lint scan release
+.PHONY: build test lint scan release demo
 
 build:
 	CGO_ENABLED=0 go build ./cmd/...
@@ -24,3 +24,7 @@ scan:
 
 release:
 	goreleaser build --snapshot --clean
+
+# Regenerates docs/logs and docs/images from real runs.
+demo:
+	scripts/demo.sh

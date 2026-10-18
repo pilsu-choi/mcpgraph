@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="829" height="474" viewBox="0 0 829 474">
+<rect width="829" height="474" rx="8" fill="#0d1117"/>
+<rect width="829" height="30" rx="8" fill="#161b22"/><rect y="22" width="829" height="8" fill="#161b22"/>
+<circle cx="18" cy="15" r="6" fill="#ff5f56"/>
+<circle cx="38" cy="15" r="6" fill="#ffbd2e"/>
+<circle cx="58" cy="15" r="6" fill="#27c93f"/>
+<text x="414" y="19" fill="#8b949e" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" text-anchor="middle">mcpgraphd</text>
+<g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace" font-size="13" fill="#c9d1d9" xml:space="preserve" style="white-space:pre">
+<text x="16" y="57"><tspan fill="#7ee787">$&#160;</tspan><tspan fill="#ffffff">mcpgraphd&#160;--home&#160;/home/dev&#160;--no-processes&#160;--addr&#160;127.0.0.1:17878</tspan></text>
+<text x="16" y="75">INFO&#160;&#160;mcpgraphd&#160;starting&#160;&#160;&quot;home&quot;:&quot;/home/dev&quot;,&quot;data_dir&quot;:&quot;/tmp/mcpgraph-demo/data&quot;</text>
+<text x="16" y="93">INFO&#160;&#160;new&#160;AI&#160;app&#160;config&#160;found:&#160;Claude&#160;Code&#160;(/home/dev/.claude.json)&#160;&#160;</text>
+<text x="16" y="111">INFO&#160;&#160;new&#160;AI&#160;app&#160;config&#160;found:&#160;Claude&#160;Desktop&#160;(/home/dev/.config/Claude/claude_desktop_config.json)&#160;&#160;</text>
+<text x="16" y="129">INFO&#160;&#160;new&#160;AI&#160;app&#160;config&#160;found:&#160;VS&#160;Code&#160;(/home/dev/.config/Code/User/mcp.json)&#160;&#160;</text>
+<text x="16" y="147">INFO&#160;&#160;new&#160;AI&#160;app&#160;config&#160;found:&#160;Cursor&#160;(/home/dev/.cursor/mcp.json)&#160;&#160;</text>
+<text x="16" y="165">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;remote-insecure&quot;&#160;added&#160;to&#160;Cursor&#160;config&#160;&#160;</text>
+<text x="16" y="183">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;local-http&quot;&#160;added&#160;to&#160;Cursor&#160;config&#160;&#160;</text>
+<text x="16" y="201">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;github&quot;&#160;added&#160;to&#160;Claude&#160;Desktop&#160;config&#160;&#160;</text>
+<text x="16" y="219">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;custom&quot;&#160;added&#160;to&#160;VS&#160;Code&#160;config&#160;&#160;</text>
+<text x="16" y="237">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;filesystem&quot;&#160;added&#160;to&#160;Claude&#160;Desktop&#160;config&#160;&#160;</text>
+<text x="16" y="255">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;github-remote&quot;&#160;added&#160;to&#160;VS&#160;Code&#160;config&#160;&#160;</text>
+<text x="16" y="273">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;slack&quot;&#160;added&#160;to&#160;Claude&#160;Code&#160;config&#160;&#160;</text>
+<text x="16" y="291">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;postgres&quot;&#160;added&#160;to&#160;Claude&#160;Desktop&#160;config&#160;&#160;</text>
+<text x="16" y="309">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;sentry&quot;&#160;added&#160;to&#160;Claude&#160;Code&#160;config&#160;&#160;</text>
+<text x="16" y="327">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;git&quot;&#160;added&#160;to&#160;Cursor&#160;config&#160;&#160;</text>
+<text x="16" y="345">INFO&#160;&#160;snapshot&#160;saved&#160;&#160;&quot;id&quot;:1,&quot;nodes&quot;:33,&quot;findings&quot;:13,&quot;changes&quot;:33</text>
+<text x="16" y="363">INFO&#160;&#160;API&#160;listening&#160;&#160;&quot;addr&quot;:&quot;127.0.0.1:17878&quot;</text>
+<text x="16" y="381">INFO&#160;&#160;new&#160;MCP&#160;server&#160;&quot;notion&quot;&#160;added&#160;to&#160;Cursor&#160;config&#160;&#160;</text>
+<text x="16" y="399">INFO&#160;&#160;snapshot&#160;saved&#160;&#160;&quot;id&quot;:2,&quot;nodes&quot;:35,&quot;findings&quot;:14,&quot;changes&quot;:2</text>
+<text x="16" y="417">INFO&#160;&#160;MCP&#160;server&#160;&quot;remote-insecure&quot;&#160;removed&#160;from&#160;Cursor&#160;config&#160;&#160;</text>
+<text x="16" y="435">INFO&#160;&#160;snapshot&#160;saved&#160;&#160;&quot;id&quot;:3,&quot;nodes&quot;:32,&quot;findings&quot;:12,&quot;changes&quot;:3</text>
+<text x="16" y="453"><tspan fill="#8b949e">#&#160;(SIGINT&#160;sent)&#160;exit&#160;code:&#160;0</tspan></text>
+</g>
+</svg>

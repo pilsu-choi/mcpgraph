@@ -175,3 +175,15 @@ Work in this order. Finish and commit one before starting the next. Each has an 
 ## 13. When unsure
 
 Stop and ask the owner instead of guessing on: config file locations, new dependencies, anything touching rule 3 (hard rules), or scope additions.
+
+## 14. Wiki (record every piece of work)
+
+`wiki/` is a knowledge bundle in Open Knowledge Format (OKF v0.1). After any change:
+
+- Add a dated entry (UTC) to `wiki/log.md` linking to the pages you touched.
+- Update or add the relevant page: `milestones/`, `decisions/`, `components/`, `rules/`,
+  `runbooks/`, `lessons/` (bugs found and what they taught) or `issues/` (open gaps).
+- Every page starts with YAML frontmatter: `type` (required), plus `title`, `description`,
+  `tags`, `timestamp` (ISO 8601 UTC), and `resource` (GitHub link) for pages about code.
+- One concept per file. Link pages with relative Markdown links. Every directory has an `index.md`.
+- If the change affects outputs, run `make demo` so `docs/logs` and `docs/images` stay current.

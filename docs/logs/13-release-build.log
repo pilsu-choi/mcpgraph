@@ -1,0 +1,22 @@
+$ goreleaser build --snapshot --clean && file dist/*/*
+    • ignoring errors because this is a snapshot     error=couldn't get remote URL: fatal: No remote configured to list refs from.
+    • building snapshot...                           version=0.0.1-snapshot
+  • building binaries
+    • building                                       paths=cmd/mcpgraphd binaries=mcpgraphd target=linux_arm64_v8.0
+    • building                                       paths=cmd/mcpgraphd binaries=mcpgraphd target=darwin_arm64_v8.0
+    • building                                       paths=cmd/mcpgraph binaries=mcpgraph target=darwin_arm64_v8.0
+    • building                                       paths=cmd/mcpgraphd binaries=mcpgraphd target=linux_amd64_v1
+    • building                                       paths=cmd/mcpgraph binaries=mcpgraph target=darwin_amd64_v1
+    • building                                       paths=cmd/mcpgraph binaries=mcpgraph target=linux_arm64_v8.0
+    • building                                       paths=cmd/mcpgraphd binaries=mcpgraphd target=darwin_amd64_v1
+    • building                                       paths=cmd/mcpgraph binaries=mcpgraph target=linux_amd64_v1
+  • build succeeded after 0s
+dist/mcpgraph_darwin_amd64_v1/mcpgraph:     Mach-O 64-bit x86_64 executable, flags:<|DYLDLINK|PIE>
+dist/mcpgraph_darwin_arm64_v8.0/mcpgraph:   Mach-O 64-bit arm64 executable, flags:<|DYLDLINK|PIE>
+dist/mcpgraph_linux_amd64_v1/mcpgraph:      ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, Go BuildID=U9rKLwBHMri1ADviYfOP/HQfNr9l9z9o3MjG6iH_0/HtJJunIFnhNNvKeV6sr0/f1xzeZAmcWEfXuw_oOIA, BuildID[sha1]=200a22f580a5af8d21917633325384d6d87f9fef, stripped
+dist/mcpgraph_linux_arm64_v8.0/mcpgraph:    ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, Go BuildID=yALQHhsxc8AQD3zdeOfc/OSH2s_bdVQufqtNIl18l/lSKkMTwv_WHb0fF4dRx2/HDLI_ZGfIyK_9gn3XHTz, BuildID[sha1]=a31675bbcb7eec784879d80c7c5a223995ab5df8, stripped
+dist/mcpgraphd_darwin_amd64_v1/mcpgraphd:   Mach-O 64-bit x86_64 executable, flags:<|DYLDLINK|PIE>
+dist/mcpgraphd_darwin_arm64_v8.0/mcpgraphd: Mach-O 64-bit arm64 executable, flags:<|DYLDLINK|PIE>
+dist/mcpgraphd_linux_amd64_v1/mcpgraphd:    ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, Go BuildID=Lb8gUQV5ZfTezGCU0kGq/V7SQEOEezNtlFI5kptho/y1Sf89j1jYc3IRECwuQC/v_OxW2RmQnEWTSEkUyBo, BuildID[sha1]=c57d3694f5d9e557a03b50394c0426226eb7429b, stripped
+dist/mcpgraphd_linux_arm64_v8.0/mcpgraphd:  ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, Go BuildID=2EUO7iBCH91ZP3FG5WoI/vw0SpasSlXqHVz7Jj8GG/F6hkc6r945wsHQLb2QBH/B3ZZT8Wp2-j8gRXRtl3P, BuildID[sha1]=9de728bfd6c8d759cf5424b340c3b3e59b810ba1, stripped
+# exit code: 0

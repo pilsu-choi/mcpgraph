@@ -1,0 +1,33 @@
+$ mcpgraph scan   # real $HOME, with process discovery
+Host: DESKTOP-UEHP5NV (linux/amd64)
+
+AI APPS (1)
+APP          SERVERS  CONFIG
+Claude Code  0        /home/pilsu/.claude.json
+
+MCP SERVERS (0)
+
+PROCESSES (15)
+PID    PPID   APP          MCP  COMMAND
+1588   1335   Claude Code       claude
+1654   1588                yes  npm exec @playwright/mcp@latest
+1698   1654                yes  sh -c "playwright-mcp"
+1699   1698                yes  node /home/pilsu/.npm/_npx/9833c18b2d85bc59/node_modules/.bin/playwri…
+51473  51469  VS Code           /home/pilsu/.vscode-server/bin/6d62b1d5dace93a33b3a6d3eca1317bd5e15bc…
+51487  51486  VS Code           /home/pilsu/.vscode-server/bin/6d62b1d5dace93a33b3a6d3eca1317bd5e15bc…
+51509  51508  VS Code           /home/pilsu/.vscode-server/bin/6d62b1d5dace93a33b3a6d3eca1317bd5e15bc…
+51530  51473  VS Code           /home/pilsu/.vscode-server/bin/6d62b1d5dace93a33b3a6d3eca1317bd5e15bc…
+51762  51473  VS Code           /home/pilsu/.vscode-server/bin/6d62b1d5dace93a33b3a6d3eca1317bd5e15bc…
+51769  51473  VS Code           /home/pilsu/.vscode-server/bin/6d62b1d5dace93a33b3a6d3eca1317bd5e15bc…
+51824  51769  VS Code           /home/pilsu/.vscode-server/bin/6d62b1d5dace93a33b3a6d3eca1317bd5e15bc…
+52102  51762  VS Code           /home/pilsu/.vscode-server/bin/6d62b1d5dace93a33b3a6d3eca1317bd5e15bc…
+65293  1588                     /bin/bash -c source /home/pilsu/.claude/shell-snapshots/snapshot-bash…
+65294  65293                    bash scripts/demo.sh
+65295  65293                    tail -3
+
+FINDINGS: 0 high, 1 medium, 0 low
+
+MEDIUM (1)
+  [R6] Undeclared MCP-like process pid 1654
+       "npm exec @playwright/mcp@latest" is not in any scanned config, so its tools and permissions are invisible to review; declare it or find out what started it.
+# exit code: 0

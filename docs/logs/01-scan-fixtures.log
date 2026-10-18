@@ -1,0 +1,55 @@
+$ mcpgraph scan --home /home/dev --no-processes
+Host: devbox (linux/amd64)
+
+AI APPS (4)
+APP             SERVERS  CONFIG
+Claude Code     2        /home/dev/.claude.json
+Claude Desktop  3        /home/dev/.config/Claude/claude_desktop_config.json
+Cursor          3        /home/dev/.cursor/mcp.json
+VS Code         2        /home/dev/.config/Code/User/mcp.json
+
+MCP SERVERS (10)
+APP             SERVER           TRANSPORT  COMMAND / URL                                                 SECRETS  ACCESSES                                          PIDS
+Claude Code     sentry           http       https://mcp.sentry.dev/mcp                                    0        saas:mcp.sentry.dev, saas:sentry                  -
+Claude Code     slack            stdio      npx -y slack-mcp-server@1.2.0                                 1        saas:slack                                        -
+Claude Desktop  filesystem       stdio      npx -y @modelcontextprotocol/server-filesystem ~              0        filesystem:/home/dev               -
+Claude Desktop  github           stdio      npx -y @modelcontextprotocol/server-github                    1        saas:github                                       -
+Claude Desktop  postgres         stdio      npx -y @modelcontextprotocol/server-postgres@0.6.2 postgres…  1        database:postgresql://db.internal:5432/prod       -
+Cursor          git              stdio      uvx mcp-server-git --repository ~/code/project                1        filesystem:/home/dev/code/project  -
+Cursor          local-http       http       http://localhost:3000/mcp                                     0        -                                                 -
+Cursor          remote-insecure  http       http://10.0.0.5:8080/mcp?api_key=****abcd                     1        saas:10.0.0.5                                     -
+VS Code         custom           stdio      node /opt/tools/server.js --api-key ****FAKE                  3        -                                                 -
+VS Code         github-remote    http       https://api.githubcopilot.com/mcp/                            1        saas:api.githubcopilot.com, saas:github           -
+
+FINDINGS: 9 high, 4 medium, 0 low
+
+HIGH (9)
+  [R1] Plaintext secret --api-key in VS Code / custom
+       /home/dev/.config/Code/User/mcp.json#$.servers.custom.args[2] (known token prefix sk-ant-). Config files are synced, backed up and read by other tools; reference an environment variable or secret store instead.
+  [R1] Plaintext secret API_KEY in VS Code / custom
+       /home/dev/.config/Code/User/mcp.json#$.servers.custom.env.API_KEY (secret-named key API_KEY). Config files are synced, backed up and read by other tools; reference an environment variable or secret store instead.
+  [R1] Plaintext secret GITHUB_PERSONAL_ACCESS_TOKEN in Claude Desktop / github
+       /home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.github.env.GITHUB_PERSONAL_ACCESS_TOKEN (known token prefix ghp_). Config files are synced, backed up and read by other tools; reference an environment variable or secret store instead.
+  [R1] Plaintext secret SLACK_BOT_TOKEN in Claude Code / slack
+       /home/dev/.claude.json#$.projects["/work/app"].mcpServers.slack.env.SLACK_BOT_TOKEN (known token prefix xoxb-). Config files are synced, backed up and read by other tools; reference an environment variable or secret store instead.
+  [R1] Plaintext secret args[2] in Claude Desktop / postgres
+       /home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.postgres.args[2] (password or token inside a URL). Config files are synced, backed up and read by other tools; reference an environment variable or secret store instead.
+  [R1] Plaintext secret url in Cursor / remote-insecure
+       /home/dev/.cursor/mcp.json#$.mcpServers.remote-insecure.url (password or token inside the server URL). Config files are synced, backed up and read by other tools; reference an environment variable or secret store instead.
+  [R2] Claude Desktop / filesystem can access /home/dev
+       The server is rooted at the home directory or /, so a prompt injection can read SSH keys, cloud credentials and browser data; scope it to the project directory.
+  [R5] Claude Desktop / filesystem can read /home/dev/.aws/credentials
+       The credential file is inside /home/dev, which the server can access; one prompt injection is enough to exfiltrate it. Narrow the root.
+  [R5] Claude Desktop / filesystem can read /home/dev/.ssh/id_ed25519
+       The credential file is inside /home/dev, which the server can access; one prompt injection is enough to exfiltrate it. Narrow the root.
+
+MEDIUM (4)
+  [R3] Claude Desktop / filesystem runs unpinned package @modelcontextprotocol/server-filesystem via npx
+       Without a version, every start fetches the latest release, so a compromised or typosquatted publish runs immediately; pin an exact version.
+  [R3] Claude Desktop / github runs unpinned package @modelcontextprotocol/server-github via npx
+       Without a version, every start fetches the latest release, so a compromised or typosquatted publish runs immediately; pin an exact version.
+  [R3] Cursor / git runs unpinned package mcp-server-git via uvx
+       Without a version, every start fetches the latest release, so a compromised or typosquatted publish runs immediately; pin an exact version.
+  [R4] Cursor / remote-insecure uses plain http:// to 10.0.0.5:8080
+       Tool calls, results and any auth headers cross the network unencrypted and can be read or modified in transit; use https://.
+# exit code: 2
