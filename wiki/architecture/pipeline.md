@@ -3,7 +3,7 @@ type: Architecture
 title: Data pipeline
 description: Collectors send Events on a channel; one builder goroutine merges them; rules and outputs read immutable graphs.
 tags: [architecture, pipeline]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Data pipeline

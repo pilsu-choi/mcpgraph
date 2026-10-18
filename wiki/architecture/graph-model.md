@@ -3,7 +3,7 @@ type: Data Model
 title: Graph model
 description: Node kinds, edge kinds and how stable node IDs are derived.
 tags: [architecture, model]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Graph model

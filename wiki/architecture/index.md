@@ -3,7 +3,7 @@ type: Index
 title: Architecture
 description: How data flows from collectors through the single-writer builder to rules and outputs.
 tags: [architecture]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Architecture

@@ -3,7 +3,7 @@ type: Index
 title: mcpgraph wiki
 description: Entry point of the mcpgraph knowledge bundle: what the project is, how it is built, and why.
 tags: [mcpgraph, index]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # mcpgraph wiki

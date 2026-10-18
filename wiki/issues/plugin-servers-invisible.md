@@ -3,7 +3,7 @@ type: Issue
 title: Plugin-provided MCP servers are not in configs
 description: On the real machine, Claude Code's Playwright MCP comes from a plugin and is flagged R6.
 tags: [issue, open]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Plugin-provided MCP servers are not in configs

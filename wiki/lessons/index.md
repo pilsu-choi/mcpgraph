@@ -3,7 +3,7 @@ type: Index
 title: Lessons
 description: Bugs and surprises found during development.
 tags: [lesson]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Lessons

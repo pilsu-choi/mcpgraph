@@ -3,7 +3,7 @@ type: Log
 title: Work log
 description: Chronological history of work on mcpgraph, newest last.
 tags: [log, history]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Work log
@@ -31,11 +31,15 @@ Times are UTC. Each entry links to the page with the details.
   100 ms after a config edit.
 - **06:23** [m8 API](milestones/m8-api.md) committed (`92ece4b`, amended for a gofmt fix).
 - **06:24** [m9 release + README](milestones/m9-release-readme.md) committed (`0a474ab`).
-- **06:30–06:50** [Docs and visuals](milestones/m10-docs-visuals.md):
+- **06:30–06:43** [Docs and visuals](milestones/m10-docs-visuals.md):
   [termsvg](components/termsvg.md) capture tool, `scripts/demo.sh` and `make demo`, run logs in
   `docs/logs/`, README rebuilt with 9 Mermaid diagrams (all checked with the mermaid parser and
   rendered in headless Chromium), and this wiki. The module path was renamed to
   `github.com/pilsu-choi/mcpgraph`. Lessons:
   [SVG whitespace](lessons/svg-whitespace.md), [Mermaid strikethrough](lessons/mermaid-tilde.md).
-- **06:50** Public GitHub repository `pilsu-choi/mcpgraph` created; work pushed to `dev`
-  ([runbook](runbooks/github-repo.md)).
+- **06:43** Commits `2c12b0d` (module path, inventory ordering) and `06d1446` (docs) on a new
+  `dev` branch.
+- **06:44** Public GitHub repository `pilsu-choi/mcpgraph` created through the REST API; `dev`
+  pushed ([runbook](runbooks/github-repo.md)).
+- **06:45** Found that `scripts/demo.sh` reported a dirty tree: `> file` truncates
+  `00-environment.log` before `git describe` runs. Fixed (`6eb59da`), and logs regenerated at a clean commit.

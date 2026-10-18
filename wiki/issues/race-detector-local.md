@@ -3,7 +3,7 @@ type: Issue
 title: Race detector cannot run locally
 description: No C compiler on the dev machine, so go test -race only runs in CI.
 tags: [issue, open]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Race detector cannot run locally

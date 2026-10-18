@@ -3,7 +3,7 @@ type: Index
 title: Issues
 description: Open questions and known gaps.
 tags: [issue]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Issues

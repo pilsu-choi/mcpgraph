@@ -4,7 +4,7 @@ title: internal/collector/watch
 description: fsnotify watcher that re-parses changed config files after a debounce.
 resource: https://github.com/pilsu-choi/mcpgraph/blob/dev/internal/collector/watch
 tags: [component, go]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # `internal/collector/watch`

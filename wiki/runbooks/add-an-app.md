@@ -3,7 +3,7 @@ type: Runbook
 title: Add a new AI app
 description: Steps to support another AI app's MCP config.
 tags: [runbook]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Add a new AI app

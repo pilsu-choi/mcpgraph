@@ -4,14 +4,14 @@ $ curl -s 127.0.0.1:17878/findings | head -c 600
   {
     "rule_id": "R1",
     "severity": "high",
-    "node_id": "Credential:e64db514184a",
+    "node_id": "Credential:42f253346c42",
     "title": "Plaintext secret --api-key in VS Code / custom",
     "message": "/home/dev/.config/Code/User/mcp.json#$.servers.custom.args[2] (known token prefix sk-ant-). Config files are synced, backed up and read by other tools; reference an environment variable or secret store instead."
   },
   {
     "rule_id": "R1",
     "severity": "high",
-    "node_id": "Credential:ea5e0f4d3a63",
+    "node_id": "Credential:0166ba201fcb",
     "title": "Plaintext secret API_KEY in VS Code / custom",
     "message": "/home/dev/.co
 ...
@@ -20,7 +20,7 @@ $ # edit Cursor config: remove "remote-insecure"
 $ curl -s '127.0.0.1:17878/snapshots?limit=3'
 
     "id": 3,
-    "taken_at": "2026-10-18T06:44:52.871101418Z",
+    "taken_at": "2026-10-18T06:45:15.222268508Z",
     "node_count": 32,
     "high": 8,
     "medium": 4,
@@ -28,50 +28,50 @@ $ curl -s '127.0.0.1:17878/snapshots?limit=3'
         "message": "DataSource \"10.0.0.5\" removed"
         "message": "MCP server \"remote-insecure\" removed from Cursor config"
     "id": 2,
-    "taken_at": "2026-10-18T06:44:51.367313698Z",
+    "taken_at": "2026-10-18T06:45:13.040613048Z",
     "node_count": 35,
     "high": 9,
     "medium": 5,
         "message": "DataSource \"notion\" added"
         "message": "new MCP server \"notion\" added to Cursor config"
     "id": 1,
-    "taken_at": "2026-10-18T06:44:50.069137844Z",
+    "taken_at": "2026-10-18T06:45:11.742155141Z",
     "node_count": 33,
     "high": 9,
     "medium": 4,
-        "message": "new AI app config found: Cursor (/home/dev/.cursor/mcp.json)"
         "message": "new AI app config found: VS Code (/home/dev/.config/Code/User/mcp.json)"
-        "message": "new AI app config found: Claude Code (/home/dev/.claude.json)"
+        "message": "new AI app config found: Cursor (/home/dev/.cursor/mcp.json)"
         "message": "new AI app config found: Claude Desktop (/home/dev/.config/Claude/claude_desktop_config.json)"
-        "message": "new inline credential \"url\" at /home/dev/.cursor/mcp.json#$.mcpServers.remote-insecure.url"
-        "message": "new env credential \"GIT_TOKEN\" at /home/dev/.cursor/mcp.json#$.mcpServers.git.env.GIT_TOKEN"
-        "message": "new env credential \"Authorization\" at /home/dev/.config/Code/User/mcp.json#$.servers.github-remote.headers.Authorization"
-        "message": "new inline credential \"GITHUB_PERSONAL_ACCESS_TOKEN\" at /home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.github.env.GITHUB_PERSONAL_ACCESS_TOKEN"
-        "message": "new file credential \"envFile\" at /home/dev/.config/Code/User/mcp.json#$.servers.custom.envFile"
-        "message": "new inline credential \"SLACK_BOT_TOKEN\" at /home/dev/.claude.json#$.projects[\"/work/app\"].mcpServers.slack.env.SLACK_BOT_TOKEN"
-        "message": "new inline credential \"args[2]\" at /home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.postgres.args[2]"
-        "message": "new inline credential \"--api-key\" at /home/dev/.config/Code/User/mcp.json#$.servers.custom.args[2]"
+        "message": "new AI app config found: Claude Code (/home/dev/.claude.json)"
         "message": "new inline credential \"API_KEY\" at /home/dev/.config/Code/User/mcp.json#$.servers.custom.env.API_KEY"
-        "message": "DataSource \"/home/dev/code/project\" added"
+        "message": "new inline credential \"SLACK_BOT_TOKEN\" at /home/dev/.claude.json#$.projects[\"/work/app\"].mcpServers.slack.env.SLACK_BOT_TOKEN"
+        "message": "new inline credential \"GITHUB_PERSONAL_ACCESS_TOKEN\" at /home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.github.env.GITHUB_PERSONAL_ACCESS_TOKEN"
+        "message": "new inline credential \"url\" at /home/dev/.cursor/mcp.json#$.mcpServers.remote-insecure.url"
+        "message": "new file credential \"envFile\" at /home/dev/.config/Code/User/mcp.json#$.servers.custom.envFile"
+        "message": "new inline credential \"--api-key\" at /home/dev/.config/Code/User/mcp.json#$.servers.custom.args[2]"
+        "message": "new inline credential \"args[2]\" at /home/dev/.config/Claude/claude_desktop_config.json#$.mcpServers.postgres.args[2]"
+        "message": "new env credential \"Authorization\" at /home/dev/.config/Code/User/mcp.json#$.servers.github-remote.headers.Authorization"
+        "message": "new env credential \"GIT_TOKEN\" at /home/dev/.cursor/mcp.json#$.mcpServers.git.env.GIT_TOKEN"
         "message": "DataSource \"postgresql://db.internal:5432/prod\" added"
         "message": "DataSource \"slack\" added"
         "message": "DataSource \"/home/dev\" added"
         "message": "DataSource \"10.0.0.5\" added"
         "message": "DataSource \"mcp.sentry.dev\" added"
         "message": "DataSource \"sentry\" added"
+        "message": "DataSource \"/home/dev/code/project\" added"
         "message": "DataSource \"api.githubcopilot.com\" added"
         "message": "DataSource \"github\" added"
         "message": "Host \"devbox\" added"
-        "message": "new MCP server \"remote-insecure\" added to Cursor config"
-        "message": "new MCP server \"postgres\" added to Claude Desktop config"
-        "message": "new MCP server \"local-http\" added to Cursor config"
-        "message": "new MCP server \"filesystem\" added to Claude Desktop config"
-        "message": "new MCP server \"github-remote\" added to VS Code config"
-        "message": "new MCP server \"custom\" added to VS Code config"
-        "message": "new MCP server \"git\" added to Cursor config"
         "message": "new MCP server \"slack\" added to Claude Code config"
+        "message": "new MCP server \"git\" added to Cursor config"
+        "message": "new MCP server \"local-http\" added to Cursor config"
         "message": "new MCP server \"sentry\" added to Claude Code config"
         "message": "new MCP server \"github\" added to Claude Desktop config"
+        "message": "new MCP server \"remote-insecure\" added to Cursor config"
+        "message": "new MCP server \"filesystem\" added to Claude Desktop config"
+        "message": "new MCP server \"postgres\" added to Claude Desktop config"
+        "message": "new MCP server \"github-remote\" added to VS Code config"
+        "message": "new MCP server \"custom\" added to VS Code config"
 $ curl -s -o /dev/null -w '%{http_code}' -X POST 127.0.0.1:17878/graph   # read-only
 405
 $ curl -s -o /dev/null -w '%{http_code}' -H 'Host: evil.example' 127.0.0.1:17878/graph   # DNS rebinding

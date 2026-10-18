@@ -3,7 +3,7 @@ type: Lesson
 title: Two tildes in a Mermaid label become strikethrough
 description: Mermaid parsed '~/.ssh ... ~/.aws' as markdown strikethrough and rendered an error box.
 tags: [lesson]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Two tildes in a Mermaid label become strikethrough

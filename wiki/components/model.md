@@ -4,7 +4,7 @@ title: internal/model
 description: Shared types: Node, Edge, Graph, Event, Finding, NodeID.
 resource: https://github.com/pilsu-choi/mcpgraph/blob/dev/internal/model
 tags: [component, go]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # `internal/model`

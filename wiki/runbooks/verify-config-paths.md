@@ -3,7 +3,7 @@ type: Runbook
 title: Verify config paths
 description: How to confirm a candidate path before removing its TODO(verify).
 tags: [runbook]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Verify config paths

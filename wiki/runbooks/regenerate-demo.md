@@ -3,7 +3,7 @@ type: Runbook
 title: Regenerate demo logs and captures
 description: How docs/logs and docs/images are produced and how to refresh them.
 tags: [runbook]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Regenerate demo logs and captures

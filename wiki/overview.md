@@ -3,7 +3,7 @@ type: Project
 title: Project overview
 description: What mcpgraph does, its scope, the hard rules it follows and where it stands.
 tags: [mcpgraph, overview, scope]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Project overview

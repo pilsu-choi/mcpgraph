@@ -3,7 +3,7 @@ type: Architecture
 title: Concurrency model
 description: Which goroutine owns what, who closes channels, and how cancellation spreads.
 tags: [architecture, concurrency, go]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Concurrency model

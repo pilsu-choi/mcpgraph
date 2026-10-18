@@ -1,4 +1,4 @@
-# generated: 2026-10-18T06:44:50Z
-# commit:    06d1446-dirty (docs: README diagrams and captures, run logs, OKF wiki)
+# generated: 2026-10-18T06:45:11Z
+# commit:    6eb59da (docs: demo.sh records the commit before writing the environment log)
 # go:        go version go1.27.2 linux/amd64
 # os:        Linux 5.15.167.4-microsoft-standard-WSL2 x86_64

@@ -1,21 +1,21 @@
 $ go test ./...
-ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.015s
+ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.014s
 ?   	github.com/pilsu-choi/mcpgraph/cmd/mcpgraphd	[no test files]
-ok  	github.com/pilsu-choi/mcpgraph/internal/api	0.077s
+ok  	github.com/pilsu-choi/mcpgraph/internal/api	0.017s
 ?   	github.com/pilsu-choi/mcpgraph/internal/collector	[no test files]
-ok  	github.com/pilsu-choi/mcpgraph/internal/collector/config	0.077s
-ok  	github.com/pilsu-choi/mcpgraph/internal/collector/process	0.077s
+ok  	github.com/pilsu-choi/mcpgraph/internal/collector/config	0.011s
+ok  	github.com/pilsu-choi/mcpgraph/internal/collector/process	0.002s
 ?   	github.com/pilsu-choi/mcpgraph/internal/collector/watch	[no test files]
-ok  	github.com/pilsu-choi/mcpgraph/internal/daemon	0.782s
-ok  	github.com/pilsu-choi/mcpgraph/internal/graph	0.078s
-ok  	github.com/pilsu-choi/mcpgraph/internal/model	0.078s
-ok  	github.com/pilsu-choi/mcpgraph/internal/netutil	0.078s
-ok  	github.com/pilsu-choi/mcpgraph/internal/redact	0.078s
-ok  	github.com/pilsu-choi/mcpgraph/internal/report	0.077s
-ok  	github.com/pilsu-choi/mcpgraph/internal/rules	0.081s
-ok  	github.com/pilsu-choi/mcpgraph/internal/scan	0.096s
+ok  	github.com/pilsu-choi/mcpgraph/internal/daemon	0.777s
+ok  	github.com/pilsu-choi/mcpgraph/internal/graph	0.003s
+ok  	github.com/pilsu-choi/mcpgraph/internal/model	0.002s
+ok  	github.com/pilsu-choi/mcpgraph/internal/netutil	0.004s
+ok  	github.com/pilsu-choi/mcpgraph/internal/redact	0.003s
+ok  	github.com/pilsu-choi/mcpgraph/internal/report	0.002s
+ok  	github.com/pilsu-choi/mcpgraph/internal/rules	0.007s
+ok  	github.com/pilsu-choi/mcpgraph/internal/scan	0.026s
 ?   	github.com/pilsu-choi/mcpgraph/internal/sink	[no test files]
-ok  	github.com/pilsu-choi/mcpgraph/internal/store	0.035s
+ok  	github.com/pilsu-choi/mcpgraph/internal/store	0.040s
 ?   	github.com/pilsu-choi/mcpgraph/internal/testutil	[no test files]
-ok  	github.com/pilsu-choi/mcpgraph/tools/termsvg	0.003s
+ok  	github.com/pilsu-choi/mcpgraph/tools/termsvg	0.002s
 # exit code: 0

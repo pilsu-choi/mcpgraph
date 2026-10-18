@@ -4,7 +4,7 @@ title: internal/sink
 description: Interface for forwarding snapshots to a central server; only a no-op exists.
 resource: https://github.com/pilsu-choi/mcpgraph/blob/dev/internal/sink
 tags: [component, go]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # `internal/sink`

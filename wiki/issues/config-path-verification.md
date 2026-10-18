@@ -3,7 +3,7 @@ type: Issue
 title: Most config paths are unverified
 description: Only ~/.claude.json is confirmed; other candidates are TODO(verify).
 tags: [issue, open]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Most config paths are unverified

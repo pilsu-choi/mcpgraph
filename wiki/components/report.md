@@ -4,7 +4,7 @@ title: internal/report
 description: Inventory and findings tables, JSON, Mermaid.
 resource: https://github.com/pilsu-choi/mcpgraph/blob/dev/internal/report
 tags: [component, go]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # `internal/report`

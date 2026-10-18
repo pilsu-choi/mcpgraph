@@ -3,7 +3,7 @@ type: Index
 title: Design decisions
 description: Why mcpgraph is built the way it is.
 tags: [decision]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Design decisions

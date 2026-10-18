@@ -3,7 +3,7 @@ type: Runbook
 title: Development environment
 description: Toolchain locations on the owner's WSL2 machine and what is missing.
 tags: [runbook]
-timestamp: 2026-10-18T06:50:00Z
+timestamp: 2026-10-18T06:45:00Z
 ---
 
 # Development environment
