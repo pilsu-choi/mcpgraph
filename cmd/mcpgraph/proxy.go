@@ -83,6 +83,18 @@ stdout carries the MCP protocol, so mcpgraph logs only to stderr.`,
 // that fails every decision, so the proxy still starts (other MCP traffic
 // keeps working) but denies every tool call: hard rule 4, fail closed.
 func loadEngine(path, home string, known func(server, tool string) bool) policy.Engine {
+	e, err := buildEngine(path, home, known)
+	if err != nil {
+		slog.Error("mcpgraph proxy: every tool call will be denied", "err", err)
+		return proxy.FailingEngine(err)
+	}
+	return e
+}
+
+// buildEngine loads the policy file (or the built-in default when path is
+// empty) and compiles it. The hook uses it directly: it has no traffic to
+// keep alive, so it blocks instead of starting with a failing engine.
+func buildEngine(path, home string, known func(server, tool string) bool) (policy.Engine, error) {
 	var (
 		p   *policy.Policy
 		err error
@@ -92,13 +104,12 @@ func loadEngine(path, home string, known func(server, tool string) bool) policy.
 	} else {
 		p, err = policy.LoadFile(path)
 	}
-	if err == nil {
-		var e *policy.RuleEngine
-		if e, err = policy.New(p, policy.Options{Home: home, KnownTool: known}); err == nil {
-			return e
-		}
+	if err != nil {
+		return nil, fmt.Errorf("load policy: %w", err)
 	}
-	err = fmt.Errorf("load policy: %w", err)
-	slog.Error("mcpgraph proxy: every tool call will be denied", "err", err)
-	return proxy.FailingEngine(err)
+	e, err := policy.New(p, policy.Options{Home: home, KnownTool: known})
+	if err != nil {
+		return nil, fmt.Errorf("load policy: %w", err)
+	}
+	return e, nil
 }
