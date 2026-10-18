@@ -3,7 +3,7 @@ type: Index
 title: Design decisions
 description: Why mcpgraph is built the way it is.
 tags: [decision]
-timestamp: 2026-10-18T06:45:00Z
+timestamp: 2026-10-18T07:05:00Z
 ---
 
 # Design decisions
@@ -17,5 +17,8 @@ timestamp: 2026-10-18T06:45:00Z
 | [Redact secrets at collection time](redact-at-collection.md) | Raw config values never leave the config package; every stored string is masked first. |
 | [Loopback-only, read-only API](loopback-only-api.md) | The API binds only 127.0.0.1, checks the Host header, and exposes GET routes only. |
 | [Pure Go, no cgo](pure-go-no-cgo.md) | gopsutil and modernc.org/sqlite keep CGO_ENABLED=0 static cross-builds possible. |
+| [Move to AGENTS.md v2](v2-transition.md) | mcpgraph adds runtime control (proxy, hook, policy, audit) to posture. |
+| [Archive the v1 daemon](archive-v1-daemon.md) | Daemon, store, API and watcher live on `archive/v1-daemon` until milestone 12. |
+| [Plain HTTP becomes R7](plain-http-as-r7.md) | R4 now means "not proxied"; the old check keeps its logic as R7. |
 
 These match AGENTS.md §5 and the README's *Design decisions* section.

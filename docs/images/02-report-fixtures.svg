@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1375" height="654" viewBox="0 0 1375 654">
-<rect width="1375" height="654" rx="8" fill="#0d1117"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1375" height="870" viewBox="0 0 1375 870">
+<rect width="1375" height="870" rx="8" fill="#0d1117"/>
 <rect width="1375" height="30" rx="8" fill="#161b22"/><rect y="22" width="1375" height="8" fill="#161b22"/>
 <circle cx="18" cy="15" r="6" fill="#ff5f56"/>
 <circle cx="38" cy="15" r="6" fill="#ffbd2e"/>
@@ -7,7 +7,7 @@
 <text x="687" y="19" fill="#8b949e" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" text-anchor="middle">mcpgraph&#160;report</text>
 <g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace" font-size="13" fill="#c9d1d9" xml:space="preserve" style="white-space:pre">
 <text x="16" y="57"><tspan fill="#7ee787">$&#160;</tspan><tspan fill="#ffffff">mcpgraph&#160;report&#160;--home&#160;/home/dev&#160;--no-processes</tspan></text>
-<text x="16" y="75">FINDINGS:&#160;9&#160;high,&#160;4&#160;medium,&#160;0&#160;low</text>
+<text x="16" y="75">FINDINGS:&#160;9&#160;high,&#160;10&#160;medium,&#160;0&#160;low</text>
 <text x="16" y="93"></text>
 <text x="16" y="111"><tspan fill="#ff7b72" font-weight="bold">HIGH&#160;(9)</tspan></text>
 <text x="16" y="129">&#160;&#160;<tspan fill="#ff7b72" font-weight="bold">[R1]</tspan>&#160;Plaintext&#160;secret&#160;--api-key&#160;in&#160;VS&#160;Code&#160;/&#160;custom</text>
@@ -29,15 +29,27 @@
 <text x="16" y="417">&#160;&#160;<tspan fill="#ff7b72" font-weight="bold">[R5]</tspan>&#160;Claude&#160;Desktop&#160;/&#160;filesystem&#160;can&#160;read&#160;/home/dev/.ssh/id_ed25519</text>
 <text x="16" y="435">&#160;&#160;&#160;&#160;&#160;&#160;&#160;The&#160;credential&#160;file&#160;is&#160;inside&#160;/home/dev,&#160;which&#160;the&#160;server&#160;can&#160;access;&#160;one&#160;prompt&#160;injection&#160;is&#160;enough&#160;to&#160;exfiltrate&#160;it.&#160;Narrow&#160;the&#160;root.</text>
 <text x="16" y="453"></text>
-<text x="16" y="471"><tspan fill="#d29922" font-weight="bold">MEDIUM&#160;(4)</tspan></text>
+<text x="16" y="471"><tspan fill="#d29922" font-weight="bold">MEDIUM&#160;(10)</tspan></text>
 <text x="16" y="489">&#160;&#160;<tspan fill="#d29922" font-weight="bold">[R3]</tspan>&#160;Claude&#160;Desktop&#160;/&#160;filesystem&#160;runs&#160;unpinned&#160;package&#160;@modelcontextprotocol/server-filesystem&#160;via&#160;npx</text>
 <text x="16" y="507">&#160;&#160;&#160;&#160;&#160;&#160;&#160;Without&#160;a&#160;version,&#160;every&#160;start&#160;fetches&#160;the&#160;latest&#160;release,&#160;so&#160;a&#160;compromised&#160;or&#160;typosquatted&#160;publish&#160;runs&#160;immediately;&#160;pin&#160;an&#160;exact&#160;version.</text>
 <text x="16" y="525">&#160;&#160;<tspan fill="#d29922" font-weight="bold">[R3]</tspan>&#160;Claude&#160;Desktop&#160;/&#160;github&#160;runs&#160;unpinned&#160;package&#160;@modelcontextprotocol/server-github&#160;via&#160;npx</text>
 <text x="16" y="543">&#160;&#160;&#160;&#160;&#160;&#160;&#160;Without&#160;a&#160;version,&#160;every&#160;start&#160;fetches&#160;the&#160;latest&#160;release,&#160;so&#160;a&#160;compromised&#160;or&#160;typosquatted&#160;publish&#160;runs&#160;immediately;&#160;pin&#160;an&#160;exact&#160;version.</text>
 <text x="16" y="561">&#160;&#160;<tspan fill="#d29922" font-weight="bold">[R3]</tspan>&#160;Cursor&#160;/&#160;git&#160;runs&#160;unpinned&#160;package&#160;mcp-server-git&#160;via&#160;uvx</text>
 <text x="16" y="579">&#160;&#160;&#160;&#160;&#160;&#160;&#160;Without&#160;a&#160;version,&#160;every&#160;start&#160;fetches&#160;the&#160;latest&#160;release,&#160;so&#160;a&#160;compromised&#160;or&#160;typosquatted&#160;publish&#160;runs&#160;immediately;&#160;pin&#160;an&#160;exact&#160;version.</text>
-<text x="16" y="597">&#160;&#160;<tspan fill="#d29922" font-weight="bold">[R4]</tspan>&#160;Cursor&#160;/&#160;remote-insecure&#160;uses&#160;plain&#160;http://&#160;to&#160;10.0.0.5:8080</text>
-<text x="16" y="615">&#160;&#160;&#160;&#160;&#160;&#160;&#160;Tool&#160;calls,&#160;results&#160;and&#160;any&#160;auth&#160;headers&#160;cross&#160;the&#160;network&#160;unencrypted&#160;and&#160;can&#160;be&#160;read&#160;or&#160;modified&#160;in&#160;transit;&#160;use&#160;https://.</text>
-<text x="16" y="633"><tspan fill="#8b949e">#&#160;exit&#160;code:&#160;2</tspan></text>
+<text x="16" y="597">&#160;&#160;<tspan fill="#d29922" font-weight="bold">[R4]</tspan>&#160;Claude&#160;Code&#160;/&#160;slack&#160;is&#160;not&#160;routed&#160;through&#160;the&#160;mcpgraph&#160;proxy</text>
+<text x="16" y="615">&#160;&#160;&#160;&#160;&#160;&#160;&#160;Its&#160;tool&#160;calls&#160;reach&#160;the&#160;server&#160;without&#160;a&#160;policy&#160;check&#160;or&#160;audit&#160;record;&#160;run&#160;`mcpgraph&#160;install`&#160;to&#160;wrap&#160;it.</text>
+<text x="16" y="633">&#160;&#160;<tspan fill="#d29922" font-weight="bold">[R4]</tspan>&#160;Claude&#160;Desktop&#160;/&#160;filesystem&#160;is&#160;not&#160;routed&#160;through&#160;the&#160;mcpgraph&#160;proxy</text>
+<text x="16" y="651">&#160;&#160;&#160;&#160;&#160;&#160;&#160;Its&#160;tool&#160;calls&#160;reach&#160;the&#160;server&#160;without&#160;a&#160;policy&#160;check&#160;or&#160;audit&#160;record;&#160;run&#160;`mcpgraph&#160;install`&#160;to&#160;wrap&#160;it.</text>
+<text x="16" y="669">&#160;&#160;<tspan fill="#d29922" font-weight="bold">[R4]</tspan>&#160;Claude&#160;Desktop&#160;/&#160;github&#160;is&#160;not&#160;routed&#160;through&#160;the&#160;mcpgraph&#160;proxy</text>
+<text x="16" y="687">&#160;&#160;&#160;&#160;&#160;&#160;&#160;Its&#160;tool&#160;calls&#160;reach&#160;the&#160;server&#160;without&#160;a&#160;policy&#160;check&#160;or&#160;audit&#160;record;&#160;run&#160;`mcpgraph&#160;install`&#160;to&#160;wrap&#160;it.</text>
+<text x="16" y="705">&#160;&#160;<tspan fill="#d29922" font-weight="bold">[R4]</tspan>&#160;Claude&#160;Desktop&#160;/&#160;postgres&#160;is&#160;not&#160;routed&#160;through&#160;the&#160;mcpgraph&#160;proxy</text>
+<text x="16" y="723">&#160;&#160;&#160;&#160;&#160;&#160;&#160;Its&#160;tool&#160;calls&#160;reach&#160;the&#160;server&#160;without&#160;a&#160;policy&#160;check&#160;or&#160;audit&#160;record;&#160;run&#160;`mcpgraph&#160;install`&#160;to&#160;wrap&#160;it.</text>
+<text x="16" y="741">&#160;&#160;<tspan fill="#d29922" font-weight="bold">[R4]</tspan>&#160;Cursor&#160;/&#160;git&#160;is&#160;not&#160;routed&#160;through&#160;the&#160;mcpgraph&#160;proxy</text>
+<text x="16" y="759">&#160;&#160;&#160;&#160;&#160;&#160;&#160;Its&#160;tool&#160;calls&#160;reach&#160;the&#160;server&#160;without&#160;a&#160;policy&#160;check&#160;or&#160;audit&#160;record;&#160;run&#160;`mcpgraph&#160;install`&#160;to&#160;wrap&#160;it.</text>
+<text x="16" y="777">&#160;&#160;<tspan fill="#d29922" font-weight="bold">[R4]</tspan>&#160;VS&#160;Code&#160;/&#160;custom&#160;is&#160;not&#160;routed&#160;through&#160;the&#160;mcpgraph&#160;proxy</text>
+<text x="16" y="795">&#160;&#160;&#160;&#160;&#160;&#160;&#160;Its&#160;tool&#160;calls&#160;reach&#160;the&#160;server&#160;without&#160;a&#160;policy&#160;check&#160;or&#160;audit&#160;record;&#160;run&#160;`mcpgraph&#160;install`&#160;to&#160;wrap&#160;it.</text>
+<text x="16" y="813">&#160;&#160;<tspan fill="#d29922" font-weight="bold">[R7]</tspan>&#160;Cursor&#160;/&#160;remote-insecure&#160;uses&#160;plain&#160;http://&#160;to&#160;10.0.0.5:8080</text>
+<text x="16" y="831">&#160;&#160;&#160;&#160;&#160;&#160;&#160;Tool&#160;calls,&#160;results&#160;and&#160;any&#160;auth&#160;headers&#160;cross&#160;the&#160;network&#160;unencrypted&#160;and&#160;can&#160;be&#160;read&#160;or&#160;modified&#160;in&#160;transit;&#160;use&#160;https://.</text>
+<text x="16" y="849"><tspan fill="#8b949e">#&#160;exit&#160;code:&#160;2</tspan></text>
 </g>
 </svg>

@@ -21,7 +21,7 @@ Cursor          remote-insecure  http       http://10.0.0.5:8080/mcp?api_key=***
 VS Code         custom           stdio      node /opt/tools/server.js --api-key ****FAKE                  3        -                                                 -
 VS Code         github-remote    http       https://api.githubcopilot.com/mcp/                            1        saas:api.githubcopilot.com, saas:github           -
 
-FINDINGS: 9 high, 4 medium, 0 low
+FINDINGS: 9 high, 10 medium, 0 low
 
 HIGH (9)
   [R1] Plaintext secret --api-key in VS Code / custom
@@ -43,13 +43,25 @@ HIGH (9)
   [R5] Claude Desktop / filesystem can read /home/dev/.ssh/id_ed25519
        The credential file is inside /home/dev, which the server can access; one prompt injection is enough to exfiltrate it. Narrow the root.
 
-MEDIUM (4)
+MEDIUM (10)
   [R3] Claude Desktop / filesystem runs unpinned package @modelcontextprotocol/server-filesystem via npx
        Without a version, every start fetches the latest release, so a compromised or typosquatted publish runs immediately; pin an exact version.
   [R3] Claude Desktop / github runs unpinned package @modelcontextprotocol/server-github via npx
        Without a version, every start fetches the latest release, so a compromised or typosquatted publish runs immediately; pin an exact version.
   [R3] Cursor / git runs unpinned package mcp-server-git via uvx
        Without a version, every start fetches the latest release, so a compromised or typosquatted publish runs immediately; pin an exact version.
-  [R4] Cursor / remote-insecure uses plain http:// to 10.0.0.5:8080
+  [R4] Claude Code / slack is not routed through the mcpgraph proxy
+       Its tool calls reach the server without a policy check or audit record; run `mcpgraph install` to wrap it.
+  [R4] Claude Desktop / filesystem is not routed through the mcpgraph proxy
+       Its tool calls reach the server without a policy check or audit record; run `mcpgraph install` to wrap it.
+  [R4] Claude Desktop / github is not routed through the mcpgraph proxy
+       Its tool calls reach the server without a policy check or audit record; run `mcpgraph install` to wrap it.
+  [R4] Claude Desktop / postgres is not routed through the mcpgraph proxy
+       Its tool calls reach the server without a policy check or audit record; run `mcpgraph install` to wrap it.
+  [R4] Cursor / git is not routed through the mcpgraph proxy
+       Its tool calls reach the server without a policy check or audit record; run `mcpgraph install` to wrap it.
+  [R4] VS Code / custom is not routed through the mcpgraph proxy
+       Its tool calls reach the server without a policy check or audit record; run `mcpgraph install` to wrap it.
+  [R7] Cursor / remote-insecure uses plain http:// to 10.0.0.5:8080
        Tool calls, results and any auth headers cross the network unencrypted and can be read or modified in transit; use https://.
 # exit code: 2

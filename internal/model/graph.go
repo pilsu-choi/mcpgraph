@@ -113,5 +113,9 @@ func (n Node) clone() Node {
 		d := *n.DataSource
 		n.DataSource = &d
 	}
+	if n.Decision != nil {
+		d := *n.Decision
+		n.Decision = &d
+	}
 	return n
 }

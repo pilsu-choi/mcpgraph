@@ -26,6 +26,7 @@ const (
 	KindProcess    NodeKind = "Process"
 	KindCredential NodeKind = "Credential"
 	KindDataSource NodeKind = "DataSource"
+	KindDecision   NodeKind = "Decision"
 )
 
 // EdgeKind is the type of a directed edge in the graph.
@@ -38,6 +39,7 @@ const (
 	EdgeUsesSecret EdgeKind = "USES_SECRET" // MCPServer -> Credential
 	EdgeAccesses   EdgeKind = "ACCESSES"    // MCPServer -> DataSource
 	EdgeChildOf    EdgeKind = "CHILD_OF"    // Process -> Process (child -> parent)
+	EdgeDecidedOn  EdgeKind = "DECIDED_ON"  // Decision -> MCPServer or AIApp
 )
 
 // Transport values for MCPServer.Transport.
@@ -78,6 +80,7 @@ type Node struct {
 	Process    *Process    `json:"process,omitempty"`
 	Credential *Credential `json:"credential,omitempty"`
 	DataSource *DataSource `json:"data_source,omitempty"`
+	Decision   *Decision   `json:"decision,omitempty"`
 }
 
 // Host describes the machine that was scanned.
@@ -108,6 +111,10 @@ type MCPServer struct {
 	Transport    string   `json:"transport"`
 	URL          string   `json:"url,omitempty"`
 	SourceConfig string   `json:"source_config"`
+	// Proxied is true when the config runs the server through
+	// `mcpgraph proxy -- ...`. Command and Args then describe the wrapped
+	// server, not the proxy.
+	Proxied bool `json:"proxied,omitempty"`
 }
 
 // Process is a running OS process. Args and Cmdline are redacted.
@@ -138,6 +145,38 @@ type Credential struct {
 type DataSource struct {
 	Kind       string `json:"kind"`
 	Identifier string `json:"identifier"`
+}
+
+// Verdict is the outcome of a runtime policy decision.
+type Verdict string
+
+// Verdicts. Ask means a human must approve the action first.
+const (
+	VerdictAllow Verdict = "allow"
+	VerdictDeny  Verdict = "deny"
+	VerdictAsk   Verdict = "ask"
+)
+
+// Decision sources for Decision.Source.
+const (
+	SourceProxy = "proxy" // an MCP tools/call seen by `mcpgraph proxy`
+	SourceHook  = "hook"  // a coding-agent tool use seen by `mcpgraph hook`
+)
+
+// Decision is one runtime policy decision. Summary is redacted before the
+// Decision is created; the raw action text is never stored.
+type Decision struct {
+	Time    time.Time `json:"time"`
+	Source  string    `json:"source"`
+	Agent   string    `json:"agent"`
+	Tool    string    `json:"tool"`
+	Summary string    `json:"summary"`
+	// RuleID is the policy rule that matched, or "" when no rule matched
+	// and the policy default applied.
+	RuleID  string  `json:"rule_id,omitempty"`
+	Verdict Verdict `json:"verdict"`
+	// Reason is the message shown to the agent and the user.
+	Reason string `json:"reason,omitempty"`
 }
 
 // Edge is a directed relation between two nodes.

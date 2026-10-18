@@ -3,12 +3,12 @@ type: Index
 title: Milestones
 description: What each milestone delivered and how it was verified.
 tags: [milestone]
-timestamp: 2026-10-18T06:45:00Z
+timestamp: 2026-10-18T07:05:00Z
 ---
 
 # Milestones
 
-As defined in AGENTS.md §11. Each was committed separately.
+v1 milestones (AGENTS.md v1 §11), each committed separately. The v2 milestones follow below.
 
 | # | Milestone | Commit |
 | --- | --- | --- |
@@ -22,3 +22,15 @@ As defined in AGENTS.md §11. Each was committed separately.
 | m8 | [Local API](m8-api.md) | `92ece4b` |
 | m9 | [Release + README](m9-release-readme.md) | `0a474ab` |
 | — | [Docs and visuals](m10-docs-visuals.md) | (this change) |
+
+## v2 (AGENTS.md v2 §11)
+
+| # | Milestone | Status |
+| --- | --- | --- |
+| — | [v2 transition](v2-transition.md) | done |
+| 5 | Policy engine | in progress |
+| 6 | Audit log + events + Decision nodes | planned |
+| 7 | MCP proxy | planned; blocked on [denial format](../issues/proxy-denial-format.md) |
+| 8 | Install / uninstall | planned |
+| 9 | Coding-agent hook | planned ([fails open](../issues/hook-fails-open.md)) |
+| 10 | Demo (PostgreSQL) + README | planned |

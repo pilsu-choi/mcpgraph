@@ -3,7 +3,7 @@
 # locally we run the tests without -race; CI always has one.
 RACE := $(shell command -v gcc >/dev/null 2>&1 && echo -race)
 
-.PHONY: build test lint scan release demo
+.PHONY: build test bench lint scan release demo docs
 
 build:
 	CGO_ENABLED=0 go build ./cmd/...
@@ -16,6 +16,9 @@ else
 	CGO_ENABLED=1 go test -race ./...
 endif
 
+bench:
+	go test -run=^$$ -bench=. -benchmem ./internal/policy/...
+
 lint:
 	golangci-lint run
 
@@ -25,6 +28,11 @@ scan:
 release:
 	goreleaser build --snapshot --clean
 
-# Regenerates docs/logs and docs/images from real runs.
+# The DROP TABLE demo (milestone 10).
 demo:
-	scripts/demo.sh
+	@echo "make demo: not implemented yet (milestone 10); see make docs" >&2
+	@exit 1
+
+# Regenerates docs/logs and docs/images from real runs.
+docs:
+	scripts/docs.sh

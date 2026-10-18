@@ -1,0 +1,16 @@
+$ go test ./...
+ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.015s
+?   	github.com/pilsu-choi/mcpgraph/internal/collector	[no test files]
+ok  	github.com/pilsu-choi/mcpgraph/internal/collector/config	0.008s
+ok  	github.com/pilsu-choi/mcpgraph/internal/collector/process	0.004s
+ok  	github.com/pilsu-choi/mcpgraph/internal/graph	0.003s
+ok  	github.com/pilsu-choi/mcpgraph/internal/model	0.002s
+ok  	github.com/pilsu-choi/mcpgraph/internal/netutil	0.002s
+ok  	github.com/pilsu-choi/mcpgraph/internal/posture	0.005s
+ok  	github.com/pilsu-choi/mcpgraph/internal/redact	0.002s
+ok  	github.com/pilsu-choi/mcpgraph/internal/report	0.003s
+ok  	github.com/pilsu-choi/mcpgraph/internal/scan	0.006s
+?   	github.com/pilsu-choi/mcpgraph/internal/sink	[no test files]
+?   	github.com/pilsu-choi/mcpgraph/internal/testutil	[no test files]
+ok  	github.com/pilsu-choi/mcpgraph/tools/termsvg	0.002s
+# exit code: 0

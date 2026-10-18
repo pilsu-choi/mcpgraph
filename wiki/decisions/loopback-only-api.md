@@ -6,6 +6,8 @@ tags: [decision, security, api]
 timestamp: 2026-10-18T06:23:01Z
 ---
 
+> **Archived with the API** on `archive/v1-daemon` ([why](archive-v1-daemon.md)). It applies again when the API returns in milestone 12.
+
 # Loopback-only, read-only API
 
 ## Decision

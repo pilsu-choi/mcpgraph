@@ -21,7 +21,7 @@ func JSON(w io.Writer, v any) error {
 func Mermaid(w io.Writer, g *model.Graph) error {
 	var b strings.Builder
 	b.WriteString("flowchart LR\n")
-	for _, kind := range []model.NodeKind{model.KindHost, model.KindAIApp, model.KindMCPServer, model.KindProcess, model.KindCredential, model.KindDataSource} {
+	for _, kind := range []model.NodeKind{model.KindHost, model.KindAIApp, model.KindMCPServer, model.KindProcess, model.KindCredential, model.KindDataSource, model.KindDecision} {
 		fmt.Fprintf(&b, "  classDef %s %s\n", kind, mermaidStyle[kind])
 	}
 	for _, n := range g.Nodes {
@@ -41,6 +41,7 @@ var mermaidStyle = map[model.NodeKind]string{
 	model.KindProcess:    "fill:#dcfce7,stroke:#15803d,color:#000000",
 	model.KindCredential: "fill:#fee2e2,stroke:#b91c1c,color:#000000",
 	model.KindDataSource: "fill:#fef3c7,stroke:#b45309,color:#000000",
+	model.KindDecision:   "fill:#fce7f3,stroke:#be185d,color:#000000",
 }
 
 // nodeTitle is the two-line text shown in a Mermaid box.
@@ -53,6 +54,11 @@ func nodeTitle(n model.Node) string {
 		detail = n.Credential.Kind + ": " + n.Credential.KeyName
 	case model.KindDataSource:
 		detail = n.DataSource.Kind + ": " + n.DataSource.Identifier
+	case model.KindDecision:
+		detail = string(n.Decision.Verdict) + " " + n.Decision.Tool
+		if n.Decision.RuleID != "" {
+			detail += " (" + n.Decision.RuleID + ")"
+		}
 	}
 	return string(n.Kind) + "\n" + truncate(detail, 60)
 }

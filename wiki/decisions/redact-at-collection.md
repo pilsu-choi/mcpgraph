@@ -24,5 +24,5 @@ at the edge makes every output safe by construction: table, JSON, Mermaid, SQLit
 ## Verification
 - `internal/scan/leak_test.go` renders all formats, including the raw SQLite and WAL files, and
   looks for each fake secret and any 8-character fragment of it.
-- `scripts/demo.sh` greps the generated `docs/logs` and `docs/images` for the fake secrets.
+- `scripts/docs.sh` greps the generated `docs/logs` and `docs/images` for the fake secrets.
 - Mask format: `****` plus at most the last 4 characters, and only for values of 12 characters or more.

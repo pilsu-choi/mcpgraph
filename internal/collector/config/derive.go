@@ -50,6 +50,9 @@ func (d *deriver) app(name, path string) string {
 // a node goes through the redact package first.
 func (d *deriver) server(appID, appName, path string, s serverConfig) {
 	id := model.NodeID(model.KindMCPServer, path+"|"+s.JSONPath)
+	// Describe the wrapped server, so rules about the command (R1, R3,
+	// R5) still see what actually runs behind the proxy.
+	s, proxied := unwrapProxy(s)
 	d.addNode(model.Node{
 		ID:    id,
 		Kind:  model.KindMCPServer,
@@ -63,6 +66,7 @@ func (d *deriver) server(appID, appName, path string, s serverConfig) {
 			Transport:    transport(s),
 			URL:          redact.URL(s.URL),
 			SourceConfig: path,
+			Proxied:      proxied,
 		},
 	})
 	d.addEdge(appID, id, model.EdgeConfigures)

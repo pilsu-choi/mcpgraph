@@ -28,7 +28,7 @@ func TestScanExitsTwoOnHighFinding(t *testing.T) {
 	if !errors.As(err, &e) || e.code != 2 {
 		t.Fatalf("err = %v, want exit code 2", err)
 	}
-	for _, want := range []string{"AI APPS (4)", "MCP SERVERS (10)", "HIGH (", "[R1]", "[R3]", "[R4]"} {
+	for _, want := range []string{"AI APPS (4)", "MCP SERVERS (10)", "HIGH (", "[R1]", "[R3]", "[R4]", "[R7]"} {
 		if !strings.Contains(out, want) {
 			t.Errorf("scan output missing %q", want)
 		}

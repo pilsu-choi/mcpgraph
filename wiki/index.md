@@ -3,7 +3,7 @@ type: Index
 title: mcpgraph wiki
 description: Entry point of the mcpgraph knowledge bundle: what the project is, how it is built, and why.
 tags: [mcpgraph, index]
-timestamp: 2026-10-18T06:45:00Z
+timestamp: 2026-10-18T07:05:00Z
 ---
 
 # mcpgraph wiki
@@ -13,8 +13,9 @@ bundle: plain Markdown files with YAML frontmatter, one concept per file, linked
 relative links. Each directory has an `index.md`, and [log.md](log.md) holds the chronological
 history of work on the project.
 
-**mcpgraph** is a read-only Go agent. It finds the AI apps on a developer laptop, the MCP servers
-those apps use, and the processes, credentials and data sources those servers can reach. Start
+**mcpgraph** is a tiny EDR for AI agents, written in Go. It maps the AI apps on a developer laptop,
+their MCP servers, and what those servers can reach (posture). It also judges what agents are
+about to do, allowing, denying or asking first (runtime control). Start
 with the [project overview](overview.md).
 
 | Section | What is there |
@@ -23,7 +24,8 @@ with the [project overview](overview.md).
 | [architecture/](architecture/index.md) | Pipeline, graph model, concurrency |
 | [decisions/](decisions/index.md) | Design decisions and their reasons |
 | [components/](components/index.md) | One page per package |
-| [rules/](rules/index.md) | Risk rules R1–R6 |
+| [rules/](rules/index.md) | Posture rules R1–R7 |
+| [research/](research/index.md) | External formats checked against official docs |
 | [milestones/](milestones/index.md) | What each milestone delivered, how it was checked, Go concepts used |
 | [runbooks/](runbooks/index.md) | How to set up, run the demo, verify paths, add an app |
 | [lessons/](lessons/index.md) | Bugs found while building, and what they taught |

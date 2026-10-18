@@ -3,7 +3,7 @@ type: Log
 title: Work log
 description: Chronological history of work on mcpgraph, newest last.
 tags: [log, history]
-timestamp: 2026-10-18T06:45:00Z
+timestamp: 2026-10-18T07:05:00Z
 ---
 
 # Work log
@@ -47,3 +47,25 @@ Times are UTC. Each entry links to the page with the details.
   [39105184003](https://github.com/pilsu-choi/mcpgraph/actions/runs/39105184003) passed:
   golangci-lint, `go test -race ./...` and the cgo-free build. This is the first `-race` run of the
   project ([issue](issues/race-detector-local.md)).
+- **06:50** The owner moved the project to AGENTS.md v2: a tiny EDR for AI agents with posture plus
+  runtime control ([decision](decisions/v2-transition.md)). Owner decisions:
+  - archive the v1 daemon ([decision](decisions/archive-v1-daemon.md));
+  - fsnotify and sqlite stay approved for m12;
+  - keep plain HTTP as R7 ([decision](decisions/plain-http-as-r7.md));
+  - the demo DB is PostgreSQL.
+- **06:52** Branch `archive/v1-daemon` pushed at `a33015b`.
+- **06:55** A research subagent checked the MCP stdio format and the Claude Code hook contract
+  against official docs ([research](research/external-formats.md)). Key findings:
+  - MCP `2026-07-28` drops `initialize`.
+  - The spec prefers `isError` results over JSON-RPC errors for refusals the model should see.
+  - Hooks fail open unless `onFailure: block` is set.
+
+  Three issues opened: [denial format](issues/proxy-denial-format.md),
+  [MCP revision](issues/mcp-revision-per-client.md), [hooks fail open](issues/hook-fails-open.md).
+- **07:05** [v2 transition](milestones/v2-transition.md):
+  - the daemon, store, API and watcher were removed;
+  - `rules` became `posture`, with R4 "not proxied" and R7 "plain http";
+  - Decision model types and CLI stubs were added;
+  - Makefile targets `bench` and `docs` were added;
+  - `scripts/docs.sh` was created, the README updated, and the logs regenerated.
+

@@ -12,21 +12,13 @@ builds:
   - id: mcpgraph
     main: ./cmd/mcpgraph
     binary: mcpgraph
-    env: &env
-      - CGO_ENABLED=0 # hard rule 4: static, pure-Go binaries
-    goos: &goos [darwin, linux]
-    goarch: &goarch [amd64, arm64]
-    flags: &flags [-trimpath]
-    ldflags: &ldflags
+    env:
+      - CGO_ENABLED=0 # hard rule 5: static, pure-Go binaries
+    goos: [darwin, linux]
+    goarch: [amd64, arm64]
+    flags: [-trimpath]
+    ldflags:
       - -s -w
-  - id: mcpgraphd
-    main: ./cmd/mcpgraphd
-    binary: mcpgraphd
-    env: *env
-    goos: *goos
-    goarch: *goarch
-    flags: *flags
-    ldflags: *ldflags
 
 archives:
   - formats: [tar.gz]
@@ -41,7 +33,6 @@ snapshot:
 changelog:
   disable: true
 
-# No git remote yet: build-only. Remove this once the repo is on GitHub
-# and releases should be published.
+# Build-only for now; publishing releases is a later decision.
 release:
   disable: true

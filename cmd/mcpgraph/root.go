@@ -13,8 +13,8 @@ import (
 	"github.com/pilsu-choi/mcpgraph/internal/collector/config"
 	"github.com/pilsu-choi/mcpgraph/internal/collector/process"
 	"github.com/pilsu-choi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/posture"
 	"github.com/pilsu-choi/mcpgraph/internal/report"
-	"github.com/pilsu-choi/mcpgraph/internal/rules"
 	"github.com/pilsu-choi/mcpgraph/internal/scan"
 )
 
@@ -32,7 +32,7 @@ func newRootCmd() *cobra.Command {
 	opts := &options{}
 	root := &cobra.Command{
 		Use:           "mcpgraph",
-		Short:         "Map AI apps, their MCP servers and what those servers can reach",
+		Short:         "Watch and control what AI agents do on this machine",
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
@@ -49,6 +49,7 @@ func newRootCmd() *cobra.Command {
 	root.PersistentFlags().BoolVar(&opts.noProcesses, "no-processes", false, "skip process discovery")
 
 	root.AddCommand(newScanCmd(opts), newReportCmd(opts), newExportCmd(opts))
+	root.AddCommand(newProxyCmd(), newHookCmd(), newInstallCmd(), newUninstallCmd(), newEventsCmd())
 	return root
 }
 
@@ -111,7 +112,7 @@ func newReportCmd(opts *options) *cobra.Command {
 // exitForFindings returns exit code 2 when there is a high finding, so the
 // command can gate a CI job.
 func exitForFindings(findings []model.Finding) error {
-	if rules.HasHigh(findings) {
+	if posture.HasHigh(findings) {
 		return exitError{code: 2}
 	}
 	return nil
@@ -171,5 +172,5 @@ func runScan(ctx context.Context, opts *options) (scanResult, error) {
 	for _, w := range g.Warnings {
 		slog.Warn(w)
 	}
-	return scanResult{graph: g, findings: rules.Evaluate(g, rules.Default(home))}, nil
+	return scanResult{graph: g, findings: posture.Evaluate(g, posture.Default(home))}, nil
 }

@@ -14,7 +14,7 @@ pushed to `dev`.
 
 ## Delivered
 - [`tools/termsvg`](../components/termsvg.md): turns terminal output into SVG terminal windows.
-- `scripts/demo.sh` / `make demo`: runs the fixtures, the real machine, the daemon with two config
+- `scripts/demo.sh` / `make demo` (renamed to `scripts/docs.sh` / `make docs` in the [v2 transition](v2-transition.md)): runs the fixtures, the real machine, the daemon with two config
   edits, the API (including 405/403), the refused bind, tests, lint and the release build. Writes
   `docs/logs/00…13-*.log` and `docs/images/*.svg`, then fails if any fake secret appears in them.
 - README: 9 Mermaid diagrams (problem, findings pie, fixture graph, real-machine graph, architecture,

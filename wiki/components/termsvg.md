@@ -11,4 +11,4 @@ timestamp: 2026-10-18T06:45:00Z
 
 Renders terminal output as an SVG terminal window for README captures.
 
-Stdlib only. Colors prompts, section headers, HIGH/MEDIUM blocks, rule IDs, masked values and log levels. Spaces are emitted as `&#160;` ([lesson](../lessons/svg-whitespace.md)). Driven by `scripts/demo.sh`.
+Stdlib only. Colors prompts, section headers, HIGH/MEDIUM blocks, rule IDs, masked values and log levels. Spaces are emitted as `&#160;` ([lesson](../lessons/svg-whitespace.md)). Driven by `scripts/docs.sh`.

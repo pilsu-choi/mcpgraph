@@ -3,15 +3,20 @@ type: Project
 title: Project overview
 description: What mcpgraph does, its scope, the hard rules it follows and where it stands.
 tags: [mcpgraph, overview, scope]
-timestamp: 2026-10-18T06:45:00Z
+timestamp: 2026-10-18T07:05:00Z
 ---
 
 # Project overview
 
-## Question it answers
+## What it is
 
-> Which AI apps are installed, which MCP servers do they use, and which processes, credentials and
-> data sources can those servers reach?
+A tiny EDR for AI agents ([v2 spec](decisions/v2-transition.md)). It has two jobs:
+
+1. **Visibility (posture).** Which AI apps are installed, which MCP servers they use, and which
+   processes, credentials and data sources those servers can reach.
+2. **Runtime control.** Judge each MCP tool call (through a stdio proxy) and each coding-agent
+   shell command (through a hook) with one policy engine: allow, deny or ask. Every decision is
+   audited and appears in the graph.
 
 ## Context
 
@@ -20,29 +25,32 @@ company. Code quality, clear design decisions and tests matter more than feature
 is learning Go, so the code is deliberately plain, idiomatic Go with comments on idioms that
 are not obvious.
 
-## Scope (MVP)
+## Scope (v2 MVP)
 
 - macOS and Linux.
-- Config parsers for Claude Desktop, Claude Code, Cursor and VS Code ([config collector](components/config-collector.md)).
-- Process discovery ([process collector](components/process-collector.md)).
-- Graph, [rules R1–R6](rules/index.md), CLI report, JSON and Mermaid export.
-- A daemon with fsnotify, SQLite snapshots and diffs ([daemon](components/daemon.md)).
-- A read-only HTTP API on localhost ([api](components/api.md)).
+- Discovery for Claude Desktop, Claude Code, Cursor and VS Code
+  ([config collector](components/config-collector.md), [process collector](components/process-collector.md)).
+- Graph, [posture rules R1–R7](rules/index.md), CLI report, JSON and Mermaid export.
+- YAML policy engine, stdio MCP proxy, Claude Code hook, append-only audit log, Decision nodes.
+- The DROP TABLE demo, with PostgreSQL.
 
-Out of scope: eBPF and kernel hooks, Windows, and a central server. For the central server only the
-[`Sink`](components/sink.md) interface exists.
+Stretch goals are an event sink with a collector ([`Sink`](components/sink.md)) and the daemon
+([archived](decisions/archive-v1-daemon.md)). Out of scope: eBPF, Windows, remote HTTP MCP behind
+the proxy, and fleet UI.
 
 ## Hard rules
 
-1. Read-only: it never writes outside its own data directory and never signals processes.
-2. It never stores or prints secret values ([redact at collection](decisions/redact-at-collection.md)).
-3. No network egress; the only listener is 127.0.0.1 ([loopback-only API](decisions/loopback-only-api.md)).
-4. No cgo ([pure Go](decisions/pure-go-no-cgo.md)).
-5. Config paths are not guessed: unverified ones are marked `TODO(verify)` ([issue](issues/config-path-verification.md)).
+1. Read-only by default. Only `install` / `uninstall` edit AI-app configs, with backups, a diff and `--yes`.
+2. It never stores or prints secret values. Tool-call args and commands are redacted too ([redact at collection](decisions/redact-at-collection.md)).
+3. No network egress by default; the local API listens on 127.0.0.1 only ([loopback-only API](decisions/loopback-only-api.md)).
+4. Fail closed on `tools/call`, and pass everything else through untouched.
+5. No cgo ([pure Go](decisions/pure-go-no-cgo.md)).
+6. External formats are not guessed: config paths, the MCP wire format and hook formats are checked
+   first ([research](research/external-formats.md), [path issue](issues/config-path-verification.md)).
 
 ## Status
 
-All nine [milestones](milestones/index.md) are done. On top of that, the
-[docs and visuals](milestones/m10-docs-visuals.md) work added the README diagrams, captures, run
-logs and this wiki. The code is on GitHub at
+The v1 milestones (posture) are done, and the [v2 transition](milestones/v2-transition.md) brought
+them in line with the new spec. Next is milestone 5, the policy engine. See the
+[milestones](milestones/index.md). The code is on GitHub at
 [pilsu-choi/mcpgraph](https://github.com/pilsu-choi/mcpgraph) (`dev` branch).

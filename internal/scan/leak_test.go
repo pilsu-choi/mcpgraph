@@ -4,20 +4,16 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"os"
-	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/pilsu-choi/mcpgraph/internal/collector"
 	"github.com/pilsu-choi/mcpgraph/internal/collector/config"
 	"github.com/pilsu-choi/mcpgraph/internal/graph"
 	"github.com/pilsu-choi/mcpgraph/internal/model"
+	"github.com/pilsu-choi/mcpgraph/internal/posture"
 	"github.com/pilsu-choi/mcpgraph/internal/report"
-	"github.com/pilsu-choi/mcpgraph/internal/rules"
-	"github.com/pilsu-choi/mcpgraph/internal/store"
 	"github.com/pilsu-choi/mcpgraph/internal/testutil"
 )
 
@@ -65,7 +61,7 @@ func renderAll(t *testing.T, g *model.Graph) map[string]string {
 	}
 	out["mermaid"] = mer.String()
 
-	findings := rules.Evaluate(g, rules.Default("/home/u"))
+	findings := posture.Evaluate(g, posture.Default("/home/u"))
 	var fb bytes.Buffer
 	if err := report.Findings(&fb, findings); err != nil {
 		t.Fatal(err)
@@ -77,26 +73,12 @@ func renderAll(t *testing.T, g *model.Graph) map[string]string {
 	}
 	out["findings-json"] = string(fj)
 
-	// The SQLite file on disk, read as raw bytes.
-	dbPath := filepath.Join(t.TempDir(), "leak.db")
-	st, err := store.Open(context.Background(), dbPath)
+	// Diff messages are what drift alerts (milestone 12) will print.
+	diff, err := json.Marshal(graph.Diff(nil, g))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := st.Save(context.Background(), time.Now(), g, findings, graph.Diff(nil, g)); err != nil {
-		t.Fatal(err)
-	}
-	if err := st.Close(); err != nil {
-		t.Fatal(err)
-	}
-	var db strings.Builder
-	// WAL mode keeps recent writes in the -wal file until checkpoint.
-	for _, p := range []string{dbPath, dbPath + "-wal"} {
-		if raw, err := os.ReadFile(p); err == nil {
-			db.Write(raw)
-		}
-	}
-	out["sqlite"] = db.String()
+	out["diff-json"] = string(diff)
 	return out
 }
 
