@@ -3,7 +3,7 @@ type: Log
 title: Work log
 description: Chronological history of work on mcpgraph, newest last.
 tags: [log, history]
-timestamp: 2026-10-18T07:05:00Z
+timestamp: 2026-10-18T07:15:00Z
 ---
 
 # Work log
@@ -68,4 +68,12 @@ Times are UTC. Each entry links to the page with the details.
   - Decision model types and CLI stubs were added;
   - Makefile targets `bench` and `docs` were added;
   - `scripts/docs.sh` was created, the README updated, and the logs regenerated.
+- **07:15** [v2 m5 policy engine](milestones/v2-m5-policy-engine.md): `internal/policy`,
+  `policies/default.yaml` (embedded) and `redact.Text`.
+  - 98 tricky-case table tests pass.
+  - The engine is fail closed on error, panic or timeout.
+  - One decision takes about 13 µs against the 5 ms budget.
+  - Two classifier bugs were found by the tests ([lesson](lessons/sql-quote-and-prose.md)).
+  - `Action.Cwd` was added ([decision](decisions/action-cwd.md)).
+  - The README has a new *Runtime policy* section.
 

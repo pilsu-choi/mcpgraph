@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="766" height="222" viewBox="0 0 766 222">
+<rect width="766" height="222" rx="8" fill="#0d1117"/>
+<rect width="766" height="30" rx="8" fill="#161b22"/><rect y="22" width="766" height="8" fill="#161b22"/>
+<circle cx="18" cy="15" r="6" fill="#ff5f56"/>
+<circle cx="38" cy="15" r="6" fill="#ffbd2e"/>
+<circle cx="58" cy="15" r="6" fill="#27c93f"/>
+<text x="383" y="19" fill="#8b949e" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" text-anchor="middle">make&#160;bench</text>
+<g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace" font-size="13" fill="#c9d1d9" xml:space="preserve" style="white-space:pre">
+<text x="16" y="57"><tspan fill="#7ee787">$&#160;</tspan><tspan fill="#ffffff">go&#160;test&#160;-run='^$'&#160;-bench=.&#160;-benchmem&#160;./internal/policy/...</tspan></text>
+<text x="16" y="75">goos:&#160;linux</text>
+<text x="16" y="93">goarch:&#160;amd64</text>
+<text x="16" y="111">pkg:&#160;github.com/pilsu-choi/mcpgraph/internal/policy</text>
+<text x="16" y="129">cpu:&#160;13th&#160;Gen&#160;Intel(R)&#160;Core(TM)&#160;i5-13400F</text>
+<text x="16" y="147">BenchmarkDecide-16&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;96841&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;12038&#160;ns/op&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3558&#160;B/op&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;87&#160;allocs/op</text>
+<text x="16" y="165"><tspan fill="#79c0ff" font-weight="bold">PASS</tspan></text>
+<text x="16" y="183"><tspan fill="#3fb950" font-weight="bold">ok</tspan>&#160;&#160;&#160;&#160;&#160;&#160;github.com/pilsu-choi/mcpgraph/internal/policy&#160;&#160;&#160;&#160;1.170s</text>
+<text x="16" y="201"><tspan fill="#8b949e">#&#160;exit&#160;code:&#160;0</tspan></text>
+</g>
+</svg>

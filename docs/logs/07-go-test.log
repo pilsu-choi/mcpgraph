@@ -19,7 +19,7 @@ ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.016s
 === RUN   TestCandidatesPerOS
 --- PASS: TestCandidatesPerOS (0.00s)
 === RUN   TestDeriveCredentialsAndDataSources
-=== RUN   TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource//tmp/TestDeriveCredentialsAndDataSources3026575878/001
+=== RUN   TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource//tmp/TestDeriveCredentialsAndDataSources1577658509/001
 === RUN   TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource/github
 === RUN   TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource/postgresql://db.internal:5432/prod
 === RUN   TestDeriveCredentialsAndDataSources/Claude_Desktop_Credential/GITHUB_PERSONAL_ACCESS_TOKEN
@@ -28,13 +28,13 @@ ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.016s
 === RUN   TestDeriveCredentialsAndDataSources/Claude_Code_DataSource/mcp.sentry.dev
 === RUN   TestDeriveCredentialsAndDataSources/Cursor_Credential/GIT_TOKEN
 === RUN   TestDeriveCredentialsAndDataSources/Cursor_Credential/url
-=== RUN   TestDeriveCredentialsAndDataSources/Cursor_DataSource//tmp/TestDeriveCredentialsAndDataSources3026575878/001/code/project
+=== RUN   TestDeriveCredentialsAndDataSources/Cursor_DataSource//tmp/TestDeriveCredentialsAndDataSources1577658509/001/code/project
 === RUN   TestDeriveCredentialsAndDataSources/VS_Code_Credential/--api-key
 === RUN   TestDeriveCredentialsAndDataSources/VS_Code_Credential/API_KEY
 === RUN   TestDeriveCredentialsAndDataSources/VS_Code_Credential/envFile
 === RUN   TestDeriveCredentialsAndDataSources/VS_Code_Credential/Authorization
 --- PASS: TestDeriveCredentialsAndDataSources (0.00s)
-    --- PASS: TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource//tmp/TestDeriveCredentialsAndDataSources3026575878/001 (0.00s)
+    --- PASS: TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource//tmp/TestDeriveCredentialsAndDataSources1577658509/001 (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource/github (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/Claude_Desktop_DataSource/postgresql://db.internal:5432/prod (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/Claude_Desktop_Credential/GITHUB_PERSONAL_ACCESS_TOKEN (0.00s)
@@ -43,7 +43,7 @@ ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.016s
     --- PASS: TestDeriveCredentialsAndDataSources/Claude_Code_DataSource/mcp.sentry.dev (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/Cursor_Credential/GIT_TOKEN (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/Cursor_Credential/url (0.00s)
-    --- PASS: TestDeriveCredentialsAndDataSources/Cursor_DataSource//tmp/TestDeriveCredentialsAndDataSources3026575878/001/code/project (0.00s)
+    --- PASS: TestDeriveCredentialsAndDataSources/Cursor_DataSource//tmp/TestDeriveCredentialsAndDataSources1577658509/001/code/project (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/VS_Code_Credential/--api-key (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/VS_Code_Credential/API_KEY (0.00s)
     --- PASS: TestDeriveCredentialsAndDataSources/VS_Code_Credential/envFile (0.00s)
@@ -87,7 +87,7 @@ ok  	github.com/pilsu-choi/mcpgraph/cmd/mcpgraph	0.016s
     --- PASS: TestUnwrapProxy/other_subcommand (0.00s)
     --- PASS: TestUnwrapProxy/other_binary_named_proxy (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/collector/config	0.009s
+ok  	github.com/pilsu-choi/mcpgraph/internal/collector/config	0.008s
 === RUN   TestBuildSelectsInterestingProcesses
 --- PASS: TestBuildSelectsInterestingProcesses (0.00s)
 === RUN   TestBuildChildOfEdges
@@ -105,7 +105,7 @@ ok  	github.com/pilsu-choi/mcpgraph/internal/collector/config	0.009s
 === RUN   TestNormalizeArgs
 --- PASS: TestNormalizeArgs (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/collector/process	0.003s
+ok  	github.com/pilsu-choi/mcpgraph/internal/collector/process	0.002s
 === RUN   TestBuilderReplacesPerSource
 --- PASS: TestBuilderReplacesPerSource (0.00s)
 === RUN   TestBuilderDedupesAndDropsDanglingEdges
@@ -147,11 +147,299 @@ ok  	github.com/pilsu-choi/mcpgraph/internal/graph	0.003s
 === RUN   TestOutAndIn
 --- PASS: TestOutAndIn (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/model	0.003s
+ok  	github.com/pilsu-choi/mcpgraph/internal/model	0.002s
 === RUN   TestIsLoopbackHost
 --- PASS: TestIsLoopbackHost (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/netutil	0.002s
+ok  	github.com/pilsu-choi/mcpgraph/internal/netutil	0.003s
+=== RUN   TestDecideIsFast
+--- PASS: TestDecideIsFast (0.01s)
+=== RUN   TestBlockDestructiveSQL
+=== RUN   TestBlockDestructiveSQL/demo:_psql_drop_table
+=== RUN   TestBlockDestructiveSQL/mixed_case
+=== RUN   TestBlockDestructiveSQL/drop_table_if_exists
+=== RUN   TestBlockDestructiveSQL/block_comment_between_keywords
+=== RUN   TestBlockDestructiveSQL/line_comment_between_keywords
+=== RUN   TestBlockDestructiveSQL/drop_database
+=== RUN   TestBlockDestructiveSQL/drop_schema
+=== RUN   TestBlockDestructiveSQL/truncate
+=== RUN   TestBlockDestructiveSQL/truncate_table_only
+=== RUN   TestBlockDestructiveSQL/delete_without_where
+=== RUN   TestBlockDestructiveSQL/delete_where_1=1
+=== RUN   TestBlockDestructiveSQL/delete_where_1_=_1_spaced
+=== RUN   TestBlockDestructiveSQL/delete_where_true
+=== RUN   TestBlockDestructiveSQL/delete_where_id_or_tautology
+=== RUN   TestBlockDestructiveSQL/delete_where_in_parens
+=== RUN   TestBlockDestructiveSQL/delete_where_hidden_in_line_comment
+=== RUN   TestBlockDestructiveSQL/delete_where_hidden_in_block_comment
+=== RUN   TestBlockDestructiveSQL/where_belongs_to_next_statement
+=== RUN   TestBlockDestructiveSQL/where_after_&&_in_another_command
+=== RUN   TestBlockDestructiveSQL/second_statement_destructive
+=== RUN   TestBlockDestructiveSQL/chained_after_safe_command
+=== RUN   TestBlockDestructiveSQL/nested_shell
+=== RUN   TestBlockDestructiveSQL/mysql_multi-table_delete
+=== RUN   TestBlockDestructiveSQL/select
+=== RUN   TestBlockDestructiveSQL/delete_with_where
+=== RUN   TestBlockDestructiveSQL/delete_with_where_and_returning
+=== RUN   TestBlockDestructiveSQL/delete_where_is_null
+=== RUN   TestBlockDestructiveSQL/delete_where_1=1_and_bound
+=== RUN   TestBlockDestructiveSQL/create_table
+=== RUN   TestBlockDestructiveSQL/drop_index
+=== RUN   TestBlockDestructiveSQL/word_containing_drop
+=== RUN   TestBlockDestructiveSQL/shell_truncate
+=== RUN   TestBlockDestructiveSQL/git_log_mentions_delete
+--- PASS: TestBlockDestructiveSQL (0.00s)
+    --- PASS: TestBlockDestructiveSQL/demo:_psql_drop_table (0.00s)
+    --- PASS: TestBlockDestructiveSQL/mixed_case (0.00s)
+    --- PASS: TestBlockDestructiveSQL/drop_table_if_exists (0.00s)
+    --- PASS: TestBlockDestructiveSQL/block_comment_between_keywords (0.00s)
+    --- PASS: TestBlockDestructiveSQL/line_comment_between_keywords (0.00s)
+    --- PASS: TestBlockDestructiveSQL/drop_database (0.00s)
+    --- PASS: TestBlockDestructiveSQL/drop_schema (0.00s)
+    --- PASS: TestBlockDestructiveSQL/truncate (0.00s)
+    --- PASS: TestBlockDestructiveSQL/truncate_table_only (0.00s)
+    --- PASS: TestBlockDestructiveSQL/delete_without_where (0.00s)
+    --- PASS: TestBlockDestructiveSQL/delete_where_1=1 (0.00s)
+    --- PASS: TestBlockDestructiveSQL/delete_where_1_=_1_spaced (0.00s)
+    --- PASS: TestBlockDestructiveSQL/delete_where_true (0.00s)
+    --- PASS: TestBlockDestructiveSQL/delete_where_id_or_tautology (0.00s)
+    --- PASS: TestBlockDestructiveSQL/delete_where_in_parens (0.00s)
+    --- PASS: TestBlockDestructiveSQL/delete_where_hidden_in_line_comment (0.00s)
+    --- PASS: TestBlockDestructiveSQL/delete_where_hidden_in_block_comment (0.00s)
+    --- PASS: TestBlockDestructiveSQL/where_belongs_to_next_statement (0.00s)
+    --- PASS: TestBlockDestructiveSQL/where_after_&&_in_another_command (0.00s)
+    --- PASS: TestBlockDestructiveSQL/second_statement_destructive (0.00s)
+    --- PASS: TestBlockDestructiveSQL/chained_after_safe_command (0.00s)
+    --- PASS: TestBlockDestructiveSQL/nested_shell (0.00s)
+    --- PASS: TestBlockDestructiveSQL/mysql_multi-table_delete (0.00s)
+    --- PASS: TestBlockDestructiveSQL/select (0.00s)
+    --- PASS: TestBlockDestructiveSQL/delete_with_where (0.00s)
+    --- PASS: TestBlockDestructiveSQL/delete_with_where_and_returning (0.00s)
+    --- PASS: TestBlockDestructiveSQL/delete_where_is_null (0.00s)
+    --- PASS: TestBlockDestructiveSQL/delete_where_1=1_and_bound (0.00s)
+    --- PASS: TestBlockDestructiveSQL/create_table (0.00s)
+    --- PASS: TestBlockDestructiveSQL/drop_index (0.00s)
+    --- PASS: TestBlockDestructiveSQL/word_containing_drop (0.00s)
+    --- PASS: TestBlockDestructiveSQL/shell_truncate (0.00s)
+    --- PASS: TestBlockDestructiveSQL/git_log_mentions_delete (0.00s)
+=== RUN   TestAskRecursiveDelete
+=== RUN   TestAskRecursiveDelete/root
+=== RUN   TestAskRecursiveDelete/root_glob
+=== RUN   TestAskRecursiveDelete/home
+=== RUN   TestAskRecursiveDelete/home_dir
+=== RUN   TestAskRecursiveDelete/parent
+=== RUN   TestAskRecursiveDelete/project_itself
+=== RUN   TestAskRecursiveDelete/project_by_absolute_path
+=== RUN   TestAskRecursiveDelete/split_flags
+=== RUN   TestAskRecursiveDelete/capital_R
+=== RUN   TestAskRecursiveDelete/long_flag
+=== RUN   TestAskRecursiveDelete/sudo
+=== RUN   TestAskRecursiveDelete/full_path_to_rm
+=== RUN   TestAskRecursiveDelete/chained_after_make
+=== RUN   TestAskRecursiveDelete/one_target_outside
+=== RUN   TestAskRecursiveDelete/unexpanded_variable
+=== RUN   TestAskRecursiveDelete/after_--
+=== RUN   TestAskRecursiveDelete/nested_shell
+=== RUN   TestAskRecursiveDelete/xargs
+=== RUN   TestAskRecursiveDelete/unknown_cwd
+=== RUN   TestAskRecursiveDelete/inside_project
+=== RUN   TestAskRecursiveDelete/inside_project_dot_slash
+=== RUN   TestAskRecursiveDelete/inside_project_absolute
+=== RUN   TestAskRecursiveDelete/glob_in_project
+=== RUN   TestAskRecursiveDelete/not_recursive
+=== RUN   TestAskRecursiveDelete/other_command
+=== RUN   TestAskRecursiveDelete/rm_as_argument
+=== RUN   TestAskRecursiveDelete/quoted_inside_echo
+--- PASS: TestAskRecursiveDelete (0.00s)
+    --- PASS: TestAskRecursiveDelete/root (0.00s)
+    --- PASS: TestAskRecursiveDelete/root_glob (0.00s)
+    --- PASS: TestAskRecursiveDelete/home (0.00s)
+    --- PASS: TestAskRecursiveDelete/home_dir (0.00s)
+    --- PASS: TestAskRecursiveDelete/parent (0.00s)
+    --- PASS: TestAskRecursiveDelete/project_itself (0.00s)
+    --- PASS: TestAskRecursiveDelete/project_by_absolute_path (0.00s)
+    --- PASS: TestAskRecursiveDelete/split_flags (0.00s)
+    --- PASS: TestAskRecursiveDelete/capital_R (0.00s)
+    --- PASS: TestAskRecursiveDelete/long_flag (0.00s)
+    --- PASS: TestAskRecursiveDelete/sudo (0.00s)
+    --- PASS: TestAskRecursiveDelete/full_path_to_rm (0.00s)
+    --- PASS: TestAskRecursiveDelete/chained_after_make (0.00s)
+    --- PASS: TestAskRecursiveDelete/one_target_outside (0.00s)
+    --- PASS: TestAskRecursiveDelete/unexpanded_variable (0.00s)
+    --- PASS: TestAskRecursiveDelete/after_-- (0.00s)
+    --- PASS: TestAskRecursiveDelete/nested_shell (0.00s)
+    --- PASS: TestAskRecursiveDelete/xargs (0.00s)
+    --- PASS: TestAskRecursiveDelete/unknown_cwd (0.00s)
+    --- PASS: TestAskRecursiveDelete/inside_project (0.00s)
+    --- PASS: TestAskRecursiveDelete/inside_project_dot_slash (0.00s)
+    --- PASS: TestAskRecursiveDelete/inside_project_absolute (0.00s)
+    --- PASS: TestAskRecursiveDelete/glob_in_project (0.00s)
+    --- PASS: TestAskRecursiveDelete/not_recursive (0.00s)
+    --- PASS: TestAskRecursiveDelete/other_command (0.00s)
+    --- PASS: TestAskRecursiveDelete/rm_as_argument (0.00s)
+    --- PASS: TestAskRecursiveDelete/quoted_inside_echo (0.00s)
+=== RUN   TestBlockSecretRead
+=== RUN   TestBlockSecretRead/cat_ssh_key
+=== RUN   TestBlockSecretRead/ssh_glob
+=== RUN   TestBlockSecretRead/ssh_absolute
+=== RUN   TestBlockSecretRead/ssh_via_$HOME
+=== RUN   TestBlockSecretRead/aws_credentials
+=== RUN   TestBlockSecretRead/redirect_from_env_file
+=== RUN   TestBlockSecretRead/env_file_in_project
+=== RUN   TestBlockSecretRead/env_file_variant
+=== RUN   TestBlockSecretRead/flag_value
+=== RUN   TestBlockSecretRead/chained
+=== RUN   TestBlockSecretRead/read_tool_ssh
+=== RUN   TestBlockSecretRead/read_tool_env
+=== RUN   TestBlockSecretRead/mcp_filesystem_tool
+=== RUN   TestBlockSecretRead/env_example
+=== RUN   TestBlockSecretRead/envrc_is_not_env
+=== RUN   TestBlockSecretRead/aws_config
+=== RUN   TestBlockSecretRead/other_ssh_dir
+=== RUN   TestBlockSecretRead/word_env
+=== RUN   TestBlockSecretRead/read_tool_readme
+--- PASS: TestBlockSecretRead (0.00s)
+    --- PASS: TestBlockSecretRead/cat_ssh_key (0.00s)
+    --- PASS: TestBlockSecretRead/ssh_glob (0.00s)
+    --- PASS: TestBlockSecretRead/ssh_absolute (0.00s)
+    --- PASS: TestBlockSecretRead/ssh_via_$HOME (0.00s)
+    --- PASS: TestBlockSecretRead/aws_credentials (0.00s)
+    --- PASS: TestBlockSecretRead/redirect_from_env_file (0.00s)
+    --- PASS: TestBlockSecretRead/env_file_in_project (0.00s)
+    --- PASS: TestBlockSecretRead/env_file_variant (0.00s)
+    --- PASS: TestBlockSecretRead/flag_value (0.00s)
+    --- PASS: TestBlockSecretRead/chained (0.00s)
+    --- PASS: TestBlockSecretRead/read_tool_ssh (0.00s)
+    --- PASS: TestBlockSecretRead/read_tool_env (0.00s)
+    --- PASS: TestBlockSecretRead/mcp_filesystem_tool (0.00s)
+    --- PASS: TestBlockSecretRead/env_example (0.00s)
+    --- PASS: TestBlockSecretRead/envrc_is_not_env (0.00s)
+    --- PASS: TestBlockSecretRead/aws_config (0.00s)
+    --- PASS: TestBlockSecretRead/other_ssh_dir (0.00s)
+    --- PASS: TestBlockSecretRead/word_env (0.00s)
+    --- PASS: TestBlockSecretRead/read_tool_readme (0.00s)
+=== RUN   TestAskGitForcePush
+=== RUN   TestAskGitForcePush/--force
+=== RUN   TestAskGitForcePush/-f
+=== RUN   TestAskGitForcePush/combined_short_flags
+=== RUN   TestAskGitForcePush/force_with_lease
+=== RUN   TestAskGitForcePush/force_with_lease_value
+=== RUN   TestAskGitForcePush/plus_refspec
+=== RUN   TestAskGitForcePush/global_option
+=== RUN   TestAskGitForcePush/mixed_case
+=== RUN   TestAskGitForcePush/chained
+=== RUN   TestAskGitForcePush/plain_push
+=== RUN   TestAskGitForcePush/follow_tags
+=== RUN   TestAskGitForcePush/branch_named_f
+=== RUN   TestAskGitForcePush/force_on_another_command
+=== RUN   TestAskGitForcePush/git_fetch_force
+=== RUN   TestAskGitForcePush/echo
+--- PASS: TestAskGitForcePush (0.00s)
+    --- PASS: TestAskGitForcePush/--force (0.00s)
+    --- PASS: TestAskGitForcePush/-f (0.00s)
+    --- PASS: TestAskGitForcePush/combined_short_flags (0.00s)
+    --- PASS: TestAskGitForcePush/force_with_lease (0.00s)
+    --- PASS: TestAskGitForcePush/force_with_lease_value (0.00s)
+    --- PASS: TestAskGitForcePush/plus_refspec (0.00s)
+    --- PASS: TestAskGitForcePush/global_option (0.00s)
+    --- PASS: TestAskGitForcePush/mixed_case (0.00s)
+    --- PASS: TestAskGitForcePush/chained (0.00s)
+    --- PASS: TestAskGitForcePush/plain_push (0.00s)
+    --- PASS: TestAskGitForcePush/follow_tags (0.00s)
+    --- PASS: TestAskGitForcePush/branch_named_f (0.00s)
+    --- PASS: TestAskGitForcePush/force_on_another_command (0.00s)
+    --- PASS: TestAskGitForcePush/git_fetch_force (0.00s)
+    --- PASS: TestAskGitForcePush/echo (0.00s)
+=== RUN   TestAskUnknownTool
+=== RUN   TestAskUnknownTool/new_tool_on_known_server
+=== RUN   TestAskUnknownTool/unknown_server
+=== RUN   TestAskUnknownTool/known_tool
+=== RUN   TestAskUnknownTool/hook_actions_are_not_MCP_tools
+--- PASS: TestAskUnknownTool (0.00s)
+    --- PASS: TestAskUnknownTool/new_tool_on_known_server (0.00s)
+    --- PASS: TestAskUnknownTool/unknown_server (0.00s)
+    --- PASS: TestAskUnknownTool/known_tool (0.00s)
+    --- PASS: TestAskUnknownTool/hook_actions_are_not_MCP_tools (0.00s)
+=== RUN   TestUnknownToolWithoutInventory
+--- PASS: TestUnknownToolWithoutInventory (0.00s)
+=== RUN   TestParseRejectsBadPolicies
+=== RUN   TestParseRejectsBadPolicies/unknown_key
+=== RUN   TestParseRejectsBadPolicies/bad_version
+=== RUN   TestParseRejectsBadPolicies/bad_verdict
+=== RUN   TestParseRejectsBadPolicies/bad_default
+=== RUN   TestParseRejectsBadPolicies/missing_id
+=== RUN   TestParseRejectsBadPolicies/duplicate_id
+=== RUN   TestParseRejectsBadPolicies/no_matcher
+=== RUN   TestParseRejectsBadPolicies/bad_sql_class
+=== RUN   TestParseRejectsBadPolicies/bad_regex
+=== RUN   TestParseRejectsBadPolicies/bad_glob
+=== RUN   TestParseRejectsBadPolicies/bad_source
+=== RUN   TestParseRejectsBadPolicies/bad_delete_mode
+--- PASS: TestParseRejectsBadPolicies (0.00s)
+    --- PASS: TestParseRejectsBadPolicies/unknown_key (0.00s)
+    --- PASS: TestParseRejectsBadPolicies/bad_version (0.00s)
+    --- PASS: TestParseRejectsBadPolicies/bad_verdict (0.00s)
+    --- PASS: TestParseRejectsBadPolicies/bad_default (0.00s)
+    --- PASS: TestParseRejectsBadPolicies/missing_id (0.00s)
+    --- PASS: TestParseRejectsBadPolicies/duplicate_id (0.00s)
+    --- PASS: TestParseRejectsBadPolicies/no_matcher (0.00s)
+    --- PASS: TestParseRejectsBadPolicies/bad_sql_class (0.00s)
+    --- PASS: TestParseRejectsBadPolicies/bad_regex (0.00s)
+    --- PASS: TestParseRejectsBadPolicies/bad_glob (0.00s)
+    --- PASS: TestParseRejectsBadPolicies/bad_source (0.00s)
+    --- PASS: TestParseRejectsBadPolicies/bad_delete_mode (0.00s)
+=== RUN   TestFirstMatchWins
+--- PASS: TestFirstMatchWins (0.00s)
+=== RUN   TestDefaultVerdictAndFilters
+--- PASS: TestDefaultVerdictAndFilters (0.00s)
+=== RUN   TestDecideCancelledContext
+--- PASS: TestDecideCancelledContext (0.00s)
+=== RUN   TestJudgeFailsClosed
+=== RUN   TestJudgeFailsClosed/error
+=== RUN   TestJudgeFailsClosed/panic
+=== RUN   TestJudgeFailsClosed/hang
+--- PASS: TestJudgeFailsClosed (0.05s)
+    --- PASS: TestJudgeFailsClosed/error (0.00s)
+    --- PASS: TestJudgeFailsClosed/panic (0.00s)
+    --- PASS: TestJudgeFailsClosed/hang (0.05s)
+=== RUN   TestJudgePassesDecisionThrough
+--- PASS: TestJudgePassesDecisionThrough (0.00s)
+=== RUN   TestDecisionNeverContainsSecrets
+--- PASS: TestDecisionNeverContainsSecrets (0.00s)
+=== RUN   TestSummaryIsCapped
+--- PASS: TestSummaryIsCapped (0.00s)
+=== RUN   TestSplitShell
+=== RUN   TestSplitShell/ls_-la
+=== RUN   TestSplitShell/a_&&_b_||_c;_d_|_e_&_f
+=== RUN   TestSplitShell/psql_-c_"DROP_TABLE_a;_DROP_TABLE_b"
+=== RUN   TestSplitShell/echo_'a_&&_b'_"c_\"q\"_\$x"
+=== RUN   TestSplitShell/echo_a\_b
+=== RUN   TestSplitShell/echo_""_x
+=== RUN   TestSplitShell/ls_#_rm_-rf_/_pwd
+=== RUN   TestSplitShell/cmd_2>&1_>/dev/null
+=== RUN   TestSplitShell/FOO=1_sudo_-u_pg_/usr/bin/psql_x
+=== RUN   TestSplitShell/bash_-lc_"git_push_-f"
+=== RUN   TestSplitShell/X=1
+--- PASS: TestSplitShell (0.00s)
+    --- PASS: TestSplitShell/ls_-la (0.00s)
+    --- PASS: TestSplitShell/a_&&_b_||_c;_d_|_e_&_f (0.00s)
+    --- PASS: TestSplitShell/psql_-c_"DROP_TABLE_a;_DROP_TABLE_b" (0.00s)
+    --- PASS: TestSplitShell/echo_'a_&&_b'_"c_\"q\"_\$x" (0.00s)
+    --- PASS: TestSplitShell/echo_a\_b (0.00s)
+    --- PASS: TestSplitShell/echo_""_x (0.00s)
+    --- PASS: TestSplitShell/ls_#_rm_-rf_/_pwd (0.00s)
+    --- PASS: TestSplitShell/cmd_2>&1_>/dev/null (0.00s)
+    --- PASS: TestSplitShell/FOO=1_sudo_-u_pg_/usr/bin/psql_x (0.00s)
+    --- PASS: TestSplitShell/bash_-lc_"git_push_-f" (0.00s)
+    --- PASS: TestSplitShell/X=1 (0.00s)
+=== RUN   TestShellNestingIsBounded
+--- PASS: TestShellNestingIsBounded (0.00s)
+=== RUN   TestGlob
+--- PASS: TestGlob (0.00s)
+=== RUN   TestTautology
+--- PASS: TestTautology (0.00s)
+PASS
+ok  	github.com/pilsu-choi/mcpgraph/internal/policy	0.070s
 === RUN   TestPlaintextSecret
 === RUN   TestPlaintextSecret/inline_secret
 === RUN   TestPlaintextSecret/env_reference
@@ -332,20 +620,41 @@ ok  	github.com/pilsu-choi/mcpgraph/internal/posture	0.005s
 --- PASS: TestCmdline (0.00s)
 === RUN   TestIsSecretKey
 --- PASS: TestIsSecretKey (0.00s)
+=== RUN   TestText
+=== RUN   TestText/plain_command_kept
+=== RUN   TestText/env_assignment
+=== RUN   TestText/url_password
+=== RUN   TestText/bearer_header
+=== RUN   TestText/secret_flag
+=== RUN   TestText/quoted_flag_value
+=== RUN   TestText/sql_password
+=== RUN   TestText/known_prefix_anywhere
+--- PASS: TestText (0.00s)
+    --- PASS: TestText/plain_command_kept (0.00s)
+    --- PASS: TestText/env_assignment (0.00s)
+    --- PASS: TestText/url_password (0.00s)
+    --- PASS: TestText/bearer_header (0.00s)
+    --- PASS: TestText/secret_flag (0.00s)
+    --- PASS: TestText/quoted_flag_value (0.00s)
+    --- PASS: TestText/sql_password (0.00s)
+    --- PASS: TestText/known_prefix_anywhere (0.00s)
+=== RUN   TestIsEnvAssignment
+--- PASS: TestIsEnvAssignment (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/redact	0.004s
+ok  	github.com/pilsu-choi/mcpgraph/internal/redact	0.003s
 === RUN   TestMermaid
 --- PASS: TestMermaid (0.00s)
 === RUN   TestJSONRoundTrip
 --- PASS: TestJSONRoundTrip (0.00s)
 PASS
-ok  	github.com/pilsu-choi/mcpgraph/internal/report	0.003s
+ok  	github.com/pilsu-choi/mcpgraph/internal/report	0.002s
 === RUN   TestNoSecretInAnyOutput
 --- PASS: TestNoSecretInAnyOutput (0.00s)
 PASS
 ok  	github.com/pilsu-choi/mcpgraph/internal/scan	0.006s
 ?   	github.com/pilsu-choi/mcpgraph/internal/sink	[no test files]
 ?   	github.com/pilsu-choi/mcpgraph/internal/testutil	[no test files]
+?   	github.com/pilsu-choi/mcpgraph/policies	[no test files]
 === RUN   TestRenderIsValidXML
 --- PASS: TestRenderIsValidXML (0.00s)
 === RUN   TestLongLinesAreTruncated

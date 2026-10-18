@@ -1,0 +1,71 @@
+# mcpgraph default runtime policy.
+#
+# Every action an agent is about to take (an MCP tools/call seen by
+# `mcpgraph proxy`, or a tool use seen by `mcpgraph hook`) is checked
+# against these rules in order. The first rule that matches decides:
+#
+#   allow  run it
+#   deny   do not run it; the agent is told the reason
+#   ask    a human must approve it (the proxy answers with a denial that
+#          explains how to approve, the hook asks natively)
+#
+# A rule fires when ANY of its `match` entries fires. `when` narrows which
+# actions a rule looks at (sources: proxy/hook, tools: regexes on the tool
+# name). Regexes are case-insensitive. Paths: "~" is your home directory,
+# "**" matches any number of directories.
+version: 1
+default: allow
+
+rules:
+  - id: block-destructive-sql
+    verdict: deny
+    reason: >-
+      Destructive SQL is blocked: DROP TABLE, DROP DATABASE/SCHEMA, TRUNCATE
+      and DELETE without a limiting WHERE clause (WHERE 1=1 does not count).
+    match:
+      sql: [drop_table, drop_database, truncate, delete_without_where]
+
+  - id: ask-recursive-delete
+    verdict: ask
+    reason: >-
+      Recursive delete (rm -r) of a path outside the current project
+      directory needs approval.
+    match:
+      recursive_delete: outside_project
+
+  - id: block-secret-read
+    verdict: deny
+    reason: >-
+      Access to secret files is blocked: SSH keys (~/.ssh), AWS credentials
+      and .env files.
+    match:
+      paths:
+        - "~/.ssh/**"
+        - "~/.aws/credentials"
+        - "**/.env"
+        - "**/.env.*"
+      paths_except:
+        - "**/.env.example"
+        - "**/.env.sample"
+        - "**/.env.template"
+
+  - id: ask-git-force-push
+    verdict: ask
+    reason: >-
+      git push --force rewrites remote history and needs approval.
+    match:
+      command:
+        # git [global options] push ... with --force, --force-with-lease,
+        # --force-if-includes, a short flag group containing f (-f, -fu)
+        # or a +refspec.
+        - '^git\s.*\bpush\b.*(\s--force(-with-lease|-if-includes)?(=\S*)?(\s|$)|\s-[a-z]*f[a-z]*(\s|$)|\s\+\S)'
+
+  - id: ask-unknown-tool
+    verdict: ask
+    reason: >-
+      This MCP tool was not seen in the last scan; approve it once you have
+      checked what it does.
+    when:
+      sources: [proxy]
+    match:
+      unknown_tool: true

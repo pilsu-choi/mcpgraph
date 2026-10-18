@@ -3,7 +3,7 @@ type: Index
 title: Milestones
 description: What each milestone delivered and how it was verified.
 tags: [milestone]
-timestamp: 2026-10-18T07:05:00Z
+timestamp: 2026-10-18T07:15:00Z
 ---
 
 # Milestones
@@ -28,7 +28,7 @@ v1 milestones (AGENTS.md v1 §11), each committed separately. The v2 milestones 
 | # | Milestone | Status |
 | --- | --- | --- |
 | — | [v2 transition](v2-transition.md) | done |
-| 5 | Policy engine | in progress |
+| 5 | [Policy engine](v2-m5-policy-engine.md) | done |
 | 6 | Audit log + events + Decision nodes | planned |
 | 7 | MCP proxy | planned; blocked on [denial format](../issues/proxy-denial-format.md) |
 | 8 | Install / uninstall | planned |

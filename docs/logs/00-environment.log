@@ -1,4 +1,4 @@
-# generated: 2026-10-18T06:59:26Z
-# commit:    a33015b-dirty (docs(wiki): record CI on dev and first -race run)
+# generated: 2026-10-18T07:10:38Z
+# commit:    08120e4-dirty (m1: adopt AGENTS.md v2 layout)
 # go:        go version go1.27.2 linux/amd64
 # os:        Linux 5.15.167.4-microsoft-standard-WSL2 x86_64

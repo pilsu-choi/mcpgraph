@@ -1,0 +1,9 @@
+$ go test -run='^$' -bench=. -benchmem ./internal/policy/...
+goos: linux
+goarch: amd64
+pkg: github.com/pilsu-choi/mcpgraph/internal/policy
+cpu: 13th Gen Intel(R) Core(TM) i5-13400F
+BenchmarkDecide-16    	   96841	     12038 ns/op	    3558 B/op	      87 allocs/op
+PASS
+ok  	github.com/pilsu-choi/mcpgraph/internal/policy	1.170s
+# exit code: 0

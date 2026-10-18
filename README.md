@@ -30,6 +30,7 @@ All secrets there are fake, and they appear masked (<code>****abcd</code>). Ever
 - [The problem](#the-problem)
 - [Quick start](#quick-start)
 - [What it finds](#what-it-finds)
+- [Runtime policy](#runtime-policy)
 - [Architecture](#architecture)
 - [Design decisions](#design-decisions)
 - [Roadmap](#roadmap)
@@ -171,6 +172,82 @@ flowchart LR
   n_Process_eaf31313d171 -->|CHILD_OF| n_Process_e36828d32d16
 ```
 
+## Runtime policy
+
+Runtime control judges one action at a time: an MCP `tools/call` (through the proxy, milestone 7) or
+a coding-agent tool use such as a Bash command (through the hook, milestone 9). Both paths build the
+same `policy.Action` and call the same `policy.Engine`, so each rule is written once. The engine and
+the shipped policy are done (milestone 5). The proxy and the hook that feed it come next.
+
+```mermaid
+flowchart LR
+  P["mcpgraph proxy<br/>tools/call"] --> A["policy.Action<br/>source · agent · tool · args · text · cwd"]
+  H["mcpgraph hook<br/>Bash, Read, ..."] --> A
+  A --> J["policy.Judge<br/>timeout · recover"]
+  J --> E["RuleEngine.Decide<br/>rules in order, first match wins"]
+  E --> D["model.Decision<br/>verdict · rule_id · reason · summary*"]
+  J -. "error, panic or timeout" .-> F["deny<br/>mcpgraph-fail-closed"]
+  classDef deny fill:#fee2e2,stroke:#b91c1c,color:#000
+  class F deny
+```
+
+<sub>* the summary is the action text after <code>redact.Text</code>, capped at 200 characters.
+Raw arguments never reach a Decision.</sub>
+
+The shipped policy, [`policies/default.yaml`](policies/default.yaml), is embedded in the binary:
+
+| Rule | Matches | Verdict |
+| --- | --- | --- |
+| `block-destructive-sql` | `DROP TABLE`, `DROP DATABASE/SCHEMA`, `TRUNCATE`, `DELETE` without a limiting `WHERE` | deny |
+| `ask-recursive-delete` | `rm -r` / `-rf` / `--recursive` on a path that is not strictly inside the project directory | ask |
+| `block-secret-read` | any path under `~/.ssh/`, `~/.aws/credentials`, `.env` / `.env.*` (not `.env.example`) | deny |
+| `ask-git-force-push` | `git push --force`, `-f`, `--force-with-lease`, `+refspec` | ask |
+| `ask-unknown-tool` | an MCP tool the last scan did not see (proxy only) | ask |
+
+A rule looks like this:
+
+```yaml
+- id: block-destructive-sql
+  verdict: deny
+  reason: Destructive SQL is blocked ...
+  match:
+    sql: [drop_table, drop_database, truncate, delete_without_where]
+```
+
+Matchers are `sql` (a small statement classifier), `command` (regex per simple command), `text`
+(regex on the whole text), `recursive_delete`, `paths` / `paths_except` (globs with `**`) and
+`unknown_tool`. `when` narrows a rule by `sources` (proxy/hook) and `tools`. Unknown YAML keys are
+errors, so a typo cannot quietly switch a rule off.
+
+**Tricky cases are tested.** There are 98 table cases in
+[`docs/logs/12-policy-tests.log`](docs/logs/12-policy-tests.log). Some examples:
+
+| Input | Result |
+| --- | --- |
+| `psql -c "dRoP tAbLe users"` | deny (mixed case) |
+| `DROP/**/TABLE users`, `DROP -- x⏎TABLE users` | deny (comments between keywords) |
+| `DELETE FROM users WHERE 1=1`, `... WHERE id = 5 OR 'a'='a'` | deny (tautological WHERE) |
+| `DELETE FROM users -- WHERE id = 5` | deny (WHERE only in a comment) |
+| `psql -c "DELETE FROM users" && echo "where id=3"` | deny (WHERE belongs to another command) |
+| `bash -c "psql -c 'DROP TABLE users'"` | deny (nested shell) |
+| `DELETE FROM jobs WHERE finished_at IS NULL` | allow |
+| `truncate -s 0 app.log`, `git log --grep "delete from"` | allow (not SQL) |
+| `make clean && rm -rf ~/.cache`, `rm -rf "$TARGET"` | ask (chained; unresolved variable) |
+| `rm -rf build dist/*` in the project | allow |
+| `git push origin main && rm -f x.lock` | allow (the `-f` belongs to `rm`) |
+
+**Fail closed.** `policy.Judge` runs `Decide` in a goroutine with a deadline. An error, a panic or
+a timeout becomes a denial with rule ID `mcpgraph-fail-closed`, and the caller is never blocked past
+the deadline (hard rule 4).
+
+**Fast.** Regexes and globs are compiled once, when the policy loads. One decision takes about
+**13 µs** ([`docs/logs/11-bench.log`](docs/logs/11-bench.log)), far under the 5 ms budget, and a
+test enforces that budget on every `make test`.
+
+<p align="center">
+  <img src="docs/images/11-bench.svg" alt="make bench" width="80%">
+</p>
+
 ## Architecture
 
 ```mermaid
@@ -209,6 +286,8 @@ flowchart LR
 | `internal/graph` | Single-writer builder, RUNS_AS linking, snapshot diff |
 | `internal/redact` | Secret detection and masking |
 | `internal/posture` | Posture rules R1–R7, one file each |
+| `internal/policy` | Runtime policy: YAML loading, SQL classifier, shell splitting, path globs, `Engine.Decide`, fail-closed `Judge` |
+| `policies` | The shipped `default.yaml`, embedded with `//go:embed` |
 | `internal/report` | Inventory and findings tables, JSON, Mermaid |
 | `internal/sink` | `Sink` interface for a future central server; only a no-op exists |
 | `tools/termsvg` | Renders terminal output as the SVG captures in this README |
@@ -340,6 +419,10 @@ Tests never read the real machine. They build a fake `$HOME` in `t.TempDir()` fr
 | Every posture rule: positive and negative cases | `internal/posture/r*_test.go` |
 | Concurrent producers, single writer (run with `-race`) | `internal/graph/builder_test.go` |
 | A `mcpgraph proxy -- ...` entry is recognised as proxied | `internal/collector/config/proxied_test.go` |
+| Every runtime rule: positive, negative and tricky cases | `internal/policy/default_test.go` |
+| Fail closed on engine error, panic or timeout | `internal/policy/engine_test.go` |
+| No secret in a Decision (command, URL, headers, nested args) | `internal/policy/engine_test.go` |
+| Under 5 ms per decision | `internal/policy/bench_test.go` |
 | Exit code 2 on high findings | `cmd/mcpgraph/main_test.go` |
 
 <p align="center">
@@ -366,17 +449,19 @@ GoReleaser builds the binary for darwin/linux × amd64/arm64 as a static, stripp
 | [07-go-test](docs/logs/07-go-test.log) · [08 summary](docs/logs/08-go-test-summary.log) | full verbose test run |
 | [09-lint](docs/logs/09-lint.log) | golangci-lint |
 | [10-release-build](docs/logs/10-release-build.log) | GoReleaser cross build + `file` output |
+| [11-bench](docs/logs/11-bench.log) | policy engine benchmark |
+| [12-policy-tests](docs/logs/12-policy-tests.log) | every runtime policy table case, by name |
 
 Development history and design notes are kept in the [`wiki/`](wiki/index.md) knowledge bundle.
 
 ## Roadmap
 
-The spec is [`AGENTS.md`](AGENTS.md). Posture (milestones 1–4) is done; runtime control is next.
+The spec is [`AGENTS.md`](AGENTS.md). Posture (milestones 1–4) and the policy engine (5) are done.
 
 | # | Milestone | Status |
 | --- | --- | --- |
 | 1–4 | Skeleton, discovery, redaction, graph + posture | done |
-| 5 | Policy engine: YAML policy, matchers, SQL classifier, `Engine.Decide` | in progress |
+| 5 | Policy engine: YAML policy, matchers, SQL classifier, `Engine.Decide` | done |
 | 6 | Append-only JSONL audit log, `mcpgraph events`, `Decision` nodes | planned |
 | 7 | `mcpgraph proxy -- <server>`: stdio MCP proxy that judges `tools/call` | planned |
 | 8 | `mcpgraph install` / `uninstall`: route servers through the proxy, with backups | planned |
@@ -400,6 +485,11 @@ back with milestone 12.
   process matching are heuristics, so they can miss things or produce false positives. A server
   started through a wrapper script may not get a `RUNS_AS` edge.
 - **App versions** are not detected yet.
+- **Policy matching is pattern-based.** The SQL classifier does not parse string literals, so a
+  keyword inside a string can count. The shell splitter does not expand variables, `$(...)` or
+  backticks. Unresolved `rm` targets are treated as outside the project, which errs towards asking.
+- **`ask-unknown-tool` needs a tool inventory.** Scans do not list tools yet, so the rule only
+  fires once the proxy supplies one (milestone 7).
 
 ## Future work
 

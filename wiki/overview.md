@@ -3,7 +3,7 @@ type: Project
 title: Project overview
 description: What mcpgraph does, its scope, the hard rules it follows and where it stands.
 tags: [mcpgraph, overview, scope]
-timestamp: 2026-10-18T07:05:00Z
+timestamp: 2026-10-18T07:15:00Z
 ---
 
 # Project overview
@@ -51,6 +51,6 @@ the proxy, and fleet UI.
 ## Status
 
 The v1 milestones (posture) are done, and the [v2 transition](milestones/v2-transition.md) brought
-them in line with the new spec. Next is milestone 5, the policy engine. See the
+them in line with the new spec. The [policy engine](milestones/v2-m5-policy-engine.md) (milestone 5) is done. Next is milestone 6, the audit log. See the
 [milestones](milestones/index.md). The code is on GitHub at
 [pilsu-choi/mcpgraph](https://github.com/pilsu-choi/mcpgraph) (`dev` branch).

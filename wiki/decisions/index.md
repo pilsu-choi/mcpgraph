@@ -3,7 +3,7 @@ type: Index
 title: Design decisions
 description: Why mcpgraph is built the way it is.
 tags: [decision]
-timestamp: 2026-10-18T07:05:00Z
+timestamp: 2026-10-18T07:15:00Z
 ---
 
 # Design decisions
@@ -19,6 +19,7 @@ timestamp: 2026-10-18T07:05:00Z
 | [Pure Go, no cgo](pure-go-no-cgo.md) | gopsutil and modernc.org/sqlite keep CGO_ENABLED=0 static cross-builds possible. |
 | [Move to AGENTS.md v2](v2-transition.md) | mcpgraph adds runtime control (proxy, hook, policy, audit) to posture. |
 | [Archive the v1 daemon](archive-v1-daemon.md) | Daemon, store, API and watcher live on `archive/v1-daemon` until milestone 12. |
+| [Action carries the working directory](action-cwd.md) | `policy.Action.Cwd` exists so recursive deletes can be judged against the project. |
 | [Plain HTTP becomes R7](plain-http-as-r7.md) | R4 now means "not proxied"; the old check keeps its logic as R7. |
 
 These match AGENTS.md §5 and the README's *Design decisions* section.

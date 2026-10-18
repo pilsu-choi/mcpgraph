@@ -98,14 +98,26 @@ echo "wrote docs/logs/06-scan-real-machine.log"
 log 07-go-test.log "go test -v ./..." go test -count=1 -v ./...
 log 08-go-test-summary.log "go test ./..." go test -count=1 ./...
 log 09-lint.log "golangci-lint run" golangci-lint run
+log 11-bench.log "go test -run='^\$' -bench=. -benchmem ./internal/policy/..." \
+	go test -run='^$' -bench=. -benchmem ./internal/policy/...
 log 10-release-build.log "goreleaser build --snapshot --clean && file dist/*/*" \
 	sh -c 'goreleaser build --snapshot --clean 2>&1 | grep -E "building|succeeded|error" ; file dist/*/mcpgraph'
+
+# --- runtime policy: one decision per line --------------------------------
+# Uses the shipped policy on the actions the README talks about.
+{
+	echo "\$ go test -run 'TestBlockDestructiveSQL|TestAskRecursiveDelete|TestBlockSecretRead|TestAskGitForcePush|TestAskUnknownTool' -v ./internal/policy/"
+	go test -count=1 -run 'TestBlockDestructiveSQL|TestAskRecursiveDelete|TestBlockSecretRead|TestAskGitForcePush|TestAskUnknownTool' -v ./internal/policy/ 2>&1 |
+		grep -E -- '^\s+--- (PASS|FAIL)|^ok|^FAIL' | sed -E 's/ \([0-9.]+s\)$//; s/^ +//'
+} > "$LOGS/12-policy-tests.log"
+echo "wrote docs/logs/12-policy-tests.log"
 
 # --- captures ---------------------------------------------------------------
 svg 01-scan-fixtures.log "mcpgraph scan"
 svg 02-report-fixtures.log "mcpgraph report"
 svg 08-go-test-summary.log "go test"
 svg 09-lint.log "golangci-lint"
+svg 11-bench.log "make bench"
 
 # --- hard rule 2: no fake secret may appear in any generated file ------------
 SECRETS=$(sed -n 's/^\t"\(.*\)",$/\1/p' internal/testutil/fakehome.go)

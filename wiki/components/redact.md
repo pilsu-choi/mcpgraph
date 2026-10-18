@@ -4,8 +4,10 @@ title: internal/redact
 description: Secret detection and masking.
 resource: https://github.com/pilsu-choi/mcpgraph/blob/dev/internal/redact
 tags: [component, go]
-timestamp: 2026-10-18T06:45:00Z
+timestamp: 2026-10-18T07:15:00Z
 ---
+
+> **v2 addition:** `Text(s)` redacts free text (shell commands, SQL). It covers `NAME=value` assignments, the word after Bearer/Basic/token/password, quoted `--flag=value`, and everything `Args` already masks. The policy engine uses it for `Decision.Summary`.
 
 # `internal/redact`
 

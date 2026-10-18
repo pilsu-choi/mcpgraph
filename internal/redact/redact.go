@@ -295,3 +295,67 @@ func Cmdline(args []string) ([]string, string) {
 	r := Args(args)
 	return r, strings.Join(r, " ")
 }
+
+// Text redacts free-form text such as a shell command or a SQL query, for
+// places that show what an agent tried to run (decision summaries, the
+// audit log). Whitespace is collapsed to single spaces. On top of Args it
+// masks:
+//   - environment assignments "NAME=value" (PGPASSWORD=..., API_KEY=...),
+//   - the word after "Bearer", "Basic", "token" or "password" (headers,
+//     ALTER USER ... PASSWORD '...').
+func Text(s string) string {
+	fields := strings.Fields(s)
+	// Quotes around a word ("--token=abc", 'Bearer') would hide it from
+	// detection, so detect on the unquoted core and keep the original
+	// word when nothing needed masking.
+	cores := make([]string, len(fields))
+	for i, f := range fields {
+		cores[i] = strings.Trim(f, `"'`)
+	}
+	masked := Args(cores)
+	out := make([]string, len(fields))
+	for i, f := range fields {
+		core := cores[i]
+		switch {
+		case i > 0 && maskNextWord(cores[i-1]) && core != "":
+			out[i] = Mask(core)
+		case isEnvAssignment(core):
+			name, v, _ := strings.Cut(core, "=")
+			if strings.Contains(v, "://") {
+				out[i] = name + "=" + URL(v)
+			} else {
+				out[i] = name + "=" + Value(name, v)
+			}
+		case masked[i] != core:
+			out[i] = masked[i]
+		default:
+			out[i] = f
+		}
+	}
+	return strings.Join(out, " ")
+}
+
+// maskNextWord reports whether the word after w is a credential.
+func maskNextWord(w string) bool {
+	switch strings.ToLower(strings.TrimSuffix(w, ":")) {
+	case "bearer", "basic", "token", "password":
+		return true
+	}
+	return false
+}
+
+// isEnvAssignment reports whether w looks like NAME=value with a shell
+// variable name, e.g. PGPASSWORD=secret.
+func isEnvAssignment(w string) bool {
+	name, _, ok := strings.Cut(w, "=")
+	if !ok || name == "" {
+		return false
+	}
+	for i, r := range name {
+		letter := r == '_' || (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z')
+		if !letter && (i == 0 || r < '0' || r > '9') {
+			return false
+		}
+	}
+	return true
+}
