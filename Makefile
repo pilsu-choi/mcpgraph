@@ -3,7 +3,7 @@
 # locally we run the tests without -race; CI always has one.
 RACE := $(shell command -v gcc >/dev/null 2>&1 && echo -race)
 
-.PHONY: build test bench lint scan release demo docs
+.PHONY: build test bench lint scan release demo demo-down docs
 
 build:
 	CGO_ENABLED=0 go build ./cmd/...
@@ -30,8 +30,11 @@ release:
 
 # The DROP TABLE demo (milestone 10).
 demo:
-	@echo "make demo: not implemented yet (milestone 10); see make docs" >&2
-	@exit 1
+	demo/run.sh
+
+# Removes the demo database container and volume if a demo run was interrupted.
+demo-down:
+	demo/down.sh
 
 # Regenerates docs/logs and docs/images from real runs.
 docs:

@@ -43,3 +43,53 @@ func TestLongLinesAreTruncated(t *testing.T) {
 		t.Fatal("line was not truncated")
 	}
 }
+
+func wellFormed(t *testing.T, svg string) {
+	t.Helper()
+	dec := xml.NewDecoder(strings.NewReader(svg))
+	for {
+		_, err := dec.Token()
+		if errors.Is(err, io.EOF) {
+			return
+		}
+		if err != nil {
+			t.Fatalf("invalid XML: %v\n%s", err, svg)
+		}
+	}
+}
+
+func TestRenderAnimated(t *testing.T) {
+	raw := []string{
+		"$ echo <hi> & bye",
+		"#@ 2",
+		`output "quoted" <tag> & more`,
+		"last line",
+	}
+	svg := RenderAnimated("t", raw)
+	wellFormed(t, svg)
+
+	if n := strings.Count(svg, `<text x="16"`); n != 3 { // 3 lines (the #@ line is not drawn)
+		t.Errorf("drawn lines = %d, want 3", n)
+	}
+	for _, want := range []string{
+		"@keyframes k0{", "@keyframes k2{", "animation-iteration-count:infinite",
+		"clip-path:inset(0 100% 0 0)", // typed command line
+		"opacity:1",                   // plain output line
+		`style="animation-name:k1"`,
+		"&lt;tag&gt;", "&amp;", "&quot;quoted&quot;",
+	} {
+		if !strings.Contains(svg, want) {
+			t.Errorf("svg missing %q", want)
+		}
+	}
+	if strings.Contains(svg, "<script") || strings.Contains(svg, "#@") {
+		t.Error("svg must have no script and no raw directive")
+	}
+}
+
+func TestStaticHasNoAnimation(t *testing.T) {
+	svg := Render("t", []string{"a", "b"})
+	if strings.Contains(svg, "@keyframes") || strings.Contains(svg, "<style>") {
+		t.Fatal("static mode must not carry animation")
+	}
+}

@@ -5,6 +5,14 @@
 // Usage:
 //
 //	some-command | go run ./tools/termsvg -title "mcpgraph scan" -o docs/images/scan.svg
+//
+// With -animate the input is a timed transcript and the output is an
+// animated SVG (CSS keyframes only, so it plays inside a README <img>):
+//
+//	go run ./tools/termsvg -animate -o docs/images/demo.svg < transcript.txt
+//
+// Transcript lines are plain terminal lines. A line "#@ 1.5" adds a pause of
+// 1.5 seconds before the next line; lines starting with "$ " are typed out.
 package main
 
 import (
@@ -14,6 +22,7 @@ import (
 	"io"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -56,11 +65,16 @@ func main() {
 func run() error {
 	title := flag.String("title", "terminal", "window title")
 	out := flag.String("o", "", "output file (default stdout)")
+	animate := flag.Bool("animate", false, "input is a timed transcript; write an animated SVG")
 	flag.Parse()
 
 	lines, err := readLines(os.Stdin)
 	if err != nil {
 		return err
+	}
+	render := func() string { return Render(*title, lines) }
+	if *animate {
+		render = func() string { return RenderAnimated(*title, lines) }
 	}
 	w := io.Writer(os.Stdout)
 	if *out != "" {
@@ -71,7 +85,7 @@ func run() error {
 		defer f.Close()
 		w = f
 	}
-	_, err = io.WriteString(w, Render(*title, lines))
+	_, err = io.WriteString(w, render())
 	return err
 }
 
@@ -87,6 +101,13 @@ func readLines(r io.Reader) ([]string, error) {
 
 // Render returns the SVG document for the given lines.
 func Render(title string, lines []string) string {
+	return document(title, lines, "", func(int) string { return "" })
+}
+
+// document is the part static and animated output share: the window, the
+// title bar and one <text> per line. css goes into a <style> element and
+// attrs(i) adds attributes to line i's <text>.
+func document(title string, lines []string, css string, attrs func(i int) string) string {
 	cols := 40
 	for i, l := range lines {
 		r := []rune(l)
@@ -103,6 +124,9 @@ func Render(title string, lines []string) string {
 
 	var b strings.Builder
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d">`+"\n", width, height, width, height)
+	if css != "" {
+		fmt.Fprintf(&b, "<style>%s</style>\n", css)
+	}
 	fmt.Fprintf(&b, `<rect width="%d" height="%d" rx="8" fill="%s"/>`+"\n", width, height, colBG)
 	fmt.Fprintf(&b, `<rect width="%d" height="30" rx="8" fill="%s"/><rect y="22" width="%d" height="8" fill="%s"/>`+"\n", width, colBar, width, colBar)
 	for i, c := range []string{"#ff5f56", "#ffbd2e", "#27c93f"} {
@@ -116,10 +140,62 @@ func Render(title string, lines []string) string {
 	for i, l := range lines {
 		section = nextSection(section, l)
 		y := padTop + i*lineHeight + fontSize
-		fmt.Fprintf(&b, `<text x="%d" y="%d">%s</text>`+"\n", padX, y, colorLine(l, section))
+		fmt.Fprintf(&b, `<text x="%d" y="%d"%s>%s</text>`+"\n", padX, y, attrs(i), colorLine(l, section))
 	}
 	b.WriteString("</g>\n</svg>\n")
 	return b.String()
+}
+
+// Timing constants of the animated mode, in seconds.
+const (
+	lineGap  = 0.12 // between two output lines
+	typeRate = 0.04 // per typed character
+	holdEnd  = 4.0  // everything stays visible this long before the loop restarts
+)
+
+// RenderAnimated renders a timed transcript (see the package comment) as an
+// SVG whose lines appear one after another and loop forever. Each line gets
+// its own @keyframes: output lines switch from hidden to visible; "$ "
+// command lines are revealed by a clip-path that grows in one step per
+// character. There are no scripts, so GitHub shows it in an <img>.
+func RenderAnimated(title string, raw []string) string {
+	var lines []string
+	var start, dur []float64
+	t, pause := 0.0, 0.0
+	for _, l := range raw {
+		if rest, ok := strings.CutPrefix(l, "#@ "); ok {
+			if sec, err := strconv.ParseFloat(strings.TrimSpace(rest), 64); err == nil {
+				pause += sec
+			}
+			continue
+		}
+		t += lineGap + pause
+		pause = 0
+		d := 0.0
+		if strings.HasPrefix(l, "$ ") {
+			d = float64(len([]rune(l))) * typeRate
+		}
+		lines, start, dur = append(lines, l), append(start, t), append(dur, d)
+		t += d
+	}
+	total := t + pause + holdEnd
+
+	var css strings.Builder
+	fmt.Fprintf(&css, "g text{animation-duration:%.2fs;animation-iteration-count:infinite;animation-timing-function:linear}", total)
+	for i, l := range lines {
+		p0, p1 := start[i]/total*100, (start[i]+dur[i])/total*100
+		if dur[i] == 0 {
+			// Hidden, then visible from p0 until just before the loop.
+			fmt.Fprintf(&css, "@keyframes k%d{0%%,%.3f%%{opacity:0}%.3f%%,99.9%%{opacity:1}100%%{opacity:0}}", i, p0, p0+0.001)
+			continue
+		}
+		steps := len([]rune(l))
+		fmt.Fprintf(&css, "@keyframes k%d{0%%,%.3f%%{clip-path:inset(0 100%% 0 0);animation-timing-function:steps(%d,end)}%.3f%%,99.9%%{clip-path:inset(0)}100%%{clip-path:inset(0 100%% 0 0)}}",
+			i, p0, steps, p1)
+	}
+	return document(title, lines, css.String(), func(i int) string {
+		return fmt.Sprintf(` style="animation-name:k%d"`, i)
+	})
 }
 
 // nextSection tracks whether we are inside the HIGH or MEDIUM block of a
